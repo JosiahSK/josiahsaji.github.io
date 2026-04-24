@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Josiah Saji – Robotics Engineer & Embedded Systems Developer</title>
+  <meta name="description" content="Portfolio of Josiah Saji – Robotics Engineer, ROS2 Developer, and Embedded Systems Enthusiast based in Kerala, India." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">JS<span class="accent">.</span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#media">Media</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#skills" class="mobile-link">Skills</a>
+      <a href="#experience" class="mobile-link">Experience</a>
+      <a href="#media" class="mobile-link">Media</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-content reveal">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Available for Opportunities
+      </div>
+      <h1 class="hero-name">Josiah <span class="accent-text">Saji</span></h1>
+      <p class="hero-title">Robotics Engineer &nbsp;|&nbsp; ROS2 Developer &nbsp;|&nbsp; Embedded Systems Enthusiast</p>
+      <p class="hero-tagline">"Building intelligent machines that interact with the real world."</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary" id="heroViewProjects">View Projects</a>
+        <a href="#contact" class="btn btn-outline" id="heroContact">Contact Me</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Major Projects</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">ROS2</span><span class="stat-label">Jazzy Expert</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">Kerala</span><span class="stat-label">India</span></div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">// who I am</span>
+        <h2 class="section-title">About Me</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-card-glow"></div>
+          <div class="about-avatar">
+            <div class="avatar-ring ring-1"></div>
+            <div class="avatar-ring ring-2"></div>
+            <div class="avatar-ring ring-3"></div>
+            <div class="avatar-core">
+              <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="avatar-icon">
+                <circle cx="40" cy="28" r="16" stroke="url(#grad1)" stroke-width="2.5"/>
+                <path d="M14 68c0-14.359 11.64-26 26-26h0c14.359 0 26 11.641 26 26" stroke="url(#grad1)" stroke-width="2.5" stroke-linecap="round"/>
+                <defs>
+                  <linearGradient id="grad1" x1="14" y1="14" x2="66" y2="68" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#7c3aed"/>
+                    <stop offset="1" stop-color="#06b6d4"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+          <div class="about-tags">
+            <span class="tag">🤖 Robotics</span>
+            <span class="tag">⚡ Embedded</span>
+            <span class="tag">🛰 ROS2</span>
+            <span class="tag">🌾 AgriTech</span>
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <p class="about-lead">Final-year committee member &amp; Secretary of the Robotics Society at <strong>Saintgits College</strong>, Kerala.</p>
+          <p>I specialize in <strong>ROS2</strong>, <strong>embedded systems</strong>, and <strong>autonomous robotics</strong> — turning ideas into machines that operate in real environments. My work spans hardware-software integration, sensor fusion, and power system design.</p>
+          <p>My current research interests include autonomous navigation, agricultural robotics, and intelligent sensing. I'm passionate about building systems that solve genuine problems — not just proof-of-concept demos.</p>
+          <p>Beyond engineering, I lead technical workshops, coordinate with industry professionals, and mentor peers in robotics fundamentals and ROS2 development.</p>
+          <div class="about-highlights">
+            <div class="highlight-item">
+              <span class="highlight-icon">📍</span>
+              <span>Kerala, India</span>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">🎓</span>
+              <span>Saintgits College of Engineering</span>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">🏛</span>
+              <span>Secretary – Robotics Society</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">// what I've built</span>
+        <h2 class="section-title">Projects</h2>
+      </div>
+      <div class="projects-grid">
+
+        <div class="project-card reveal" id="proj-tilling">
+          <div class="project-card-inner">
+            <div class="project-num">01</div>
+            <div class="project-icon">🌾</div>
+            <h3 class="project-title">Autonomous Tilling Robot</h3>
+            <p class="project-desc">A rear-wheel drive agricultural robot with a front tilling mechanism powered by a two-stroke engine. Designed for real-world field deployment with GPS tracking and remote operation capabilities.</p>
+            <ul class="project-tech">
+              <li>LiFePO4 Battery</li>
+              <li>GPS Navigation</li>
+              <li>Embedded Control</li>
+              <li>Remote Operation</li>
+            </ul>
+            <div class="project-footer">
+              <span class="project-badge">YIP 7.0 Submission</span>
+            </div>
+          </div>
+          <div class="project-glow"></div>
+        </div>
+
+        <div class="project-card reveal" id="proj-ros2">
+          <div class="project-card-inner">
+            <div class="project-num">02</div>
+            <div class="project-icon">🤖</div>
+            <h3 class="project-title">ROS2-Based Robotics Systems</h3>
+            <p class="project-desc">Developed and visualized robotic models using URDF, RViz, and TF2. Implemented autonomous navigation pipelines with Nav2 and explored micro-ROS for microcontroller integration.</p>
+            <ul class="project-tech">
+              <li>ROS2 Jazzy</li>
+              <li>URDF / TF2</li>
+              <li>Nav2</li>
+              <li>micro-ROS</li>
+            </ul>
+            <div class="project-footer">
+              <span class="project-badge">Autonomous Navigation</span>
+            </div>
+          </div>
+          <div class="project-glow"></div>
+        </div>
+
+        <div class="project-card reveal" id="proj-embedded">
+          <div class="project-card-inner">
+            <div class="project-num">03</div>
+            <div class="project-icon">⚡</div>
+            <h3 class="project-title">Embedded Systems Projects</h3>
+            <p class="project-desc">Multi-platform embedded development spanning Raspberry Pi, Pico, and ESP32. Includes sensor integration (LiDAR, ultrasonic, LDR) and power system design using buck converters for efficient energy delivery.</p>
+            <ul class="project-tech">
+              <li>Raspberry Pi / Pico</li>
+              <li>ESP32</li>
+              <li>LiDAR & Sensors</li>
+              <li>Buck Converters</li>
+            </ul>
+            <div class="project-footer">
+              <span class="project-badge">Hardware + Software</span>
+            </div>
+          </div>
+          <div class="project-glow"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">// what I know</span>
+        <h2 class="section-title">Skills</h2>
+      </div>
+      <div class="skills-grid">
+
+        <div class="skill-category reveal" id="skill-robotics">
+          <div class="skill-cat-header">
+            <span class="skill-cat-icon">🤖</span>
+            <h3>Robotics</h3>
+          </div>
+          <div class="skill-bars">
+            <div class="skill-bar-item" data-level="90">
+              <span class="skill-name">ROS2 (Jazzy)</span>
+              <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-bar-item" data-level="85">
+              <span class="skill-name">URDF / TF2 / RViz</span>
+              <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar-item" data-level="80">
+              <span class="skill-name">Nav2</span>
+              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+              <span class="skill-pct">80%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category reveal" id="skill-embedded">
+          <div class="skill-cat-header">
+            <span class="skill-cat-icon">⚡</span>
+            <h3>Embedded Systems</h3>
+          </div>
+          <div class="skill-bars">
+            <div class="skill-bar-item">
+              <span class="skill-name">Raspberry Pi</span>
+              <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-bar-item">
+              <span class="skill-name">ESP32</span>
+              <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar-item">
+              <span class="skill-name">Pico / MicroPython</span>
+              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+              <span class="skill-pct">80%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category reveal" id="skill-programming">
+          <div class="skill-cat-header">
+            <span class="skill-cat-icon">💻</span>
+            <h3>Programming</h3>
+          </div>
+          <div class="skill-bars">
+            <div class="skill-bar-item">
+              <span class="skill-name">Python</span>
+              <div class="skill-track"><div class="skill-fill" data-width="92"></div></div>
+              <span class="skill-pct">92%</span>
+            </div>
+            <div class="skill-bar-item">
+              <span class="skill-name">C / C++</span>
+              <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
+              <span class="skill-pct">78%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category reveal" id="skill-hardware">
+          <div class="skill-cat-header">
+            <span class="skill-cat-icon">🔧</span>
+            <h3>Hardware</h3>
+          </div>
+          <div class="skill-bars">
+            <div class="skill-bar-item">
+              <span class="skill-name">Motor Drivers</span>
+              <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar-item">
+              <span class="skill-name">Sensors (LiDAR / Ultrasonic / LDR)</span>
+              <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-bar-item">
+              <span class="skill-name">Power Systems (Buck Converters)</span>
+              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+              <span class="skill-pct">80%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tech Pills -->
+      <div class="tech-pills reveal">
+        <span class="pill">ROS2</span><span class="pill">Python</span><span class="pill">C++</span>
+        <span class="pill">URDF</span><span class="pill">Nav2</span><span class="pill">micro-ROS</span>
+        <span class="pill">ESP32</span><span class="pill">Raspberry Pi</span><span class="pill">LiDAR</span>
+        <span class="pill">LiFePO4</span><span class="pill">GPS</span><span class="pill">TF2</span>
+        <span class="pill">MicroPython</span><span class="pill">Buck Converter</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE & LEADERSHIP -->
+  <section id="experience" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">// what I've led</span>
+        <h2 class="section-title">Experience &amp; Leadership</h2>
+      </div>
+      <div class="timeline">
+
+        <div class="timeline-item reveal" id="exp-secretary">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <span class="timeline-role">Secretary</span>
+              <span class="timeline-org">Robotics Society, Saintgits College</span>
+            </div>
+            <p class="timeline-desc">Serving as Secretary of the college Robotics Society — managing operations, coordinating technical events, and driving the society's robotics agenda forward.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal" id="exp-workshops">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <span class="timeline-role">Workshop Organizer</span>
+              <span class="timeline-org">Robotics Society, Saintgits College</span>
+            </div>
+            <p class="timeline-desc">Organized and conducted robotics workshops covering ROS2, ESP32, and micro-ROS. Coordinated with industry speakers and faculty to deliver high-quality learning experiences.</p>
+            <div class="timeline-tags">
+              <span>ROS2</span><span>ESP32</span><span>micro-ROS</span><span>Industry Speakers</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal" id="exp-yip">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <span class="timeline-role">Project Lead</span>
+              <span class="timeline-org">YIP 7.0 – Young Innovators Programme</span>
+            </div>
+            <p class="timeline-desc">Led the design and development of the Autonomous Tilling Robot, submitted to YIP 7.0. Managed end-to-end system integration from mechanical design to embedded control systems.</p>
+            <div class="timeline-tags">
+              <span>Agricultural Robotics</span><span>Embedded Systems</span><span>GPS</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Future Goals -->
+      <div class="goals-block reveal">
+        <h3 class="goals-title">📈 Future Goals</h3>
+        <div class="goals-grid">
+          <div class="goal-item">
+            <span class="goal-icon">🌾</span>
+            <p>Develop advanced autonomous robots for agriculture at scale</p>
+          </div>
+          <div class="goal-item">
+            <span class="goal-icon">🧠</span>
+            <p>Integrate AI and machine learning into real-time robotics systems</p>
+          </div>
+          <div class="goal-item">
+            <span class="goal-icon">🚀</span>
+            <p>Build scalable robotic platforms that solve genuine real-world problems</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEDIA -->
+  <section id="media" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">// behind the lens</span>
+        <h2 class="section-title">Media &amp; Content</h2>
+      </div>
+      <div class="media-grid">
+        <div class="media-card reveal" id="media-gopro">
+          <div class="media-icon-wrap">
+            <span class="media-icon">🎥</span>
+          </div>
+          <h3>Helmet POV Riding Videos</h3>
+          <p>Captures immersive first-person riding footage using a <strong>GoPro Hero 12</strong>. Wide-angle lens setup for cinematic, dynamic video content.</p>
+          <span class="media-tag">GoPro Hero 12</span>
+        </div>
+        <div class="media-card reveal" id="media-sony">
+          <div class="media-icon-wrap">
+            <span class="media-icon">📷</span>
+          </div>
+          <h3>Photography &amp; Videography</h3>
+          <p>Uses a <strong>Sony Alpha 6300</strong> mirrorless camera for high-quality photography and video production. Focused on technical and natural subject matter.</p>
+          <span class="media-tag">Sony α6300</span>
+        </div>
+        <div class="media-card reveal" id="media-vision">
+          <div class="media-icon-wrap">
+            <span class="media-icon">🌐</span>
+          </div>
+          <h3>Wide-Angle Immersive Visuals</h3>
+          <p>Specializes in wide-angle and immersive visual storytelling — bringing the same attention to detail from engineering into visual composition and framing.</p>
+          <span class="media-tag">Cinematic</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">// let's connect</span>
+        <h2 class="section-title">Contact</h2>
+        <p class="section-sub">Have a project, opportunity, or just want to talk robotics? Reach out.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <div class="contact-link-item" id="contact-email">
+            <div class="contact-link-icon">✉️</div>
+            <div>
+              <span class="contact-link-label">Email</span>
+              <a href="mailto:josiahsaji2k03@gmail.com" class="contact-link-val">josiahsaji2k03@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-link-item" id="contact-linkedin">
+            <div class="contact-link-icon">💼</div>
+            <div>
+              <span class="contact-link-label">LinkedIn</span>
+              <a href="#" class="contact-link-val">linkedin.com/in/josiahsaji</a>
+            </div>
+          </div>
+          <div class="contact-link-item" id="contact-github">
+            <div class="contact-link-icon">🐙</div>
+            <div>
+              <span class="contact-link-label">GitHub</span>
+              <a href="#" class="contact-link-val">github.com/josiahsaji</a>
+            </div>
+          </div>
+          <p class="contact-location">📍 Kerala, India</p>
+        </div>
+        <form class="contact-form reveal" id="contactForm" novalidate>
+          <div class="form-group">
+            <label for="formName">Name</label>
+            <input type="text" id="formName" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="formEmail">Email</label>
+            <input type="email" id="formEmail" name="email" placeholder="your@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="formSubject">Subject</label>
+            <input type="text" id="formSubject" name="subject" placeholder="What's this about?" />
+          </div>
+          <div class="form-group">
+            <label for="formMessage">Message</label>
+            <textarea id="formMessage" name="message" rows="5" placeholder="Tell me about your project or opportunity..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="formSubmit">Send Message →</button>
+          <p class="form-note" id="formNote"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <p class="footer-text">Built by <span class="accent">Josiah Saji</span> &nbsp;·&nbsp; Robotics Engineer &amp; Embedded Systems Developer</p>
+      <p class="footer-sub">Kerala, India &nbsp;·&nbsp; 2025</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
