@@ -60,7 +60,7 @@
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < CONNECT_DIST) {
           const alpha = (1 - dist / CONNECT_DIST) * 0.15;
-          ctx.strokeStyle = `rgba(124,58,237,${alpha})`;
+          ctx.strokeStyle = 'rgba(124,58,237,' + alpha + ')';
           ctx.lineWidth = 0.8;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
@@ -75,7 +75,6 @@
     ctx.clearRect(0, 0, W, H);
     drawGrid();
 
-    // Radial gradient overlay
     const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
     grad.addColorStop(0, 'rgba(124,58,237,0.06)');
     grad.addColorStop(1, 'rgba(8,11,18,0)');
@@ -84,18 +83,18 @@
 
     drawConnections();
 
-    particles.forEach(p => {
+    particles.forEach(function(p) {
       p.update();
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
+      ctx.fillStyle = 'rgba(' + p.color + ',' + p.alpha + ')';
       ctx.fill();
     });
 
     requestAnimationFrame(animate);
   }
 
-  window.addEventListener('resize', () => { resize(); initParticles(); });
+  window.addEventListener('resize', function() { resize(); initParticles(); });
   resize();
   initParticles();
   animate();
@@ -108,7 +107,7 @@
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
 
-  window.addEventListener('scroll', () => {
+  window.addEventListener('scroll', function() {
     if (window.scrollY > 50) {
       navbar.style.background = 'rgba(8,11,18,0.95)';
       navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.4)';
@@ -118,29 +117,28 @@
     }
   });
 
-  hamburger.addEventListener('click', () => {
+  hamburger.addEventListener('click', function() {
     mobileMenu.classList.toggle('open');
   });
 
-  document.querySelectorAll('.mobile-link').forEach(link => {
-    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mobile-link').forEach(function(link) {
+    link.addEventListener('click', function() { mobileMenu.classList.remove('open'); });
   });
 
-  // Active link highlight
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-links a');
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
       if (entry.isIntersecting) {
-        navLinks.forEach(l => l.classList.remove('active'));
-        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        navLinks.forEach(function(l) { l.classList.remove('active'); });
+        const active = document.querySelector('.nav-links a[href="#' + entry.target.id + '"]');
         if (active) active.classList.add('active');
       }
     });
   }, { threshold: 0.4 });
 
-  sections.forEach(s => observer.observe(s));
+  sections.forEach(function(s) { observer.observe(s); });
 })();
 
 
@@ -148,19 +146,30 @@
 (function initReveal() {
   const reveals = document.querySelectorAll('.reveal');
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((entry, i) => {
+  // Immediately show hero elements (already in viewport on load)
+  document.querySelectorAll('#hero .reveal').forEach(function(el) {
+    el.classList.add('visible');
+  });
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
       if (entry.isIntersecting) {
-        // Stagger children of the same parent
-        setTimeout(() => {
+        setTimeout(function() {
           entry.target.classList.add('visible');
         }, 80);
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
-  reveals.forEach(el => observer.observe(el));
+  reveals.forEach(function(el) { observer.observe(el); });
+
+  // Fallback: if anything is still invisible after 2s, force show it
+  setTimeout(function() {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }, 2000);
 })();
 
 
@@ -168,8 +177,8 @@
 (function initSkillBars() {
   const fills = document.querySelectorAll('.skill-fill');
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         const el = entry.target;
         const width = el.getAttribute('data-width') || '0';
@@ -179,7 +188,7 @@
     });
   }, { threshold: 0.3 });
 
-  fills.forEach(f => observer.observe(f));
+  fills.forEach(function(f) { observer.observe(f); });
 })();
 
 
@@ -189,14 +198,14 @@
   const note = document.getElementById('formNote');
   if (!form) return;
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('formSubmit');
     btn.textContent = 'Sending…';
     btn.disabled = true;
 
-    setTimeout(() => {
-      note.textContent = '✓ Message received! I'll get back to you soon.';
+    setTimeout(function() {
+      note.textContent = '✓ Message received! I will get back to you soon.';
       note.style.color = '#22c55e';
       form.reset();
       btn.textContent = 'Send Message →';
@@ -208,8 +217,8 @@
 
 // ── SMOOTH TILT ON PROJECT CARDS ──────────────────────────────────────
 (function initTilt() {
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
+  document.querySelectorAll('.project-card').forEach(function(card) {
+    card.addEventListener('mousemove', function(e) {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -217,9 +226,9 @@
       const cy = rect.height / 2;
       const rotX = ((y - cy) / cy) * -6;
       const rotY = ((x - cx) / cx) * 6;
-      card.style.transform = `translateY(-8px) perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      card.style.transform = 'translateY(-8px) perspective(600px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
     });
-    card.addEventListener('mouseleave', () => {
+    card.addEventListener('mouseleave', function() {
       card.style.transform = '';
     });
   });
@@ -228,6 +237,5 @@
 
 // ── NAV ACTIVE STYLE ─────────────────────────────────────────────────
 const style = document.createElement('style');
-style.textContent = `.nav-links a.active { color: #fff !important; }
-.nav-links a.active::after { transform: scaleX(1) !important; }`;
+style.textContent = '.nav-links a.active { color: #fff !important; } .nav-links a.active::after { transform: scaleX(1) !important; }';
 document.head.appendChild(style);
