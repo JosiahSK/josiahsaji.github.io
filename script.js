@@ -364,47 +364,117 @@ try {
 }
 
 
-// ---- SKILL BARS --------------------------------------------------------
-try {
-  (function initSkillBars() {
-    var fills = document.querySelectorAll('.skill-fill');
-    if (typeof IntersectionObserver === 'undefined') {
-      for (var i = 0; i < fills.length; i++) {
-        fills[i].style.width = (fills[i].getAttribute('data-width') || '0') + '%';
-      }
-      return;
-    }
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.style.width = (entry.target.getAttribute('data-width') || '0') + '%';
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-    for (var i = 0; i < fills.length; i++) observer.observe(fills[i]);
-  })();
-} catch(e) {}
+// ---- SKILL BARS (removed — skills are now pill tags) ------------------
+// Skill bars replaced with grouped pill layout; no JS required.
 
 
-// ---- CONTACT FORM ------------------------------------------------------
+// ---- CONTACT FORM (Formspree) ------------------------------------------
+// PLACEHOLDER: create a free form at formspree.io, then replace YOUR_FORM_ID
+// in the <form action="..."> attribute in index.html.
 try {
   (function initForm() {
     var form = document.getElementById('contactForm');
     var note = document.getElementById('formNote');
+    var btn  = document.getElementById('formSubmit');
     if (!form) return;
+
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      var btn = document.getElementById('formSubmit');
-      btn.textContent = 'Sending...';
+      btn.textContent = 'Sending\u2026';
       btn.disabled = true;
-      setTimeout(function() {
-        if (note) { note.textContent = 'Message received! I will get back to you soon.'; note.style.color = '#22c55e'; }
-        form.reset();
-        btn.textContent = 'Send Message';
+      if (note) { note.textContent = ''; note.style.color = ''; }
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function(res) {
+        if (res.ok) {
+          if (note) { note.textContent = '\u2713 Message sent! I will get back to you soon.'; note.style.color = '#22c55e'; }
+          form.reset();
+        } else {
+          return res.json().then(function(data) {
+            throw new Error((data.errors || []).map(function(e) { return e.message; }).join(', ') || 'Submission failed.');
+          });
+        }
+      })
+      .catch(function(err) {
+        if (note) {
+          note.textContent = 'Oops \u2014 ' + err.message + ' Try emailing me directly.';
+          note.style.color = '#ef4444';
+        }
+      })
+      ['finally'](function() {
+        btn.textContent = 'Send Message \u2192';
         btn.disabled = false;
-      }, 1400);
+      });
     });
+  })();
+} catch(e) {}
+
+
+// ---- IMAGE CAROUSELS ---------------------------------------------------
+try {
+  (function initCarousels() {
+    var carousels = document.querySelectorAll('[data-carousel]');
+    for (var ci = 0; ci < carousels.length; ci++) {
+      (function(carousel) {
+        var track       = carousel.querySelector('.carousel-track');
+        var items       = track ? track.querySelectorAll('figure') : [];
+        var placeholder = carousel.querySelector('.carousel-placeholder');
+        var prevBtn     = carousel.querySelector('.carousel-prev');
+        var nextBtn     = carousel.querySelector('.carousel-next');
+
+        if (!items.length) {
+          // No images — show placeholder, hide arrow buttons
+          if (placeholder) placeholder.style.display = 'flex';
+          if (prevBtn) prevBtn.style.display = 'none';
+          if (nextBtn) nextBtn.style.display = 'none';
+          return;
+        }
+
+        // Has images — hide placeholder, show arrows
+        if (placeholder) placeholder.style.display = 'none';
+        if (prevBtn) prevBtn.style.display = '';
+        if (nextBtn) nextBtn.style.display = '';
+
+        var current = 0;
+        var total   = items.length;
+
+        function goTo(idx) {
+          current = (idx + total) % total;
+          if (track) track.style.transform = 'translateX(-' + (current * 100) + '%)';
+          for (var i = 0; i < items.length; i++) {
+            items[i].setAttribute('aria-hidden', String(i !== current));
+          }
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
+
+        // Touch / swipe
+        var swipeStartX = 0;
+        if (track) {
+          track.addEventListener('touchstart', function(e) {
+            swipeStartX = e.touches[0].clientX;
+          }, { passive: true });
+          track.addEventListener('touchend', function(e) {
+            var diff = swipeStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+          }, { passive: true });
+        }
+
+        // Keyboard navigation when carousel is focused
+        carousel.setAttribute('tabindex', '0');
+        carousel.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowLeft')  goTo(current - 1);
+          if (e.key === 'ArrowRight') goTo(current + 1);
+        });
+
+        goTo(0);
+      })(carousels[ci]);
+    }
   })();
 } catch(e) {}
 

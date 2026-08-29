@@ -3,8 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Josiah Saji – Robotics Engineer & Embedded Systems Developer</title>
-  <meta name="description" content="Portfolio of Josiah Saji – Robotics Engineer, ROS2 Developer, and Embedded Systems Enthusiast based in Kerala, India." />
+  <title>Josiah Saji — Robotics &amp; ROS2 Engineer</title>
+  <meta name="description" content="Portfolio of Josiah Saji — Robotics Engineer, ROS2 Developer, and Embedded Systems Enthusiast based in Kerala, India." />
+
+  <!-- Open Graph / Social Previews -->
+  <meta property="og:title" content="Josiah Saji — Robotics &amp; ROS2 Engineer" />
+  <meta property="og:description" content="Robotics Engineer specialising in ROS2, autonomous navigation, and embedded systems. Based in Kerala, India." />
+  <!-- PLACEHOLDER: replace assets/og-image.png with a real 1200×630 image -->
+  <meta property="og:image" content="assets/og-image.png" />
+  <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Josiah Saji — Robotics &amp; ROS2 Engineer" />
+  <meta name="twitter:description" content="Robotics Engineer specialising in ROS2, autonomous navigation, and embedded systems." />
+  <!-- PLACEHOLDER: replace assets/og-image.png with a real 1200×630 image -->
+  <meta name="twitter:image" content="assets/og-image.png" />
+
+  <!-- Favicon -->
+  <!-- PLACEHOLDER: replace assets/favicon.ico with your real favicon -->
+  <link rel="icon" href="assets/favicon.ico" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -23,6 +43,8 @@
         <li><a href="#experience">Experience</a></li>
         <li><a href="#media">Media</a></li>
         <li><a href="#contact">Contact</a></li>
+        <!-- PLACEHOLDER: upload resume PDF to assets/resume/resume.pdf -->
+        <li><a href="assets/resume/resume.pdf" class="nav-resume-btn" id="navResumeBtn" download>&#x2193;&nbsp;Resume</a></li>
       </ul>
       <button class="hamburger" id="hamburger" aria-label="Open menu">
         <span></span><span></span><span></span>
@@ -35,6 +57,8 @@
       <a href="#experience" class="mobile-link">Experience</a>
       <a href="#media" class="mobile-link">Media</a>
       <a href="#contact" class="mobile-link">Contact</a>
+      <!-- PLACEHOLDER: upload resume PDF to assets/resume/resume.pdf -->
+      <a href="assets/resume/resume.pdf" class="mobile-link" id="mobileResumeBtn" download>&#x2193; Download Resume</a>
     </div>
   </nav>
 
@@ -52,9 +76,11 @@
       <div class="hero-cta">
         <a href="#projects" class="btn btn-primary" id="heroViewProjects">View Projects</a>
         <a href="#contact" class="btn btn-outline" id="heroContact">Contact Me</a>
+        <!-- PLACEHOLDER: upload resume PDF to assets/resume/resume.pdf -->
+        <a href="assets/resume/resume.pdf" class="btn btn-resume" id="heroResume" download>&#x2193; Resume</a>
       </div>
       <div class="hero-stats">
-        <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Major Projects</span></div>
+        <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Major Projects</span></div>
         <div class="stat-divider"></div>
         <div class="stat"><span class="stat-num">ROS2</span><span class="stat-label">Jazzy Expert</span></div>
         <div class="stat-divider"></div>
@@ -99,6 +125,7 @@
             <span class="tag">⚡ Embedded</span>
             <span class="tag">🛰 ROS2</span>
             <span class="tag">🌾 AgriTech</span>
+            <span class="tag">🦾 Quadruped</span>
           </div>
         </div>
         <div class="about-text reveal">
@@ -134,58 +161,346 @@
       </div>
       <div class="projects-grid">
 
+        <!-- ── PROJECT 01: AUTONOMOUS TILLING ROBOT ── -->
         <div class="project-card reveal" id="proj-tilling">
+          <!-- IMAGE CAROUSEL -->
+          <div class="proj-carousel" data-carousel>
+            <div class="carousel-track">
+              <!-- ADD IMAGES: Uncomment each <figure> block and fill in the src path
+              <figure>
+                <img src="assets/projects/tilling-robot/images/photo1.jpg" alt="Autonomous Tilling Robot – front view" loading="lazy">
+                <figcaption>Front view</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/projects/tilling-robot/images/photo2.jpg" alt="Autonomous Tilling Robot – field test" loading="lazy">
+                <figcaption>Field test</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/projects/tilling-robot/images/photo3.jpg" alt="Autonomous Tilling Robot – CAD render" loading="lazy">
+                <figcaption>CAD render</figcaption>
+              </figure>
+              -->
+            </div>
+            <div class="carousel-placeholder">
+              <span>📷</span>
+              <p>Drop images in <code>assets/projects/tilling-robot/images/</code></p>
+            </div>
+            <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
+            <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+          </div>
+
           <div class="project-card-inner">
-            <div class="project-num">01</div>
-            <div class="project-icon">🌾</div>
+            <div class="project-meta">
+              <span class="project-num">01</span>
+              <span class="project-icon">🌾</span>
+            </div>
             <h3 class="project-title">Autonomous Tilling Robot</h3>
-            <p class="project-desc">A rear-wheel drive agricultural robot with a front tilling mechanism powered by a two-stroke engine. Designed for real-world field deployment with GPS tracking and remote operation capabilities.</p>
+
+            <div class="project-narrative">
+              <div class="narrative-block">
+                <span class="narrative-label problem">Problem</span>
+                <p>Small-scale farmers in Kerala rely on manual or expensive tractor-based tilling, leaving a gap for an affordable, GPS-guided autonomous solution capable of real-field deployment.</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label approach">Approach</span>
+                <p>Built a rear-wheel-drive agricultural robot with a front two-stroke engine tilling mechanism. Integrated a LiFePO4 battery pack for sustained runtime, GPS for field navigation, and a remote-operation interface for manual override.</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label result">Result</span>
+                <p>Achieved <strong>[ADD METRIC: tilling depth] mm</strong> working depth, <strong>[ADD METRIC: coverage rate] m²/hr</strong> field coverage, and <strong>[ADD METRIC: battery runtime] hrs</strong> continuous operation. Submitted to YIP 7.0.</p>
+              </div>
+            </div>
+
             <ul class="project-tech">
               <li>LiFePO4 Battery</li>
               <li>GPS Navigation</li>
               <li>Embedded Control</li>
               <li>Remote Operation</li>
+              <li>Two-Stroke Engine</li>
             </ul>
+
+            <!-- VIDEO SLOT -->
+            <div class="proj-video">
+              <!-- ADD VIDEO: Uncomment when ready
+              <video controls preload="none" poster="assets/projects/tilling-robot/images/thumb.jpg">
+                <source src="assets/projects/tilling-robot/videos/demo.mp4" type="video/mp4" />
+                Your browser does not support video.
+              </video>
+              -->
+              <div class="video-placeholder">
+                <span>🎬</span>
+                <p>Demo coming soon — drop <code>demo.mp4</code> in <code>assets/projects/tilling-robot/videos/</code></p>
+              </div>
+            </div>
+
             <div class="project-footer">
               <span class="project-badge">YIP 7.0 Submission</span>
+              <div class="project-links">
+                <!-- PLACEHOLDER: replace REPLACE-ME-tilling-robot with the real GitHub repo name -->
+                <a href="https://github.com/JosiahSK/REPLACE-ME-tilling-robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubTilling">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                  View on GitHub
+                </a>
+                <a href="tilling-robot.html" class="proj-link proj-casestudy" id="caseStudyTilling">Read case study →</a>
+              </div>
             </div>
           </div>
           <div class="project-glow"></div>
         </div>
 
-        <div class="project-card reveal" id="proj-ros2">
+        <!-- ── PROJECT 02: QUADRUPED ROBOT ── -->
+        <div class="project-card reveal" id="proj-quadruped">
+          <!-- IMAGE CAROUSEL -->
+          <div class="proj-carousel" data-carousel>
+            <div class="carousel-track">
+              <!-- ADD IMAGES: Uncomment each <figure> block and fill in the src path
+              <figure>
+                <img src="assets/projects/quadruped-robot/images/photo1.jpg" alt="Quadruped Robot – standing pose" loading="lazy">
+                <figcaption>Standing pose</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/projects/quadruped-robot/images/photo2.jpg" alt="Quadruped Robot – terrain test" loading="lazy">
+                <figcaption>Terrain test</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/projects/quadruped-robot/images/photo3.jpg" alt="Quadruped Robot – CAD render" loading="lazy">
+                <figcaption>CAD render</figcaption>
+              </figure>
+              -->
+            </div>
+            <div class="carousel-placeholder">
+              <span>📷</span>
+              <p>Drop images in <code>assets/projects/quadruped-robot/images/</code></p>
+            </div>
+            <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
+            <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+          </div>
+
           <div class="project-card-inner">
-            <div class="project-num">02</div>
-            <div class="project-icon">🤖</div>
+            <div class="project-meta">
+              <span class="project-num">02</span>
+              <span class="project-icon">🦾</span>
+            </div>
+            <h3 class="project-title">Quadruped Robot</h3>
+
+            <div class="project-narrative">
+              <div class="narrative-block">
+                <span class="narrative-label problem">Problem</span>
+                <p>Wheeled robots cannot navigate uneven, cluttered, or obstacle-dense terrain. A bio-inspired legged platform is needed for scenarios where wheels simply cannot go.</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label approach">Approach</span>
+                <p>Designed and built a 12-DOF quadruped with servo-actuated legs. Implemented inverse kinematics for precise leg positioning and multiple gait patterns (trot, walk). Integrated with ROS2 for teleoperation and autonomous navigation planning.</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label result">Result</span>
+                <p>Achieved <strong>[ADD METRIC: walking speed] cm/s</strong> stable trot speed, <strong>[ADD METRIC: terrain clearance] mm</strong> step-over height, and stable gait across <strong>[ADD METRIC: terrain types]</strong> tested surface types.</p>
+              </div>
+            </div>
+
+            <ul class="project-tech">
+              <li>Servo Actuators</li>
+              <li>Inverse Kinematics</li>
+              <li>ROS2</li>
+              <li>Gait Algorithms</li>
+              <li>12 DOF</li>
+            </ul>
+
+            <!-- VIDEO SLOT -->
+            <div class="proj-video">
+              <!-- ADD VIDEO: Uncomment when ready
+              <video controls preload="none" poster="assets/projects/quadruped-robot/images/thumb.jpg">
+                <source src="assets/projects/quadruped-robot/videos/demo.mp4" type="video/mp4" />
+                Your browser does not support video.
+              </video>
+              -->
+              <div class="video-placeholder">
+                <span>🎬</span>
+                <p>Demo coming soon — drop <code>demo.mp4</code> in <code>assets/projects/quadruped-robot/videos/</code></p>
+              </div>
+            </div>
+
+            <div class="project-footer">
+              <span class="project-badge">Legged Locomotion</span>
+              <div class="project-links">
+                <!-- PLACEHOLDER: replace REPLACE-ME-quadruped-robot with the real GitHub repo name -->
+                <a href="https://github.com/JosiahSK/REPLACE-ME-quadruped-robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubQuadruped">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                  View on GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-glow"></div>
+        </div>
+
+        <!-- ── PROJECT 03: ROS2-BASED ROBOTICS SYSTEMS ── -->
+        <div class="project-card reveal" id="proj-ros2">
+          <!-- IMAGE CAROUSEL -->
+          <div class="proj-carousel" data-carousel>
+            <div class="carousel-track">
+              <!-- ADD IMAGES: Uncomment each <figure> block and fill in the src path
+              <figure>
+                <img src="assets/projects/ros2-robotics-systems/images/photo1.jpg" alt="ROS2 System – RViz visualisation" loading="lazy">
+                <figcaption>RViz visualisation</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/projects/ros2-robotics-systems/images/photo2.jpg" alt="ROS2 System – Nav2 in action" loading="lazy">
+                <figcaption>Nav2 in action</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/projects/ros2-robotics-systems/images/photo3.jpg" alt="ROS2 System – URDF model" loading="lazy">
+                <figcaption>URDF model</figcaption>
+              </figure>
+              -->
+            </div>
+            <div class="carousel-placeholder">
+              <span>📷</span>
+              <p>Drop images in <code>assets/projects/ros2-robotics-systems/images/</code></p>
+            </div>
+            <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
+            <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+          </div>
+
+          <div class="project-card-inner">
+            <div class="project-meta">
+              <span class="project-num">03</span>
+              <span class="project-icon">🤖</span>
+            </div>
             <h3 class="project-title">ROS2-Based Robotics Systems</h3>
-            <p class="project-desc">Developed and visualized robotic models using URDF, RViz, and TF2. Implemented autonomous navigation pipelines with Nav2 and explored micro-ROS for microcontroller integration.</p>
+
+            <div class="project-narrative">
+              <div class="narrative-block">
+                <span class="narrative-label problem">Problem</span>
+                <p>Translating theoretical robot designs into simulation-ready, navigable systems requires a robust middleware stack — something that needed to be mastered from the ground up using ROS2 Jazzy.</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label approach">Approach</span>
+                <p>Developed and visualised robotic models using URDF and TF2 in RViz. Built autonomous navigation pipelines with Nav2 (SLAM, path planning, obstacle avoidance). Explored micro-ROS for bridging ROS2 with ESP32 microcontrollers.</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label result">Result</span>
+                <p>Achieved <strong>[ADD METRIC: navigation accuracy] cm</strong> position accuracy across <strong>[ADD METRIC: number]</strong> mapped environments, and <strong>[ADD METRIC: latency] ms</strong> micro-ROS round-trip latency on ESP32.</p>
+              </div>
+            </div>
+
             <ul class="project-tech">
               <li>ROS2 Jazzy</li>
               <li>URDF / TF2</li>
               <li>Nav2</li>
               <li>micro-ROS</li>
+              <li>RViz</li>
             </ul>
+
+            <!-- VIDEO SLOT -->
+            <div class="proj-video">
+              <!-- ADD VIDEO: Uncomment when ready
+              <video controls preload="none" poster="assets/projects/ros2-robotics-systems/images/thumb.jpg">
+                <source src="assets/projects/ros2-robotics-systems/videos/demo.mp4" type="video/mp4" />
+                Your browser does not support video.
+              </video>
+              -->
+              <div class="video-placeholder">
+                <span>🎬</span>
+                <p>Demo coming soon — drop <code>demo.mp4</code> in <code>assets/projects/ros2-robotics-systems/videos/</code></p>
+              </div>
+            </div>
+
             <div class="project-footer">
               <span class="project-badge">Autonomous Navigation</span>
+              <div class="project-links">
+                <!-- PLACEHOLDER: replace REPLACE-ME-ros2-systems with the real GitHub repo name -->
+                <a href="https://github.com/JosiahSK/REPLACE-ME-ros2-systems" class="proj-link proj-github" target="_blank" rel="noopener" id="githubRos2">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                  View on GitHub
+                </a>
+              </div>
             </div>
           </div>
           <div class="project-glow"></div>
         </div>
 
+        <!-- ── PROJECT 04: EMBEDDED SYSTEMS PROJECTS ── -->
         <div class="project-card reveal" id="proj-embedded">
+          <!-- IMAGE CAROUSEL -->
+          <div class="proj-carousel" data-carousel>
+            <div class="carousel-track">
+              <!-- ADD IMAGES: Uncomment each <figure> block and fill in the src path
+              <figure>
+                <img src="assets/projects/embedded-systems/images/photo1.jpg" alt="Embedded Systems – sensor array" loading="lazy">
+                <figcaption>Sensor array</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/projects/embedded-systems/images/photo2.jpg" alt="Embedded Systems – power system" loading="lazy">
+                <figcaption>Power system</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/projects/embedded-systems/images/photo3.jpg" alt="Embedded Systems – circuit board" loading="lazy">
+                <figcaption>Circuit board</figcaption>
+              </figure>
+              -->
+            </div>
+            <div class="carousel-placeholder">
+              <span>📷</span>
+              <p>Drop images in <code>assets/projects/embedded-systems/images/</code></p>
+            </div>
+            <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
+            <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+          </div>
+
           <div class="project-card-inner">
-            <div class="project-num">03</div>
-            <div class="project-icon">⚡</div>
+            <div class="project-meta">
+              <span class="project-num">04</span>
+              <span class="project-icon">⚡</span>
+            </div>
             <h3 class="project-title">Embedded Systems Projects</h3>
-            <p class="project-desc">Multi-platform embedded development spanning Raspberry Pi, Pico, and ESP32. Includes sensor integration (LiDAR, ultrasonic, LDR) and power system design using buck converters for efficient energy delivery.</p>
+
+            <div class="project-narrative">
+              <div class="narrative-block">
+                <span class="narrative-label problem">Problem</span>
+                <p>Modern robotics demands reliable multi-sensor integration and efficient power delivery across heterogeneous hardware — from high-level SBCs to bare-metal microcontrollers.</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label approach">Approach</span>
+                <p>Developed across Raspberry Pi, Pico, and ESP32 platforms. Integrated LiDAR, ultrasonic, and LDR sensors for environment sensing. Designed custom power systems using buck converters for stable, efficient voltage delivery.</p>
+              </div>
+              <div class="narrative-block">
+                <span class="narrative-label result">Result</span>
+                <p>Achieved <strong>[ADD METRIC: efficiency]% </strong>buck converter efficiency, <strong>[ADD METRIC: range] cm</strong> effective LiDAR sensing range, and <strong>[ADD METRIC: latency] ms</strong> sensor read latency on Pico/ESP32.</p>
+              </div>
+            </div>
+
             <ul class="project-tech">
               <li>Raspberry Pi / Pico</li>
               <li>ESP32</li>
-              <li>LiDAR & Sensors</li>
+              <li>LiDAR &amp; Sensors</li>
               <li>Buck Converters</li>
+              <li>MicroPython</li>
             </ul>
+
+            <!-- VIDEO SLOT -->
+            <div class="proj-video">
+              <!-- ADD VIDEO: Uncomment when ready
+              <video controls preload="none" poster="assets/projects/embedded-systems/images/thumb.jpg">
+                <source src="assets/projects/embedded-systems/videos/demo.mp4" type="video/mp4" />
+                Your browser does not support video.
+              </video>
+              -->
+              <div class="video-placeholder">
+                <span>🎬</span>
+                <p>Demo coming soon — drop <code>demo.mp4</code> in <code>assets/projects/embedded-systems/videos/</code></p>
+              </div>
+            </div>
+
             <div class="project-footer">
               <span class="project-badge">Hardware + Software</span>
+              <div class="project-links">
+                <!-- PLACEHOLDER: replace REPLACE-ME-embedded-systems with the real GitHub repo name -->
+                <a href="https://github.com/JosiahSK/REPLACE-ME-embedded-systems" class="proj-link proj-github" target="_blank" rel="noopener" id="githubEmbedded">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                  View on GitHub
+                </a>
+              </div>
             </div>
           </div>
           <div class="project-glow"></div>
@@ -202,128 +517,93 @@
         <span class="section-tag">// what I know</span>
         <h2 class="section-title">Skills</h2>
       </div>
-      <div class="skills-grid">
+      <div class="skills-pill-grid">
 
-        <div class="skill-category reveal" id="skill-robotics">
+        <div class="skill-pill-group reveal">
           <div class="skill-cat-header">
             <span class="skill-cat-icon">🤖</span>
-            <h3>Robotics</h3>
+            <h3>Robotics &amp; ROS2</h3>
           </div>
-          <div class="skill-bars">
-            <div class="skill-bar-item" data-level="90">
-              <span class="skill-name">ROS2 (Jazzy)</span>
-              <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
-              <span class="skill-pct">90%</span>
-            </div>
-            <div class="skill-bar-item" data-level="85">
-              <span class="skill-name">URDF / TF2 / RViz</span>
-              <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-              <span class="skill-pct">85%</span>
-            </div>
-            <div class="skill-bar-item" data-level="80">
-              <span class="skill-name">Nav2</span>
-              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-              <span class="skill-pct">80%</span>
-            </div>
+          <div class="skill-pills">
+            <a href="#proj-ros2" class="skill-pill">ROS2 Jazzy</a>
+            <a href="#proj-ros2" class="skill-pill">URDF</a>
+            <a href="#proj-ros2" class="skill-pill">TF2</a>
+            <a href="#proj-ros2" class="skill-pill">RViz</a>
+            <a href="#proj-ros2" class="skill-pill">Nav2</a>
+            <a href="#proj-ros2" class="skill-pill">micro-ROS</a>
+            <a href="#proj-ros2" class="skill-pill">SLAM</a>
+            <a href="#proj-quadruped" class="skill-pill">Gait Algorithms</a>
+            <a href="#proj-quadruped" class="skill-pill">Inverse Kinematics</a>
           </div>
         </div>
 
-        <div class="skill-category reveal" id="skill-embedded">
+        <div class="skill-pill-group reveal">
+          <div class="skill-cat-header">
+            <span class="skill-cat-icon">💻</span>
+            <h3>Languages</h3>
+          </div>
+          <div class="skill-pills">
+            <a href="#proj-embedded" class="skill-pill">Python</a>
+            <a href="#proj-embedded" class="skill-pill">C</a>
+            <a href="#proj-embedded" class="skill-pill">C++</a>
+            <a href="#proj-embedded" class="skill-pill">MicroPython</a>
+          </div>
+        </div>
+
+        <div class="skill-pill-group reveal">
           <div class="skill-cat-header">
             <span class="skill-cat-icon">⚡</span>
             <h3>Embedded Systems</h3>
           </div>
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <span class="skill-name">Raspberry Pi</span>
-              <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
-              <span class="skill-pct">88%</span>
-            </div>
-            <div class="skill-bar-item">
-              <span class="skill-name">ESP32</span>
-              <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-              <span class="skill-pct">85%</span>
-            </div>
-            <div class="skill-bar-item">
-              <span class="skill-name">Pico / MicroPython</span>
-              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-              <span class="skill-pct">80%</span>
-            </div>
+          <div class="skill-pills">
+            <a href="#proj-embedded" class="skill-pill">Raspberry Pi</a>
+            <a href="#proj-embedded" class="skill-pill">Raspberry Pi Pico</a>
+            <a href="#proj-embedded" class="skill-pill">ESP32</a>
+            <a href="#proj-tilling" class="skill-pill">Embedded Control</a>
           </div>
         </div>
 
-        <div class="skill-category reveal" id="skill-programming">
-          <div class="skill-cat-header">
-            <span class="skill-cat-icon">💻</span>
-            <h3>Programming</h3>
-          </div>
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <span class="skill-name">Python</span>
-              <div class="skill-track"><div class="skill-fill" data-width="92"></div></div>
-              <span class="skill-pct">92%</span>
-            </div>
-            <div class="skill-bar-item">
-              <span class="skill-name">C / C++</span>
-              <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
-              <span class="skill-pct">78%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="skill-category reveal" id="skill-3d">
-          <div class="skill-cat-header">
-            <span class="skill-cat-icon">🧊</span>
-            <h3>3D Modeling</h3>
-          </div>
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <span class="skill-name">Fusion 360</span>
-              <div class="skill-track"><div class="skill-fill" data-width="82"></div></div>
-              <span class="skill-pct">82%</span>
-            </div>
-            <div class="skill-bar-item">
-              <span class="skill-name">AutoCAD</span>
-              <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
-              <span class="skill-pct">78%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="skill-category reveal" id="skill-hardware">
+        <div class="skill-pill-group reveal">
           <div class="skill-cat-header">
             <span class="skill-cat-icon">🔧</span>
             <h3>Hardware</h3>
           </div>
-          <div class="skill-bars">
-            <div class="skill-bar-item">
-              <span class="skill-name">Motor Drivers</span>
-              <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
-              <span class="skill-pct">85%</span>
-            </div>
-            <div class="skill-bar-item">
-              <span class="skill-name">Sensors (LiDAR / Ultrasonic / LDR)</span>
-              <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
-              <span class="skill-pct">88%</span>
-            </div>
-            <div class="skill-bar-item">
-              <span class="skill-name">Power Systems (Buck Converters)</span>
-              <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
-              <span class="skill-pct">80%</span>
-            </div>
+          <div class="skill-pills">
+            <a href="#proj-quadruped" class="skill-pill">Servo Actuators</a>
+            <a href="#proj-embedded" class="skill-pill">Motor Drivers</a>
+            <a href="#proj-embedded" class="skill-pill">LiDAR</a>
+            <a href="#proj-embedded" class="skill-pill">Ultrasonic Sensors</a>
+            <a href="#proj-embedded" class="skill-pill">LDR</a>
+            <a href="#proj-embedded" class="skill-pill">Buck Converters</a>
+            <a href="#proj-tilling" class="skill-pill">LiFePO4 Battery</a>
           </div>
         </div>
 
-      </div>
+        <div class="skill-pill-group reveal">
+          <div class="skill-cat-header">
+            <span class="skill-cat-icon">🛰</span>
+            <h3>Navigation &amp; Sensing</h3>
+          </div>
+          <div class="skill-pills">
+            <a href="#proj-tilling" class="skill-pill">GPS</a>
+            <a href="#proj-ros2" class="skill-pill">Autonomous Navigation</a>
+            <a href="#proj-ros2" class="skill-pill">Sensor Fusion</a>
+            <a href="#proj-ros2" class="skill-pill">Path Planning</a>
+          </div>
+        </div>
 
-      <!-- Tech Pills -->
-      <div class="tech-pills reveal">
-        <span class="pill">ROS2</span><span class="pill">Python</span><span class="pill">C++</span>
-        <span class="pill">URDF</span><span class="pill">Nav2</span><span class="pill">micro-ROS</span>
-        <span class="pill">ESP32</span><span class="pill">Raspberry Pi</span><span class="pill">LiDAR</span>
-        <span class="pill">LiFePO4</span><span class="pill">GPS</span><span class="pill">TF2</span>
-        <span class="pill">MicroPython</span><span class="pill">Buck Converter</span>
-        <span class="pill">Fusion 360</span><span class="pill">AutoCAD</span><span class="pill">3D Modeling</span>
+        <div class="skill-pill-group reveal">
+          <div class="skill-cat-header">
+            <span class="skill-cat-icon">🧊</span>
+            <h3>CAD &amp; 3D Modeling</h3>
+          </div>
+          <div class="skill-pills">
+            <a href="#proj-tilling" class="skill-pill">Fusion 360</a>
+            <span class="skill-pill">AutoCAD</span>
+            <span class="skill-pill">3D Modeling</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -468,7 +748,12 @@
           </div>
           <p class="contact-location">📍 Kerala, India</p>
         </div>
-        <form class="contact-form reveal" id="contactForm" novalidate>
+        <!-- PLACEHOLDER: Create account at formspree.io → New Form → copy form ID → replace YOUR_FORM_ID below -->
+        <form class="contact-form reveal" id="contactForm"
+              action="https://formspree.io/f/YOUR_FORM_ID"
+              method="POST"
+              novalidate>
+          <input type="hidden" name="_subject" value="Portfolio Contact — Josiah Saji" />
           <div class="form-group">
             <label for="formName">Name</label>
             <input type="text" id="formName" name="name" placeholder="Your name" required />
