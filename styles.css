@@ -581,15 +581,17 @@ img { max-width: 100%; }
 .projects-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 28px; }
 
 /* ===== PROJECT CARD — extended layout ===== */
+/* Note: .project-card has overflow:hidden which is fine (carousel is inside) */
 .project-card {
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; overflow: hidden;
 }
 .project-card-inner { flex: 1; display: flex; flex-direction: column; padding: 28px; position: relative; z-index: 1; }
 
 /* project meta row (number + icon) */
 .project-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.project-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
-.project-icon { font-size: 1.6rem; }
+/* Override old block display/margins so meta row stays inline */
+.project-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0; display: inline; }
+.project-icon { font-size: 1.6rem; display: inline; margin-bottom: 0; }
 
 /* ===== PROJECT NARRATIVE (Problem / Approach / Result) ===== */
 .project-narrative { display: flex; flex-direction: column; gap: 14px; margin: 16px 0 20px; }
