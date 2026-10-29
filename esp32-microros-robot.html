@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESP32 micro-ROS 2WD Differential Drive Robot — Case Study | Josiah Saji</title>
+  <meta name="description" content="Technical case study: ESP32 micro-ROS Differential Drive Robot — real-time Wi-Fi UDP transport, 4-pin hardware PWM generation, differential mixing, and failsafe watchdog." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ESP32 micro-ROS 2WD Differential Drive Robot — Case Study | Josiah Saji" />
+  <meta property="og:description" content="Embedded robotics with ESP32 and micro-ROS over Wi-Fi UDP — hardware PWM, differential mixing, and deterministic failsafes." />
+  <meta property="og:image" content="assets/og-image.png" />
+  <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/esp32-microros-robot.html" />
+  <meta property="og:type" content="article" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ESP32 micro-ROS 2WD Differential Drive Robot — Case Study | Josiah Saji" />
+  <meta name="twitter:description" content="Embedded robotics with ESP32 and micro-ROS over Wi-Fi UDP — hardware PWM, differential mixing, and deterministic failsafes." />
+  <meta property="twitter:image" content="assets/og-image.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.ico" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Case Study Styles ── */
+    .cs-hero {
+      padding: 120px 24px 64px;
+      text-align: center;
+      background: radial-gradient(ellipse at 60% 0%, rgba(6,182,212,0.18) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 0.8rem;
+      color: var(--accent2); margin-bottom: 28px;
+      transition: color var(--transition);
+    }
+    .cs-back:hover { color: var(--text); }
+    .cs-tag { display: block; font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--accent2); letter-spacing: 1px; margin-bottom: 12px; }
+    .cs-title {
+      font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900; letter-spacing: -2px; color: #fff; margin-bottom: 20px; line-height: 1.15;
+    }
+    .cs-subtitle { font-size: 1.08rem; color: var(--text-muted); max-width: 720px; margin: 0 auto 32px; line-height: 1.65; }
+    .cs-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .cs-badge {
+      background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3);
+      padding: 5px 14px; border-radius: 99px;
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent2);
+    }
+    .cs-badge.badge-purple {
+      background: rgba(124,58,237,0.12); border-color: rgba(124,58,237,0.3); color: var(--accent3);
+    }
+
+    /* ── Section Structure ── */
+    .cs-section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+    .cs-section:last-of-type { border-bottom: none; }
+    .cs-section-tag { display: block; font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--accent2); letter-spacing: 1px; margin-bottom: 8px; }
+    .cs-section-title { font-family: var(--font-head); font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 800; color: #fff; margin-bottom: 24px; letter-spacing: -0.5px; }
+
+    /* ── SVG Diagram ── */
+    .svg-diagram-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin: 24px 0;
+      overflow-x: auto;
+    }
+    .svg-diagram-card svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* ── Code Box ── */
+    .code-snippet {
+      background: #060910;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin: 18px 0;
+    }
+    .code-comment { color: #64748b; }
+    .code-kw { color: #c084fc; font-weight: 600; }
+    .code-fn { color: #38bdf8; }
+    .code-str { color: #4ade80; }
+    .code-num { color: #f59e0b; }
+
+    /* ── Tech Table ── */
+    .tech-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 16px 0; }
+    .tech-table th {
+      text-align: left; padding: 12px 16px;
+      background: var(--surface2); color: var(--accent2);
+      font-family: var(--font-mono); font-size: 0.75rem;
+      letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
+    }
+    .tech-table td { padding: 12px 16px; border-bottom: 1px solid rgba(6,182,212,0.08); color: var(--text-muted); }
+    .tech-table tr:hover td { background: var(--surface); color: var(--text); }
+    .tech-table code { color: var(--accent2); font-family: var(--font-mono); font-size: 0.8rem; }
+
+    /* ── Verification Callout ── */
+    .verification-status-box {
+      border-left: 4px solid var(--accent2);
+      background: rgba(6,182,212,0.06);
+      border-radius: 0 12px 12px 0;
+      padding: 18px 22px;
+      margin: 24px 0;
+    }
+    .verification-status-box h4 {
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+    .verification-status-box p { font-size: 0.88rem; color: var(--text); margin: 0; line-height: 1.6; }
+
+    /* ── Metric Grid ── */
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .metric-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px 18px; text-align: center;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .metric-card:hover { border-color: var(--accent2); transform: translateY(-3px); }
+    .metric-val {
+      display: block; font-family: var(--font-head);
+      font-size: 1.85rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent2), #38bdf8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 4px;
+    }
+    .metric-label { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+    /* ── Decision Cards ── */
+    .decision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
+    .decision-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .decision-title { font-family: var(--font-head); font-weight: 700; color: #fff; font-size: 1.05rem; margin-bottom: 12px; }
+    .decision-text { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; }
+    .decision-badge {
+      display: inline-block; font-family: var(--font-mono); font-size: 0.68rem;
+      padding: 3px 8px; border-radius: 4px; margin-bottom: 10px;
+      background: rgba(6,182,212,0.15); color: var(--accent2);
+    }
+
+    @media(max-width: 600px) {
+      .cs-hero { padding: 90px 20px 40px; }
+      .cs-section { padding: 40px 0; }
+      .decision-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MINIMAL NAV -->
+  <nav id="navbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(8,11,18,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(124,58,237,0.18);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="index.html#hero" style="font-family:'Poppins',sans-serif;font-weight:800;font-size:1.4rem;color:#e2e8f0;">JS<span style="color:#7c3aed;">.</span></a>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="index.html#projects" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:#06b6d4;display:flex;align-items:center;gap:6px;">← Back to Projects</a>
+      <a href="https://github.com/JosiahSK/esp32-microros-2wd-car" target="_blank" rel="noopener" class="proj-link proj-github" style="font-size:0.75rem;">GitHub Repo ↗</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="cs-hero">
+    <a href="index.html#projects" class="cs-back">← Back to Projects</a>
+    <span class="cs-tag">// case study · 04</span>
+    <h1 class="cs-title">ESP32 micro-ROS 2WD<br><span style="background:linear-gradient(135deg,#06b6d4,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Differential Drive Robot</span></h1>
+    <p class="cs-subtitle">Bridging the standard ROS 2 navigation stack directly to embedded microcontroller hardware over wireless UDP transports, with 4-pin hardware PWM motor control and deterministic failsafe watchdogs.</p>
+    <div class="cs-badges">
+      <span class="cs-badge">micro-ROS (XRCE-DDS)</span>
+      <span class="cs-badge badge-purple">ESP32 DevKit V1</span>
+      <span class="cs-badge">Wi-Fi UDP Transport</span>
+      <span class="cs-badge badge-purple">geometry_msgs/Twist</span>
+      <span class="cs-badge">LEDC Hardware PWM</span>
+      <span class="cs-badge badge-purple">Failsafe Watchdog (500ms)</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- § 01 — OVERVIEW & OBJECTIVES -->
+    <section class="cs-section reveal" id="cs-overview">
+      <span class="cs-section-tag">// 01 — overview &amp; objectives</span>
+      <h2 class="cs-section-title">The Problem: Embedded Middleware Fragmentation</h2>
+      <p style="color:var(--text-muted);line-height:1.75;margin-bottom:18px;">
+        Integrating physical microcontrollers with ROS 2 traditionally required complex serial bridges, custom ASCII command parsers, or serial-to-socket converters (e.g. legacy rosserial). These ad-hoc solutions suffer from buffer overflows, lack of standardized message types, fragile reconnection logic, and tethered cables that hinder free mobile robot testing.
+      </p>
+      <p style="color:var(--text-muted);line-height:1.75;margin-bottom:24px;">
+        <strong>Project Objectives:</strong> Deploy a native, lightweight <strong>micro-ROS</strong> client on an ESP32 microcontroller to subscribe directly to standard <code style="color:var(--accent2);">geometry_msgs/msg/Twist</code> over Wi-Fi (UDP). The firmware transforms linear and angular velocity commands into 8-bit hardware PWM signals across a 4-pin dual H-bridge motor driver, incorporating deadband stiction compensation and safety watchdogs.
+      </p>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-val">1000 Hz</span>
+          <span class="metric-label">PWM Switching Frequency</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">500 ms</span>
+          <span class="metric-label">Command Timeout Watchdog</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">8-Bit</span>
+          <span class="metric-label">LEDC PWM Resolution (0–255)</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">0 ENA/ENB</span>
+          <span class="metric-label">4-Pin Pure Directional PWM</span>
+        </div>
+      </div>
+
+      <div class="verification-status-box">
+        <h4>Verification Status: Benchtop Hardware &amp; UDP Teleop Tested</h4>
+        <p>This implementation has been benchtop-tested on physical <strong>ESP32 DevKit V1</strong> hardware wired to an L298N/DRV8833 dual H-bridge motor driver and 2WD chassis. Verified Wi-Fi UDP message transport from a Linux PC running the official Docker <code style="color:var(--accent2);">micro_ros_agent</code>, with oscilloscope-verified PWM motor signals. <em>Note: Currently open-loop; closed-loop wheel encoder feedback is listed in the roadmap.</em></p>
+      </div>
+    </section>
+
+    <!-- § 02 — ARCHITECTURE DIAGRAM -->
+    <section class="cs-section reveal" id="cs-architecture">
+      <span class="cs-section-tag">// 02 — system architecture</span>
+      <h2 class="cs-section-title">Communication Flow &amp; Motor Control Pipeline</h2>
+      <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">
+        The end-to-end telemetry pipeline shows how high-level navigation velocity goals traverse DDS networks, convert through the micro-ROS Agent, and drive low-level motor channels:
+      </p>
+
+      <!-- Accurate SVG System Architecture Diagram -->
+      <div class="svg-diagram-card">
+        <svg viewBox="0 0 980 410" xmlns="http://www.w3.org/2000/svg" style="background:#090d16;border-radius:12px;font-family:'JetBrains Mono',monospace;">
+          <defs>
+            <marker id="arrow-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#06b6d4"/>
+            </marker>
+            <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#a78bfa"/>
+            </marker>
+            <linearGradient id="nodeGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#141c2e"/>
+              <stop offset="100%" stop-color="#101726"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Zone Headers -->
+          <text x="30" y="32" fill="#64748b" font-size="11" letter-spacing="1">HOST WORKSTATION / LINUX PC</text>
+          <text x="380" y="32" fill="#64748b" font-size="11" letter-spacing="1">WIRELESS TRANSPORT</text>
+          <text x="610" y="32" fill="#64748b" font-size="11" letter-spacing="1">ESP32 EMBEDDED HARDWARE</text>
+
+          <!-- Block 1: ROS 2 Host System -->
+          <rect x="30" y="60" width="250" height="130" rx="10" fill="url(#nodeGrad2)" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="45" y="88" fill="#a78bfa" font-size="13" font-weight="bold">ROS 2 Navigation Stack</text>
+          <text x="45" y="108" fill="#94a3b8" font-size="10">Host PC / SBC</text>
+          <text x="45" y="128" fill="#64748b" font-size="9">• Nav2 / teleop_twist_keyboard</text>
+          <text x="45" y="144" fill="#64748b" font-size="9">• Publishes: /cmd_vel (Twist)</text>
+          <text x="45" y="160" fill="#64748b" font-size="9">• Linear.x (m/s) + Angular.z (rad/s)</text>
+          <text x="45" y="176" fill="#06b6d4" font-size="9">Standard CycloneDDS / FastDDS</text>
+
+          <!-- Block 2: micro_ros_agent -->
+          <rect x="30" y="225" width="250" height="145" rx="10" fill="url(#nodeGrad2)" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="45" y="253" fill="#38bdf8" font-size="13" font-weight="bold">micro_ros_agent</text>
+          <text x="45" y="273" fill="#94a3b8" font-size="10">UDP Bridge (Docker / Native)</text>
+          <text x="45" y="293" fill="#64748b" font-size="9">• Port: 8888 (UDP)</text>
+          <text x="45" y="309" fill="#64748b" font-size="9">• Translates DDS &lt;=&gt; Micro XRCE-DDS</text>
+          <text x="45" y="325" fill="#64748b" font-size="9">• Manages client entity lifecycles</text>
+          <text x="45" y="352" fill="#22c55e" font-size="9">Command: ros2 run micro_ros_agent ... udp4</text>
+
+          <!-- Block 3: Wi-Fi UDP Transport -->
+          <rect x="330" y="130" width="220" height="150" rx="10" fill="url(#nodeGrad2)" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <text x="350" y="160" fill="#22c55e" font-size="12" font-weight="bold">Wi-Fi (802.11 b/g/n)</text>
+          <text x="350" y="180" fill="#94a3b8" font-size="10">Micro XRCE-DDS Protocol</text>
+          <text x="350" y="200" fill="#64748b" font-size="9">• UDP packet framing</text>
+          <text x="350" y="216" fill="#64748b" font-size="9">• Zero physical tether cables</text>
+          <text x="350" y="232" fill="#64748b" font-size="9">• Static IP / Router AP link</text>
+          <text x="350" y="252" fill="#06b6d4" font-size="9">Low latency (&lt;8ms)</text>
+
+          <!-- Block 4: ESP32 Firmware Execution -->
+          <rect x="590" y="60" width="360" height="180" rx="10" fill="url(#nodeGrad2)" stroke="#7c3aed" stroke-width="2"/>
+          <text x="610" y="88" fill="#a78bfa" font-size="13" font-weight="bold">ESP32 Firmware (esp32_drive)</text>
+          <text x="610" y="108" fill="#94a3b8" font-size="10">rclc_node &amp; rclc_executor_spin_some</text>
+          <text x="610" y="128" fill="#64748b" font-size="9">1. /cmd_vel Callback: (linear.x, angular.z)</text>
+          <text x="610" y="144" fill="#64748b" font-size="9">2. Differential Mixer: Left = lin - ang, Right = lin + ang</text>
+          <text x="610" y="160" fill="#64748b" font-size="9">3. Deadband Stiction Mapping: MIN_PWM = 60</text>
+          <text x="610" y="176" fill="#64748b" font-size="9">4. Failsafe Watchdog: millis() - lastCmd &gt; 500ms -&gt; STOP</text>
+          <text x="610" y="196" fill="#06b6d4" font-size="9">LEDC PWM: 1 kHz · 8-bit (ch 0,1,2,3)</text>
+          <text x="610" y="222" fill="#f59e0b" font-size="10">GPIO 25, 26 (M1) · GPIO 27, 14 (M2)</text>
+
+          <!-- Block 5: Power & Actuators -->
+          <rect x="590" y="265" width="360" height="105" rx="10" fill="url(#nodeGrad2)" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="610" y="293" fill="#38bdf8" font-size="13" font-weight="bold">Dual H-Bridge Driver &amp; Motors</text>
+          <text x="610" y="313" fill="#94a3b8" font-size="10">DRV8833 / L298N + 2WD TT Gearmotors</text>
+          <text x="610" y="333" fill="#64748b" font-size="9">• 4-Pin Pure Directional Control (No Enable pins required)</text>
+          <text x="610" y="349" fill="#64748b" font-size="9">• Power: 7.4V 2S Li-ion battery + LM2596 5V Buck Converter</text>
+
+          <!-- Connectors -->
+          <path d="M 155 190 L 155 225" fill="none" stroke="#7c3aed" stroke-width="1.8" marker-end="url(#arrow-purple)"/>
+          <path d="M 280 297 L 330 205" fill="none" stroke="#06b6d4" stroke-width="1.8" marker-end="url(#arrow-cyan)"/>
+          <path d="M 550 205 L 590 150" fill="none" stroke="#06b6d4" stroke-width="1.8" marker-end="url(#arrow-cyan)"/>
+          <path d="M 770 240 L 770 265" fill="none" stroke="#a78bfa" stroke-width="1.8" marker-end="url(#arrow-purple)"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- § 03 — VERIFIED CONTRIBUTIONS -->
+    <section class="cs-section reveal" id="cs-contributions">
+      <span class="cs-section-tag">// 03 — verified contributions</span>
+      <h2 class="cs-section-title">Firmware Architecture &amp; Key Implementation Highlights</h2>
+      <div class="decision-grid">
+        <div class="decision-card">
+          <span class="decision-badge">rclc &amp; micro-ROS</span>
+          <div class="decision-title">Native micro-ROS Client Over UDP</div>
+          <p class="decision-text">
+            Integrated the <code style="color:var(--accent2);">micro_ros_arduino</code> stack using official eProsima Micro XRCE-DDS client primitives. Configured Wi-Fi transport routines connecting directly to the host agent IP over port 8888, eliminating the need for intermediate serial wires or custom serialization protocols.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <span class="decision-badge">kinematics mixing</span>
+          <div class="decision-title">Normalized Differential Drive Kinematics</div>
+          <p class="decision-text">
+            Implemented differential drive conversion mapping linear velocity ($v$) and angular yaw rate ($\omega$) to wheel speeds ($v_L = v - \omega$, $v_R = v + \omega$). Includes dynamic normalization: if either wheel command exceeds 1.0, both speeds are scaled proportionally to preserve turning radius without motor clipping.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <span class="decision-badge">motor dynamics</span>
+          <div class="decision-title">Nonlinear Stiction Deadzone Compensation</div>
+          <p class="decision-text">
+            DC motors and gearheads suffer from static friction, failing to rotate below low duty cycles. Designed an active deadband compensation function (<code style="color:var(--accent2);">MIN_PWM = 60</code>): any velocity command above $\pm0.05$ immediately jumps to the minimum dynamic threshold and scales smoothly up to 255.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <span class="decision-badge">safety watchdog</span>
+          <div class="decision-title">Deterministic Failsafe Cutoff</div>
+          <p class="decision-text">
+            Mobile robots running over wireless links face network drops and Wi-Fi disconnects. The main execution loop continuously monitors <code style="color:var(--accent2);">millis() - lastCmdTime</code>: if no valid <code style="color:var(--accent2);">/cmd_vel</code> packet arrives within 500 ms, the hardware PWM immediately resets to 0 on all pins, preventing runaway robots.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 04 — SOURCE CODE DEEP-DIVE -->
+    <section class="cs-section reveal" id="cs-firmware">
+      <span class="cs-section-tag">// 04 — firmware implementation</span>
+      <h2 class="cs-section-title">Core Firmware Logic &amp; Code References</h2>
+      <p style="color:var(--text-muted);line-height:1.7;margin-bottom:16px;">
+        The firmware is written in C++ for the Arduino/ESP-IDF framework. Here are the core routines handling velocity reception, mixing, deadband thresholding, and the hardware safety timer:
+      </p>
+
+      <div class="code-snippet">
+<span class="code-comment">// Excerpt from: firmware/esp32_microros_2wd/esp32_microros_2wd.ino</span>
+<span class="code-kw">void</span> <span class="code-fn">cmd_vel_callback</span>(<span class="code-kw">const void</span> * msgin) {
+  <span class="code-kw">const</span> geometry_msgs__msg__Twist * m = (<span class="code-kw">const</span> geometry_msgs__msg__Twist *)msgin;
+
+  <span class="code-comment">// Normalize inputs against calibrated maximum ratings</span>
+  <span class="code-kw">float</span> lin = constrain(m->linear.x  / MAX_LINEAR,  <span class="code-num">-1.0</span>, <span class="code-num">1.0</span>);
+  <span class="code-kw">float</span> ang = constrain(m->angular.z / MAX_ANGULAR, <span class="code-num">-1.0</span>, <span class="code-num">1.0</span>);
+
+  <span class="code-comment">// 2WD Differential Drive Kinematics Mixing</span>
+  <span class="code-kw">float</span> left  = lin - ang;
+  <span class="code-kw">float</span> right = lin + ang;
+
+  <span class="code-comment">// Preserve commanded turning curvature if motor saturation occurs</span>
+  <span class="code-kw">float</span> maxMag = max(fabs(left), fabs(right));
+  <span class="code-kw">if</span> (maxMag > <span class="code-num">1.0</span>) { left /= maxMag; right /= maxMag; }
+
+  <span class="code-comment">// Map velocity to 8-bit PWM with stiction thresholding</span>
+  <span class="code-kw">int</span> leftPwm  = toPwm(left);
+  <span class="code-kw">int</span> rightPwm = toPwm(right);
+
+  driveMotor(M1A, <span class="code-num">0</span>, M1B, <span class="code-num">1</span>, leftPwm);
+  driveMotor(M2A, <span class="code-num">2</span>, M2B, <span class="code-num">3</span>, rightPwm);
+
+  lastCmdTime = millis();  <span class="code-comment">// Reset watchdog timer</span>
+}
+
+<span class="code-kw">int</span> <span class="code-fn">toPwm</span>(<span class="code-kw">float</span> v) {
+  <span class="code-kw">if</span> (fabs(v) &lt; <span class="code-num">0.05</span>) <span class="code-kw">return</span> <span class="code-num">0</span>;
+  <span class="code-kw">int</span> pwm = (<span class="code-kw">int</span>)(fabs(v) * (<span class="code-num">255</span> - MIN_PWM)) + MIN_PWM;
+  <span class="code-kw">return</span> v > <span class="code-num">0</span> ? pwm : -pwm;
+}
+      </div>
+
+      <p style="color:var(--text-muted);line-height:1.7;margin-top:20px;">
+        <strong>Micro-ROS Executor &amp; Hardware Failsafe Loop:</strong> In the main execution loop, micro-ROS processes incoming messages with a 10 ms quantum, while an asynchronous timer constantly monitors packet freshness:
+      </p>
+
+      <div class="code-snippet">
+<span class="code-kw">void</span> <span class="code-fn">loop</span>() {
+  rclc_executor_spin_some(&amp;executor, RCL_MS_TO_NS(<span class="code-num">10</span>));
+
+  <span class="code-comment">// Safety Failsafe: stop DC motors immediately if Wi-Fi or command drops</span>
+  <span class="code-kw">if</span> (millis() - lastCmdTime > CMD_TIMEOUT_MS) {
+    stopMotors();
+  }
+}
+      </div>
+    </section>
+
+    <!-- § 05 — HARDWARE SPECIFICATIONS -->
+    <section class="cs-section reveal" id="cs-specs">
+      <span class="cs-section-tag">// 05 — bill of materials &amp; pinout</span>
+      <h2 class="cs-section-title">Hardware Specifications &amp; Pinout</h2>
+      <div style="overflow-x:auto;">
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Specification / Part</th>
+              <th>Wiring / Pinout</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Microcontroller</strong></td>
+              <td>ESP32-WROOM-32 DevKit V1 (Xtensa dual-core @ 240 MHz)</td>
+              <td>Wi-Fi 802.11 b/g/n, 520 KB SRAM, 4 MB Flash</td>
+            </tr>
+            <tr>
+              <td><strong>Motor Driver</strong></td>
+              <td>Dual H-Bridge Driver (DRV8833 or L298N)</td>
+              <td>4-Pin control (M1A=GPIO 25, M1B=GPIO 26, M2A=GPIO 27, M2B=GPIO 14)</td>
+            </tr>
+            <tr>
+              <td><strong>Drive Actuators</strong></td>
+              <td>2× Yellow TT DC Geared Motors (1:48 gear ratio)</td>
+              <td>Differential left and right drive wheels + front swivel caster</td>
+            </tr>
+            <tr>
+              <td><strong>Power Subsystem</strong></td>
+              <td>2S Li-ion Battery (7.4 V nominal) + LM2596 DC-DC Buck Converter</td>
+              <td>7.4 V to motor driver VM / 5.0 V regulated to ESP32 VIN &amp; logic</td>
+            </tr>
+            <tr>
+              <td><strong>PWM Configuration</strong></td>
+              <td>ESP32 LEDC Peripheral (1 kHz frequency, 8-bit resolution)</td>
+              <td>LEDC Channels 0, 1 (Left Motor) · Channels 2, 3 (Right Motor)</td>
+            </tr>
+            <tr>
+              <td><strong>Middleware Bridge</strong></td>
+              <td>Docker: <code>microros/micro-ros-agent:humble</code> on Host PC</td>
+              <td>UDPv4 transport listening on port 8888</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- § 06 — DECISIONS & TRADE-OFFS -->
+    <section class="cs-section reveal" id="cs-decisions">
+      <span class="cs-section-tag">// 06 — engineering decisions</span>
+      <h2 class="cs-section-title">Design Decisions &amp; Trade-Offs</h2>
+      <div class="decision-grid">
+        <div class="decision-card">
+          <div class="decision-title">Wi-Fi UDP vs. USB Serial micro-ROS</div>
+          <p class="decision-text">
+            <strong>Decision:</strong> Wireless UDP transport (<code style="color:var(--accent2);">set_microros_wifi_transports</code>).<br>
+            <strong>Rationale:</strong> While serial connections offer negligible packet drop, physical USB cables constrain robotic mobility. Wi-Fi allows free arena navigation and mirrors real-world factory AGV deployment topology.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-title">4-Pin Pure PWM vs. 2-Pin DIR+PWM</div>
+          <p class="decision-text">
+            <strong>Decision:</strong> 4-pin pure PWM control (no separate ENA/ENB jumpers).<br>
+            <strong>Rationale:</strong> Many compact dual H-bridge modules (DRV8833, L9110S) omit dedicated enable pins. Applying complementary PWM directly to forward and reverse pins provides active regenerative braking on 0V and reduces wiring complexity.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-title">Dynamic Normalization vs. Raw Clamping</div>
+          <p class="decision-text">
+            <strong>Decision:</strong> Proportional scaling by <code style="color:var(--accent2);">maxMag</code>.<br>
+            <strong>Rationale:</strong> Simple clamping at $\pm1.0$ causes distortion of commanded turning curvature when forward and angular components add up beyond motor limits. Scaling both wheels maintains the robot's intended geometric path.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-title">Client-Side Watchdog vs. Server Heartbeat</div>
+          <p class="decision-text">
+            <strong>Decision:</strong> Local 500 ms deadline timer on ESP32.<br>
+            <strong>Rationale:</strong> If Wi-Fi drops completely, a remote heartbeat check cannot reach the robot. A local autonomous watchdog guarantees safety even in total network blackout scenarios.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 07 — LIMITATIONS & ROADMAP -->
+    <section class="cs-section reveal" id="cs-roadmap">
+      <span class="cs-section-tag">// 07 — limitations &amp; roadmap</span>
+      <h2 class="cs-section-title">Known Limitations &amp; Future Engineering Steps</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:28px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;">
+          <h4 style="color:#f87171;font-family:var(--font-mono);font-size:0.85rem;margin-bottom:10px;">CURRENT LIMITATIONS</h4>
+          <ul style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;padding-left:18px;">
+            <li>Open-loop actuation: lacks optical wheel encoders to measure real ground velocity.</li>
+            <li>No odometry publishing (<code style="color:var(--accent2);">nav_msgs/msg/Odometry</code> and <code style="color:var(--accent2);">tf2</code>) back to host Nav2 stack.</li>
+            <li>Wi-Fi connection depends on pre-configured 2.4 GHz credentials in <code style="color:var(--accent2);">config.h</code>.</li>
+          </ul>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;">
+          <h4 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.85rem;margin-bottom:10px;">FUTURE IMPROVEMENTS</h4>
+          <ul style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;padding-left:18px;">
+            <li>Integrate dual-channel optical wheel encoders and publish real-time <code style="color:var(--accent2);">/odom</code> over micro-ROS.</li>
+            <li>Implement discrete PID closed-loop velocity controller inside ESP32 timer interrupts.</li>
+            <li>Add I2C MPU-6050 IMU publisher for onboard sensor-fused orientation tracking.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="text-align:center;padding:24px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);">
+        <h3 style="font-family:var(--font-head);font-size:1.15rem;color:#fff;margin-bottom:8px;">Inspect Firmware &amp; Python Teleop Scripts</h3>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">Complete repository with Arduino firmware, Docker agent setup guide, and keyboard control scripts.</p>
+        <a href="https://github.com/JosiahSK/esp32-microros-2wd-car" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;">View Repository on GitHub ↗</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <p class="footer-text">Built by <span class="accent">Josiah Saji</span> &nbsp;·&nbsp; Robotics Engineer &amp; Embedded Systems Developer</p>
+      <p class="footer-sub"><a href="index.html" style="color:var(--accent2);">← Back to Portfolio</a> &nbsp;·&nbsp; Kerala, India &nbsp;·&nbsp; 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    try {
+      if (typeof IntersectionObserver !== 'undefined') {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05 });
+        document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+      }
+    } catch(e) {}
+  </script>
+</body>
+</html>

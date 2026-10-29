@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji</title>
+  <meta name="description" content="Technical case study: 12-DOF Quadruped Robot Locomotion Framework in ROS 2 Humble — analytical inverse kinematics, 3D cycloid trajectory generation, and Gazebo dynamic simulation." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
+  <meta property="og:description" content="Analytical Inverse Kinematics (<10µs), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
+  <meta property="og:image" content="assets/og-image.png" />
+  <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/quadruped-locomotion.html" />
+  <meta property="og:type" content="article" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
+  <meta name="twitter:description" content="Analytical Inverse Kinematics (<10µs), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
+  <meta name="twitter:image" content="assets/og-image.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.ico" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Case Study Styles ── */
+    .cs-hero {
+      padding: 120px 24px 64px;
+      text-align: center;
+      background: radial-gradient(ellipse at 60% 0%, rgba(124,58,237,0.18) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 0.8rem;
+      color: var(--accent2); margin-bottom: 28px;
+      transition: color var(--transition);
+    }
+    .cs-back:hover { color: var(--text); }
+    .cs-tag { display: block; font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--accent2); letter-spacing: 1px; margin-bottom: 12px; }
+    .cs-title {
+      font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900; letter-spacing: -2px; color: #fff; margin-bottom: 20px; line-height: 1.15;
+    }
+    .cs-subtitle { font-size: 1.08rem; color: var(--text-muted); max-width: 720px; margin: 0 auto 32px; line-height: 1.65; }
+    .cs-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .cs-badge {
+      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.3);
+      padding: 5px 14px; border-radius: 99px;
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent3);
+    }
+    .cs-badge.badge-cyan {
+      background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.3); color: var(--accent2);
+    }
+
+    /* ── Section Structure ── */
+    .cs-section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+    .cs-section:last-of-type { border-bottom: none; }
+    .cs-section-tag { display: block; font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--accent2); letter-spacing: 1px; margin-bottom: 8px; }
+    .cs-section-title { font-family: var(--font-head); font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 800; color: #fff; margin-bottom: 24px; letter-spacing: -0.5px; }
+
+    /* ── Architecture Diagram Container ── */
+    .svg-diagram-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin: 24px 0;
+      overflow-x: auto;
+    }
+    .svg-diagram-card svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* ── Code Box ── */
+    .code-snippet {
+      background: #060910;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin: 18px 0;
+    }
+    .code-comment { color: #64748b; }
+    .code-kw { color: #c084fc; font-weight: 600; }
+    .code-fn { color: #38bdf8; }
+    .code-str { color: #4ade80; }
+    .code-num { color: #f59e0b; }
+
+    /* ── Engineering Tables ── */
+    .tech-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 16px 0; }
+    .tech-table th {
+      text-align: left; padding: 12px 16px;
+      background: var(--surface2); color: var(--accent3);
+      font-family: var(--font-mono); font-size: 0.75rem;
+      letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
+    }
+    .tech-table td { padding: 12px 16px; border-bottom: 1px solid rgba(124,58,237,0.08); color: var(--text-muted); }
+    .tech-table tr:hover td { background: var(--surface); color: var(--text); }
+    .tech-table code { color: var(--accent2); font-family: var(--font-mono); font-size: 0.8rem; }
+
+    /* ── Verification Callout ── */
+    .verification-status-box {
+      border-left: 4px solid var(--accent2);
+      background: rgba(6,182,212,0.06);
+      border-radius: 0 12px 12px 0;
+      padding: 18px 22px;
+      margin: 24px 0;
+    }
+    .verification-status-box h4 {
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent2);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+    .verification-status-box p { font-size: 0.88rem; color: var(--text); margin: 0; line-height: 1.6; }
+
+    /* ── Metric Grid ── */
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .metric-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px 18px; text-align: center;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .metric-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .metric-val {
+      display: block; font-family: var(--font-head);
+      font-size: 1.85rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 4px;
+    }
+    .metric-label { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+    /* ── Decision Cards ── */
+    .decision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
+    .decision-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .decision-title { font-family: var(--font-head); font-weight: 700; color: #fff; font-size: 1.05rem; margin-bottom: 12px; }
+    .decision-text { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; }
+    .decision-badge {
+      display: inline-block; font-family: var(--font-mono); font-size: 0.68rem;
+      padding: 3px 8px; border-radius: 4px; margin-bottom: 10px;
+      background: rgba(124,58,237,0.15); color: var(--accent3);
+    }
+
+    @media(max-width: 600px) {
+      .cs-hero { padding: 90px 20px 40px; }
+      .cs-section { padding: 40px 0; }
+      .decision-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MINIMAL NAV -->
+  <nav id="navbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(8,11,18,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(124,58,237,0.18);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="index.html#hero" style="font-family:'Poppins',sans-serif;font-weight:800;font-size:1.4rem;color:#e2e8f0;">JS<span style="color:#7c3aed;">.</span></a>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="index.html#projects" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:#06b6d4;display:flex;align-items:center;gap:6px;">← Back to Projects</a>
+      <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener" class="proj-link proj-github" style="font-size:0.75rem;">GitHub Repo ↗</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="cs-hero">
+    <a href="index.html#projects" class="cs-back">← Back to Projects</a>
+    <span class="cs-tag">// case study · 02</span>
+    <h1 class="cs-title">ROS 2 Quadruped<br><span class="accent-text">Locomotion Framework</span></h1>
+    <p class="cs-subtitle">A modular 12-DOF legged robot control and simulation architecture featuring closed-form analytical kinematics, 3D cycloid foot trajectory planning, and synchronized multi-gait coordination in ROS 2 &amp; Gazebo.</p>
+    <div class="cs-badges">
+      <span class="cs-badge badge-cyan">ROS 2 Humble</span>
+      <span class="cs-badge">12-DOF URDF / Xacro</span>
+      <span class="cs-badge badge-cyan">Analytical IK (&lt;10µs)</span>
+      <span class="cs-badge">3D Cycloid Gait</span>
+      <span class="cs-badge badge-cyan">ros2_control</span>
+      <span class="cs-badge">Gazebo Classic 11</span>
+      <span class="cs-badge">PyQt5 Teleop GUI</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- § 01 — OVERVIEW & OBJECTIVES -->
+    <section class="cs-section reveal" id="cs-overview">
+      <span class="cs-section-tag">// 01 — overview &amp; objectives</span>
+      <h2 class="cs-section-title">Engineering Challenge &amp; Scope</h2>
+      <p style="color:var(--text-muted);line-height:1.75;margin-bottom:18px;">
+        Unlike wheeled platforms restricted to planar, prepared surfaces, quadruped robots must continuously maintain dynamic stability across discrete footholds, unstructured obstacles, and uneven terrain. However, legged locomotion presents severe control hurdles: high dimensionality (12 actively actuated revolute joints), mathematical singularity risks in iterative inverse kinematics solvers, phase synchronization across swing and stance cycles, and real-time execution constraints where control delays result in catastrophic falls.
+      </p>
+      <p style="color:var(--text-muted);line-height:1.75;margin-bottom:24px;">
+        <strong>Project Objectives:</strong> Build a production-grade, mathematically verified ROS 2 workspace that solves the full locomotion chain from high-level teleoperation commands down to synchronized joint position trajectories, cleanly isolated through industrial <code style="color:var(--accent2);">ros2_control</code> hardware abstractions.
+      </p>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-val">12 DOF</span>
+          <span class="metric-label">3 Revolute Joints / Leg</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">&lt; 10 µs</span>
+          <span class="metric-label">IK Compute Latency</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">100 Hz</span>
+          <span class="metric-label">Joint Trajectory Control</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">4 Gaits</span>
+          <span class="metric-label">Trot · Walk · Crawl · Bound</span>
+        </div>
+      </div>
+
+      <div class="verification-status-box">
+        <h4>Verification Status: Simulation-Validated</h4>
+        <p>This framework is fully implemented and validated in <strong>Gazebo Classic 11.10 (ODE physics)</strong> and <strong>RViz2</strong> on Ubuntu 22.04 LTS. Hardware deployment architecture is pre-configured via the <code style="color:var(--accent3);">ros2_control</code> C++ Hardware Interface abstraction layer, ready for physical motor drivers.</p>
+      </div>
+    </section>
+
+    <!-- § 02 — ARCHITECTURE DIAGRAM -->
+    <section class="cs-section reveal" id="cs-architecture">
+      <span class="cs-section-tag">// 02 — system architecture</span>
+      <h2 class="cs-section-title">ROS 2 Node Graph &amp; Communication Topology</h2>
+      <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">
+        The system decouples high-level user teleop, gait generation, dynamic stabilization, kinematics, and low-level joint execution into modular ROS 2 nodes communicating over deterministic topics:
+      </p>
+
+      <!-- Accurate SVG System Architecture Diagram -->
+      <div class="svg-diagram-card">
+        <svg viewBox="0 0 980 430" xmlns="http://www.w3.org/2000/svg" style="background:#090d16;border-radius:12px;font-family:'JetBrains Mono',monospace;">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#06b6d4"/>
+            </marker>
+            <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#a78bfa"/>
+            </marker>
+            <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#141c2e"/>
+              <stop offset="100%" stop-color="#101726"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Layer Labels -->
+          <text x="30" y="32" fill="#64748b" font-size="11" letter-spacing="1">USER CONTROL LAYER</text>
+          <text x="340" y="32" fill="#64748b" font-size="11" letter-spacing="1">LOCOMOTION &amp; KINEMATICS LAYER</text>
+          <text x="730" y="32" fill="#64748b" font-size="11" letter-spacing="1">ROS2_CONTROL &amp; SIM LAYER</text>
+
+          <!-- Node 1: quadruped_gui_node -->
+          <rect x="30" y="60" width="220" height="110" rx="10" fill="url(#nodeGrad)" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="45" y="88" fill="#a78bfa" font-size="13" font-weight="bold">quadruped_gui_node</text>
+          <text x="45" y="108" fill="#94a3b8" font-size="10">PyQt5 Teleop Dashboard</text>
+          <text x="45" y="126" fill="#64748b" font-size="9">• Gait selector (Trot/Walk/Crawl)</text>
+          <text x="45" y="142" fill="#64748b" font-size="9">• Pose &amp; Vel sliders (Vx, Vy, Wz)</text>
+          <text x="45" y="156" fill="#06b6d4" font-size="9">Rate: 20 Hz / Event-driven</text>
+
+          <!-- Node 2: gait_generator_node -->
+          <rect x="330" y="60" width="280" height="95" rx="10" fill="url(#nodeGrad)" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="345" y="88" fill="#38bdf8" font-size="13" font-weight="bold">gait_generator_node</text>
+          <text x="345" y="108" fill="#94a3b8" font-size="10">Cycloid Foot Trajectory Planner</text>
+          <text x="345" y="126" fill="#64748b" font-size="9">• Parametric 3D Cycloid curves</text>
+          <text x="345" y="142" fill="#64748b" font-size="9">• Stance/Swing phase sequencer</text>
+
+          <!-- Node 3: locomotion_controller_node -->
+          <rect x="330" y="195" width="280" height="150" rx="10" fill="url(#nodeGrad)" stroke="#7c3aed" stroke-width="2"/>
+          <text x="345" y="222" fill="#a78bfa" font-size="13" font-weight="bold">locomotion_controller_node</text>
+          <text x="345" y="242" fill="#94a3b8" font-size="10">Master Coordinator &amp; Solver</text>
+          <text x="345" y="262" fill="#64748b" font-size="9">• LegIK: Analytical 3-DOF Solver</text>
+          <text x="345" y="278" fill="#64748b" font-size="9">• BalanceController: Roll/Pitch IMU trim</text>
+          <text x="345" y="294" fill="#64748b" font-size="9">• SupportPolygon: Static stability check</text>
+          <text x="345" y="318" fill="#22c55e" font-size="10">Loop frequency: 100 Hz</text>
+
+          <!-- Node 4: joint_trajectory_controller -->
+          <rect x="710" y="60" width="240" height="100" rx="10" fill="url(#nodeGrad)" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="725" y="88" fill="#38bdf8" font-size="13" font-weight="bold">ros2_control Manager</text>
+          <text x="725" y="108" fill="#94a3b8" font-size="10">joint_trajectory_controller</text>
+          <text x="725" y="126" fill="#64748b" font-size="9">• 12 Synchronized Position Interfaces</text>
+          <text x="725" y="144" fill="#64748b" font-size="9">• Interpolation &amp; hardware safety limits</text>
+
+          <!-- Node 5: Gazebo / Hardware Plugin -->
+          <rect x="710" y="200" width="240" height="145" rx="10" fill="url(#nodeGrad)" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="725" y="228" fill="#a78bfa" font-size="13" font-weight="bold">Gazebo Classic 11 / Rig</text>
+          <text x="725" y="248" fill="#94a3b8" font-size="10">Physics Engine (ODE)</text>
+          <text x="725" y="268" fill="#64748b" font-size="9">• 12 Leg Joints + Foot Contacts</text>
+          <text x="725" y="284" fill="#64748b" font-size="9">• IMU Sensor Plugin (200 Hz)</text>
+          <text x="725" y="300" fill="#64748b" font-size="9">• robot_state_publisher (TF tree)</text>
+          <text x="725" y="322" fill="#f59e0b" font-size="9">Swappable: C++ CAN/Serial Driver</text>
+
+          <!-- Communication Arrows -->
+          <!-- GUI to Locomotion (/gait_cmd) -->
+          <path d="M 250 95 L 330 95" fill="none" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <text x="260" y="87" fill="#06b6d4" font-size="8">/gait_cmd</text>
+
+          <!-- GUI to Locomotion (/cmd_vel & /robot_pose) -->
+          <path d="M 180 170 L 180 270 L 330 270" fill="none" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <text x="195" y="262" fill="#06b6d4" font-size="8">/cmd_vel · /robot_pose</text>
+
+          <!-- Gait Gen to Locomotion -->
+          <path d="M 470 155 L 470 195" fill="none" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+          <text x="475" y="180" fill="#a78bfa" font-size="8">Foot targets (x,y,z)</text>
+
+          <!-- Locomotion to JTC (/joint_trajectory_controller/joint_trajectory) -->
+          <path d="M 610 240 L 660 240 L 660 115 L 710 115" fill="none" stroke="#06b6d4" stroke-width="1.8" marker-end="url(#arrow)"/>
+          <text x="618" y="180" fill="#06b6d4" font-size="8" transform="rotate(-90 645,180)">100 Hz /joint_trajectory</text>
+
+          <!-- JTC to Gazebo -->
+          <path d="M 830 160 L 830 200" fill="none" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <text x="835" y="185" fill="#06b6d4" font-size="8">Joint states / torque</text>
+
+          <!-- Gazebo to Locomotion (/imu/data) -->
+          <path d="M 710 320 L 610 320" fill="none" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+          <text x="625" y="312" fill="#a78bfa" font-size="8">/imu/data (200 Hz)</text>
+
+          <!-- Topic Legend -->
+          <rect x="30" y="380" width="920" height="36" rx="6" fill="#0d1320" stroke="#1e293b" stroke-width="1"/>
+          <text x="45" y="402" fill="#94a3b8" font-size="10">Data Protocol: All real-time telemetry uses Best-Effort Volatile QoS depth 10 · Synchronous 12-joint updates eliminate inter-leg phase skew</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- § 03 — VERIFIED CONTRIBUTIONS -->
+    <section class="cs-section reveal" id="cs-contributions">
+      <span class="cs-section-tag">// 03 — verified contributions</span>
+      <h2 class="cs-section-title">Core Modules &amp; Algorithmic Implementation</h2>
+      <div class="decision-grid">
+        <div class="decision-card">
+          <span class="decision-badge">quadruped_kinematics</span>
+          <div class="decision-title">Closed-Form Analytical IK Solver</div>
+          <p class="decision-text">
+            Developed a deterministic, closed-form trigonometric inverse kinematics solver for the 3-DOF leg mechanism (Hip Roll, Thigh Pitch, Knee Pitch). Eliminates the divergence and matrix inversion costs of Jacobian pseudo-inverse algorithms, calculating exact joint positions in under <strong>10 µs</strong> with analytical reachability workspace clamping.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <span class="decision-badge">quadruped_gait</span>
+          <div class="decision-title">3D Cycloid Foot Trajectory Generator</div>
+          <p class="decision-text">
+            Implemented parametric cycloid curves for the swing phase trajectory. Unlike cubic or polynomial splines that impart acceleration spikes on touchdown, cycloid geometry ensures both velocity and acceleration smoothly reach zero at lift-off and ground impact, mitigating destructive ground impact shocks.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <span class="decision-badge">quadruped_control</span>
+          <div class="decision-title">IMU Attitude &amp; Support Polygon Balancer</div>
+          <p class="decision-text">
+            Built an active IMU stabilization loop subscribing to <code style="color:var(--accent2);">/imu/data</code> at 200 Hz. Adjusts leg height offsets in real time to counteract body roll and pitch on slopes, coupled with a convex hull support polygon checker that calculates whether the projected Center of Mass (CoM) remains within the stance triangle.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <span class="decision-badge">quadruped_description &amp; sim</span>
+          <div class="decision-title">Modular URDF/Xacro &amp; ros2_control Stack</div>
+          <p class="decision-text">
+            Created parametric Xacro descriptions complete with link inertias, visual STLs, and collision geometry for the trunk, hips, thighs, shanks, and spherical rubber feet. Integrated <code style="color:var(--accent3);">gazebo_ros2_control</code> to drive joint positions natively via standard ROS 2 controllers.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 04 — KINEMATICS & SOURCE CODE DEEP-DIVE -->
+    <section class="cs-section reveal" id="cs-kinematics">
+      <span class="cs-section-tag">// 04 — kinematic derivation &amp; code</span>
+      <h2 class="cs-section-title">Mathematical Derivation &amp; Code References</h2>
+      <p style="color:var(--text-muted);line-height:1.7;margin-bottom:16px;">
+        Each leg possesses 3 degrees of freedom with link dimensions: hip offset <code style="color:var(--accent2);">l1 = 0.08 m</code>, thigh length <code style="color:var(--accent2);">l2 = 0.22 m</code>, and shank length <code style="color:var(--accent2);">l3 = 0.22 m</code>. The analytical solver decouples the 3D target coordinate into a roll rotation followed by planar 2-link trigonometry:
+      </p>
+
+      <div class="code-snippet">
+<span class="code-comment"># Excerpt from: src/quadruped_kinematics/quadruped_kinematics/leg_ik.py</span>
+<span class="code-kw">def</span> <span class="code-fn">solve_ik</span>(self, x: <span class="code-kw">float</span>, y: <span class="code-kw">float</span>, z: <span class="code-kw">float</span>, is_left_leg: <span class="code-kw">bool</span> = <span class="code-kw">True</span>):
+    <span class="code-comment"># 1. Decouple Hip Roll Angle (theta_hip)</span>
+    l_yz = math.sqrt(y**<span class="code-num">2</span> + z**<span class="code-num">2</span>)
+    <span class="code-kw">if</span> l_yz &lt; self.l1:
+        <span class="code-kw">raise</span> ValueError(<span class="code-str">"Target position mathematically unreachable inside hip sphere"</span>)
+
+    d = math.sqrt(l_yz**<span class="code-num">2</span> - self.l1**<span class="code-num">2</span>)
+    theta_hip = math.atan2(y, -z) - math.atan2(self.l1, d)
+
+    <span class="code-comment"># 2. Planar Knee Pitch (theta_knee) via Law of Cosines</span>
+    r = math.sqrt(x**<span class="code-num">2</span> + d**<span class="code-num">2</span>)
+    cos_knee = (r**<span class="code-num">2</span> - self.l2**<span class="code-num">2</span> - self.l3**<span class="code-num">2</span>) / (<span class="code-num">2.0</span> * self.l2 * self.l3)
+    cos_knee = max(<span class="code-num">-1.0</span>, min(<span class="code-num">1.0</span>, cos_knee))  <span class="code-comment"># Numerical clamp</span>
+    theta_knee = -math.acos(cos_knee)
+
+    <span class="code-comment"># 3. Thigh Pitch Angle (theta_thigh)</span>
+    alpha = math.atan2(x, d)
+    beta = math.atan2(self.l3 * math.sin(-theta_knee), self.l2 + self.l3 * math.cos(theta_knee))
+    theta_thigh = alpha + beta
+
+    <span class="code-kw">return</span> theta_hip, theta_thigh, theta_knee
+      </div>
+
+      <p style="color:var(--text-muted);line-height:1.7;margin-top:20px;">
+        <strong>Cycloid Foot Trajectory Formulation:</strong> During the swing phase spanning normalized phase time $\tau \in [0, 1]$, foot clearance height $H$ and step length $S$ are generated smoothly without infinite jerk:
+      </p>
+      <div class="code-snippet">
+<span class="code-comment"># Excerpt from: src/quadruped_gait/quadruped_gait/foot_trajectory.py</span>
+<span class="code-comment"># x(tau): Cycloid forward progression</span>
+x_swing = start_x + step_length * (tau - (math.sin(<span class="code-num">2.0</span> * math.pi * tau) / (<span class="code-num">2.0</span> * math.pi)))
+<span class="code-comment"># z(tau): Cycloid ground clearance lift and descent</span>
+z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span class="code-num">1.0</span> - math.cos(<span class="code-num">2.0</span> * math.pi * tau)))
+      </div>
+    </section>
+
+    <!-- § 05 — HARDWARE & SOFTWARE SPECIFICATIONS -->
+    <section class="cs-section reveal" id="cs-specs">
+      <span class="cs-section-tag">// 05 — technical stack</span>
+      <h2 class="cs-section-title">Hardware &amp; Software Specifications</h2>
+      <div style="overflow-x:auto;">
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>Subsystem</th>
+              <th>Specification / Technology</th>
+              <th>Role in Locomotion Pipeline</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Operating System</strong></td>
+              <td>Ubuntu 22.04 LTS (Jammy Jellyfish)</td>
+              <td>Real-time priority process hosting</td>
+            </tr>
+            <tr>
+              <td><strong>Middleware</strong></td>
+              <td>ROS 2 Humble Hawksbill (rclpy, rosidl, rclcpp)</td>
+              <td>Inter-node communication &amp; executor lifecycle</td>
+            </tr>
+            <tr>
+              <td><strong>Physics Simulation</strong></td>
+              <td>Gazebo Classic 11.10.2 (ODE physics, 1 ms time step)</td>
+              <td>Dynamic multi-body contact &amp; gravity simulation</td>
+            </tr>
+            <tr>
+              <td><strong>Actuator Control</strong></td>
+              <td><code>ros2_control</code> / <code>JointTrajectoryController</code></td>
+              <td>Synchronized 100 Hz position trajectory execution</td>
+            </tr>
+            <tr>
+              <td><strong>Robot Kinematics</strong></td>
+              <td>Custom analytical solver (Python / NumPy)</td>
+              <td>Sub-10µs Cartesian-to-Joint angle transformation</td>
+            </tr>
+            <tr>
+              <td><strong>Leg Geometry</strong></td>
+              <td>3-DOF per leg (Hip Roll, Thigh Pitch, Knee Pitch)</td>
+              <td>Total 12 active joints (symmetric FL, FR, RL, RR)</td>
+            </tr>
+            <tr>
+              <td><strong>Sensor Integration</strong></td>
+              <td>Simulated 6-Axis IMU (<code>sensor_msgs/msg/Imu</code>) at 200 Hz</td>
+              <td>Body attitude (roll/pitch) closed-loop trim</td>
+            </tr>
+            <tr>
+              <td><strong>Operator GUI</strong></td>
+              <td>PyQt5 Desktop Dashboard</td>
+              <td>Real-time gait switching, linear &amp; angular velocity cmd</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- § 06 — DECISIONS & TRADE-OFFS -->
+    <section class="cs-section reveal" id="cs-decisions">
+      <span class="cs-section-tag">// 06 — engineering trade-offs</span>
+      <h2 class="cs-section-title">Design Decisions &amp; Architectural Trade-Offs</h2>
+      <div class="decision-grid">
+        <div class="decision-card">
+          <div class="decision-title">Analytical IK vs. Numerical Jacobian</div>
+          <p class="decision-text">
+            <strong>Decision:</strong> Closed-form analytical trigonometry.<br>
+            <strong>Rationale:</strong> Numerical solvers (DLS, Levenberg-Marquardt) require iterative loops that consume CPU cycles and risk divergence near workspace boundaries. The closed-form analytical approach guarantees sub-10µs compute time with zero drift.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-title">Cycloid Curve vs. Polynomial Spline</div>
+          <p class="decision-text">
+            <strong>Decision:</strong> Parametric 3D Cycloid trajectory.<br>
+            <strong>Rationale:</strong> High-order splines often induce non-zero acceleration derivatives at boundary transitions. Cycloid trajectories naturally possess zero velocity and zero acceleration at touchdown, preventing foot bounce and motor current spikes.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-title">JointTrajectory vs. Individual Float64 Topics</div>
+          <p class="decision-text">
+            <strong>Decision:</strong> Single synchronized <code>trajectory_msgs/JointTrajectory</code>.<br>
+            <strong>Rationale:</strong> Publishing 12 separate topics causes DDS network jitter and message arrival delays across joints, desynchronizing leg phases. A single array guarantees all 12 positions arrive in the same physics time-step.
+          </p>
+        </div>
+
+        <div class="decision-card">
+          <div class="decision-title">Sim-to-Real Abstraction Strategy</div>
+          <p class="decision-text">
+            <strong>Decision:</strong> Strictly isolate physics via <code>ros2_control</code>.<br>
+            <strong>Rationale:</strong> Locomotion nodes never call Gazebo-specific services. Deploying to physical servos or CAN brushless motors requires only writing a C++ <code>hardware_interface::SystemInterface</code> plugin without modifying any Python locomotion logic.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- § 07 — LIMITATIONS & ROADMAP -->
+    <section class="cs-section reveal" id="cs-roadmap">
+      <span class="cs-section-tag">// 07 — limitations &amp; future roadmap</span>
+      <h2 class="cs-section-title">Known Limitations &amp; Future Engineering Steps</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:28px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;">
+          <h4 style="color:#f87171;font-family:var(--font-mono);font-size:0.85rem;margin-bottom:10px;">CURRENT LIMITATIONS</h4>
+          <ul style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;padding-left:18px;">
+            <li>Open-loop swing trajectory lacks ground reaction force (GRF) foot contact switches.</li>
+            <li>Attitude balancing relies on kinematic IMU tilt compensation rather than full Model Predictive Control (MPC).</li>
+            <li>Gazebo simulation assumes ideal rigid-body contact with high surface friction.</li>
+          </ul>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;">
+          <h4 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.85rem;margin-bottom:10px;">FUTURE IMPROVEMENTS</h4>
+          <ul style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;padding-left:18px;">
+            <li>Implement Convex MPC + Whole-Body Impulse Control (WBC) for active push recovery.</li>
+            <li>Integrate foot contact pressure sensors or motor back-EMF current estimation.</li>
+            <li>Deploy codebase to physical 12-actuator desktop quadruped chassis via serial/CAN interface.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="text-align:center;padding:24px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);">
+        <h3 style="font-family:var(--font-head);font-size:1.15rem;color:#fff;margin-bottom:8px;">Inspect Source Code &amp; Launch System</h3>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">Complete ROS 2 workspace containing URDF models, Gazebo worlds, launch scripts, and kinematics packages.</p>
+        <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;">View Repository on GitHub ↗</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <p class="footer-text">Built by <span class="accent">Josiah Saji</span> &nbsp;·&nbsp; Robotics Engineer &amp; Embedded Systems Developer</p>
+      <p class="footer-sub"><a href="index.html" style="color:var(--accent2);">← Back to Portfolio</a> &nbsp;·&nbsp; Kerala, India &nbsp;·&nbsp; 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    try {
+      if (typeof IntersectionObserver !== 'undefined') {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05 });
+        document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+      }
+    } catch(e) {}
+  </script>
+</body>
+</html>

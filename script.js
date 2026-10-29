@@ -480,6 +480,10 @@ try {
         var prevBtn     = carousel.querySelector('.carousel-prev');
         var nextBtn     = carousel.querySelector('.carousel-next');
 
+        carousel.setAttribute('role', 'region');
+        carousel.setAttribute('aria-roledescription', 'carousel');
+        carousel.setAttribute('aria-label', 'Project Media Showcase');
+
         if (!items.length) {
           // No images — show placeholder, hide arrow buttons
           if (placeholder) placeholder.style.display = 'flex';
@@ -493,6 +497,24 @@ try {
         if (prevBtn) prevBtn.style.display = '';
         if (nextBtn) nextBtn.style.display = '';
 
+        // Graceful broken image handler to prevent layout shift
+        var imgs = track ? track.querySelectorAll('img') : [];
+        for (var mi = 0; mi < imgs.length; mi++) {
+          (function(img) {
+            img.addEventListener('error', function() {
+              this.style.display = 'none';
+              var fig = this.closest('figure');
+              if (fig && !fig.querySelector('.media-err-notice')) {
+                var errNotice = document.createElement('div');
+                errNotice.className = 'media-err-notice';
+                errNotice.style.cssText = 'padding:32px 16px;text-align:center;color:var(--text-dim);font-family:var(--font-mono);font-size:0.75rem;background:var(--surface2);';
+                errNotice.innerHTML = '<span>⚙️</span><p style="margin-top:6px;">Media pending verification</p><code style="color:var(--accent2);">' + (img.getAttribute('src') || '') + '</code>';
+                fig.insertBefore(errNotice, fig.firstChild);
+              }
+            });
+          })(imgs[mi]);
+        }
+
         var current = 0;
         var total   = items.length;
 
@@ -504,8 +526,18 @@ try {
           }
         }
 
-        if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
-        if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            goTo(current - 1);
+          });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            goTo(current + 1);
+          });
+        }
 
         // Touch / swipe
         var swipeStartX = 0;
@@ -522,8 +554,8 @@ try {
         // Keyboard navigation when carousel is focused
         carousel.setAttribute('tabindex', '0');
         carousel.addEventListener('keydown', function(e) {
-          if (e.key === 'ArrowLeft')  goTo(current - 1);
-          if (e.key === 'ArrowRight') goTo(current + 1);
+          if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+          if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
         });
 
         goTo(0);

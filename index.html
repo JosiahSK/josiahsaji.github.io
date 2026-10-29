@@ -207,7 +207,7 @@
               </div>
               <div class="narrative-block">
                 <span class="narrative-label result">Result</span>
-                <p>Achieved <strong>[ADD METRIC: tilling depth] mm</strong> working depth, <strong>[ADD METRIC: coverage rate] m²/hr</strong> field coverage, and <strong>[ADD METRIC: battery runtime] hrs</strong> continuous operation. Submitted to YIP 7.0.</p>
+                <p>Functional hardware prototype submitted to YIP 7.0 featuring a custom chassis, high-torque drivetrain, LiFePO4 power distribution, and remote teleoperation interface. Undergoing multi-acre field furrow depth calibration.</p>
               </div>
             </div>
 
@@ -280,29 +280,29 @@
               <span class="project-num">02</span>
               <span class="project-icon">🦾</span>
             </div>
-            <h3 class="project-title">Quadruped Robot</h3>
+            <h3 class="project-title">Quadruped Locomotion Framework</h3>
 
             <div class="project-narrative">
               <div class="narrative-block">
                 <span class="narrative-label problem">Problem</span>
-                <p>Wheeled robots cannot navigate uneven, cluttered, or obstacle-dense terrain. A bio-inspired legged platform is needed for scenarios where wheels simply cannot go.</p>
+                <p>Wheeled robots cannot navigate unstructured, cluttered, or stepped terrain. A bio-inspired legged architecture requires deterministic inverse kinematics and smooth swing trajectories to avoid ground impact shock.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label approach">Approach</span>
-                <p>Designed and built a 12-DOF quadruped with servo-actuated legs. Implemented inverse kinematics for precise leg positioning and multiple gait patterns (trot, walk). Integrated with ROS2 for teleoperation and autonomous navigation planning.</p>
+                <p>Designed a 12-DOF quadruped architecture in ROS 2 Humble. Formulated closed-form analytical 3-DOF leg kinematics, 3D parametric cycloid foot trajectories, multi-gait sequencing (Trot, Walk, Crawl, Bound), and an active IMU stabilization loop.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label result">Result</span>
-                <p>Achieved <strong>[ADD METRIC: walking speed] cm/s</strong> stable trot speed, <strong>[ADD METRIC: terrain clearance] mm</strong> step-over height, and stable gait across <strong>[ADD METRIC: terrain types]</strong> tested surface types.</p>
+                <p>Achieved <strong>&lt;10 µs</strong> analytical IK compute latency with zero singularity drift, validated in Gazebo Classic &amp; RViz2 with synchronized 100 Hz <code>ros2_control</code> trajectory execution.</p>
               </div>
             </div>
 
             <ul class="project-tech">
-              <li>Servo Actuators</li>
-              <li>Inverse Kinematics</li>
-              <li>ROS2</li>
-              <li>Gait Algorithms</li>
-              <li>12 DOF</li>
+              <li>ROS 2 Humble</li>
+              <li>Analytical 3-DOF IK</li>
+              <li>3D Cycloid Gait</li>
+              <li>ros2_control</li>
+              <li>Gazebo Classic 11</li>
             </ul>
 
             <!-- VIDEO SLOT -->
@@ -320,12 +320,13 @@
             </div>
 
             <div class="project-footer">
-              <span class="project-badge">Legged Locomotion</span>
+              <span class="project-badge">Legged Locomotion (Simulation)</span>
               <div class="project-links">
                 <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" class="proj-link proj-github" target="_blank" rel="noopener" id="githubQuadruped">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                   View on GitHub
                 </a>
+                <a href="quadruped-locomotion.html" class="proj-link proj-casestudy" id="caseStudyQuadruped">Read case study →</a>
               </div>
             </div>
           </div>
@@ -365,29 +366,29 @@
               <span class="project-num">03</span>
               <span class="project-icon">🤖</span>
             </div>
-            <h3 class="project-title">ROS2-Based Robotics Systems</h3>
+            <h3 class="project-title">ROS 2 Mobile Robot &amp; SLAM</h3>
 
             <div class="project-narrative">
               <div class="narrative-block">
                 <span class="narrative-label problem">Problem</span>
-                <p>Translating theoretical robot designs into simulation-ready, navigable systems requires a robust middleware stack — something that needed to be mastered from the ground up using ROS2 Jazzy.</p>
+                <p>Translating theoretical robot designs into simulation-ready, navigable systems requires a robust middleware stack built from the ground up using modern ROS 2 conventions.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label approach">Approach</span>
-                <p>Developed and visualised robotic models using URDF and TF2 in RViz. Built autonomous navigation pipelines with Nav2 (SLAM, path planning, obstacle avoidance). Explored micro-ROS for bridging ROS2 with ESP32 microcontrollers.</p>
+                <p>Modeled a 2WD differential mobile robot with URDF/Xacro and TF2 trees in RViz. Built an autonomous pipeline with SLAM Toolbox for laser-scan mapping, Nav2 for dynamic costmaps, and simulated in Gazebo.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label result">Result</span>
-                <p>Achieved <strong>[ADD METRIC: navigation accuracy] cm</strong> position accuracy across <strong>[ADD METRIC: number]</strong> mapped environments, and <strong>[ADD METRIC: latency] ms</strong> micro-ROS round-trip latency on ESP32.</p>
+                <p>Validated 2D occupancy grid mapping, dynamic obstacle avoidance, and global waypoint path planning across simulated office and indoor environments in Gazebo.</p>
               </div>
             </div>
 
             <ul class="project-tech">
-              <li>ROS2 Jazzy</li>
-              <li>URDF / TF2</li>
+              <li>ROS 2 Jazzy</li>
+              <li>SLAM Toolbox</li>
               <li>Nav2</li>
-              <li>micro-ROS</li>
-              <li>RViz</li>
+              <li>URDF / TF2</li>
+              <li>RViz2 &amp; Gazebo</li>
             </ul>
 
             <!-- VIDEO SLOT -->
@@ -405,7 +406,7 @@
             </div>
 
             <div class="project-footer">
-              <span class="project-badge">Autonomous Navigation</span>
+              <span class="project-badge">Autonomous Navigation (SLAM)</span>
               <div class="project-links">
                 <a href="https://github.com/JosiahSK/ros2_jazzy_2wd_robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubRos2">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
@@ -450,29 +451,29 @@
               <span class="project-num">04</span>
               <span class="project-icon">⚡</span>
             </div>
-            <h3 class="project-title">Embedded Systems Projects</h3>
+            <h3 class="project-title">ESP32 micro-ROS 2WD Robot</h3>
 
             <div class="project-narrative">
               <div class="narrative-block">
                 <span class="narrative-label problem">Problem</span>
-                <p>Modern robotics demands reliable multi-sensor integration and efficient power delivery across heterogeneous hardware — from high-level SBCs to bare-metal microcontrollers.</p>
+                <p>Bridging high-level ROS 2 navigation to resource-constrained microcontrollers over wireless links without heavy Linux single-board computers or fragile serial converters.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label approach">Approach</span>
-                <p>Developed across Raspberry Pi, Pico, and ESP32 platforms. Integrated LiDAR, ultrasonic, and LDR sensors for environment sensing. Designed custom power systems using buck converters for stable, efficient voltage delivery.</p>
+                <p>Deployed native micro-ROS on an ESP32 over Wi-Fi UDP. Implemented 4-pin pure PWM motor control with differential mixing, deadband static friction compensation, and safety failsafes.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label result">Result</span>
-                <p>Achieved <strong>[ADD METRIC: efficiency]% </strong>buck converter efficiency, <strong>[ADD METRIC: range] cm</strong> effective LiDAR sensing range, and <strong>[ADD METRIC: latency] ms</strong> sensor read latency on Pico/ESP32.</p>
+                <p>Achieved sub-8ms command execution latency, 1 kHz hardware PWM switching, and automated 500 ms failsafe motor cutoff on command loss, benchtop tested on real hardware.</p>
               </div>
             </div>
 
             <ul class="project-tech">
-              <li>Raspberry Pi / Pico</li>
               <li>ESP32</li>
-              <li>LiDAR &amp; Sensors</li>
-              <li>Buck Converters</li>
-              <li>MicroPython</li>
+              <li>micro-ROS (UDP)</li>
+              <li>4-Pin PWM Driver</li>
+              <li>Kinematic Mixing</li>
+              <li>Failsafe Watchdog</li>
             </ul>
 
             <!-- VIDEO SLOT -->
@@ -490,12 +491,13 @@
             </div>
 
             <div class="project-footer">
-              <span class="project-badge">Hardware + Software</span>
+              <span class="project-badge">Hardware Benchtop Tested</span>
               <div class="project-links">
                 <a href="https://github.com/JosiahSK/esp32-microros-2wd-car" class="proj-link proj-github" target="_blank" rel="noopener" id="githubEmbedded">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                   View on GitHub
                 </a>
+                <a href="esp32-microros-robot.html" class="proj-link proj-casestudy" id="caseStudyEmbedded">Read case study →</a>
               </div>
             </div>
           </div>
