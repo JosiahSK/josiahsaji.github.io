@@ -1,115 +1,190 @@
 import os
-import re
 import glob
 from collections import Counter
+from html.parser import HTMLParser
 
-def test_links_and_assets():
+class ComprehensiveDOMParser(HTMLParser):
+    def __init__(self, filename):
+        super().__init__()
+        self.filename = filename
+        self.ids = []
+        self.srcs = []
+        self.hrefs = []
+        self.meta_tags = []
+        self.link_tags = []
+        self.headings = []
+        self.images = []
+        self.anchors = []
+
+    def handle_starttag(self, tag, attrs):
+        attr_dict = dict(attrs)
+
+        # 1. Element ID
+        if 'id' in attr_dict:
+            self.ids.append(attr_dict['id'])
+
+        # 2. Local/external href
+        if 'href' in attr_dict:
+            self.hrefs.append({
+                'tag': tag,
+                'href': attr_dict['href'],
+                'target': attr_dict.get('target'),
+                'rel': attr_dict.get('rel', '')
+            })
+
+        # 3. Source assets
+        if 'src' in attr_dict:
+            self.srcs.append({
+                'tag': tag,
+                'src': attr_dict['src']
+            })
+
+        # 4. Meta tags (OpenGraph & Twitter)
+        if tag == 'meta':
+            self.meta_tags.append(attr_dict)
+
+        # 5. Link tags (favicon / preconnect / stylesheet)
+        if tag == 'link':
+            self.link_tags.append(attr_dict)
+
+        # 6. Heading hierarchy
+        if tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
+            level = int(tag[1])
+            self.headings.append(level)
+
+        # 7. Images alt text
+        if tag == 'img':
+            self.images.append({
+                'src': attr_dict.get('src', ''),
+                'alt': attr_dict.get('alt')
+            })
+
+def test_portfolio_quality():
     html_files = sorted(glob.glob('*.html'))
-    print(f"Scanning HTML files: {html_files}")
-    
+    print(f"Scanning HTML files with html.parser: {html_files}")
+
     errors = []
-    checked_srcs = 0
-    checked_hrefs = 0
-    checked_meta_assets = 0
-    checked_headings = 0
-    checked_images_alt = 0
-    
+    total_ids = 0
+    total_srcs = 0
+    total_hrefs = 0
+    total_headings = 0
+    total_images = 0
+
+    # 1. Parse all documents
+    parsed_docs = {}
     for hf in html_files:
         with open(hf, 'r', encoding='utf-8') as f:
-            raw_content = f.read()
-        
-        # Strip HTML comments to only evaluate active DOM elements
-        active_content = re.sub(r'<!--.*?-->', '', raw_content, flags=re.DOTALL)
-        
-        # 1. Duplicate ID validation
-        all_ids = re.findall(r'id=["\']([^"\']+)["\']', active_content)
-        counts = Counter(all_ids)
-        for element_id, count in counts.items():
+            content = f.read()
+
+        parser = ComprehensiveDOMParser(hf)
+        parser.feed(content)
+        parsed_docs[hf] = (parser, content)
+
+    # 2. Audit each document
+    for hf, (parser, raw_content) in parsed_docs.items():
+        # A. Unique element IDs
+        id_counts = Counter(parser.ids)
+        total_ids += len(parser.ids)
+        for el_id, count in id_counts.items():
             if count > 1:
-                errors.append(f"[{hf}] Duplicate element id detected: '{element_id}' appears {count} times")
-        page_ids = set(all_ids)
-        
-        # 2. Check active src attributes
-        srcs = re.findall(r'src=["\']([^"\']+)["\']', active_content)
-        for src in srcs:
+                errors.append(f"[{hf}] Duplicate element id: '{el_id}' appears {count} times")
+        page_id_set = set(parser.ids)
+
+        # B. Heading hierarchy
+        total_headings += len(parser.headings)
+        h1_count = parser.headings.count(1)
+        if h1_count != 1:
+            errors.append(f"[{hf}] Document must have exactly one <h1>, found {h1_count}")
+        for i in range(len(parser.headings) - 1):
+            curr, nxt = parser.headings[i], parser.headings[i+1]
+            if nxt > curr + 1:
+                errors.append(f"[{hf}] Heading level skipped: <h{curr}> followed by <h{nxt}>")
+
+        # C. Image alt attributes
+        total_images += len(parser.images)
+        for img in parser.images:
+            if img['alt'] is None:
+                errors.append(f"[{hf}] Image missing alt attribute: {img['src']}")
+
+        # D. Source assets exist locally
+        for item in parser.srcs:
+            src = item['src']
             if src.startswith(('http://', 'https://', 'data:')):
                 continue
-            checked_srcs += 1
+            total_srcs += 1
             if not os.path.exists(src):
                 errors.append(f"[{hf}] Missing active src file: {src}")
-                
-        # 3. Check active href attributes
-        hrefs = re.findall(r'href=["\']([^"\']+)["\']', active_content)
-        for href in hrefs:
+
+        # E. Href targets & Anchor validity
+        for link in parser.hrefs:
+            href = link['href']
+            # External target="_blank" safety
+            if link['target'] == '_blank':
+                rel = link['rel'].lower()
+                if 'noopener' not in rel or 'noreferrer' not in rel:
+                    errors.append(f"[{hf}] Blank link missing rel='noopener noreferrer': href={href}")
+
             if href.startswith(('http://', 'https://', 'mailto:', 'tel:')):
                 continue
+
+            # Local anchor on same page
             if href.startswith('#'):
                 anchor = href[1:]
-                if anchor and anchor not in page_ids:
+                if anchor and anchor not in page_id_set:
                     errors.append(f"[{hf}] Target anchor #{anchor} not found on page")
                 continue
-            checked_hrefs += 1
+
+            total_hrefs += 1
             target_path = href.split('#')[0]
             anchor = href.split('#')[1] if '#' in href else None
             if target_path and not os.path.exists(target_path):
                 errors.append(f"[{hf}] Missing local link target: {target_path}")
             elif target_path and anchor:
-                with open(target_path, 'r', encoding='utf-8') as tf:
-                    target_content = tf.read()
-                target_ids = set(re.findall(r'id=["\']([^"\']+)["\']', target_content))
-                if anchor not in target_ids:
-                    errors.append(f"[{hf}] Cross-page anchor #{anchor} not found in {target_path}")
+                if target_path in parsed_docs:
+                    target_id_set = set(parsed_docs[target_path][0].ids)
+                    if anchor not in target_id_set:
+                        errors.append(f"[{hf}] Cross-page anchor #{anchor} not found in {target_path}")
 
-        # 4. Check meta image assets (og:image, twitter:image, icon)
-        meta_images = re.findall(r'<meta[^>]+(?:property|name)=["\'](?:og:image|twitter:image)["\'][^>]+content=["\']([^"\']+)["\']', active_content)
-        meta_images += re.findall(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\'](?:og:image|twitter:image)["\']', active_content)
-        icon_links = re.findall(r'<link[^>]+rel=["\']icon["\'][^>]+href=["\']([^"\']+)["\']', active_content)
-        
-        for m_asset in meta_images + icon_links:
-            if m_asset.startswith(('http://', 'https://', 'data:')):
-                continue
-            checked_meta_assets += 1
-            if not os.path.exists(m_asset):
-                errors.append(f"[{hf}] Missing meta asset referenced: {m_asset}")
+        # F. Social Meta Image Absolute URLs
+        for m in parser.meta_tags:
+            prop = m.get('property', '')
+            name = m.get('name', '')
+            if prop in ('og:image', 'twitter:image') or name in ('og:image', 'twitter:image'):
+                content_val = m.get('content', '')
+                if not content_val.startswith('https://'):
+                    errors.append(f"[{hf}] Meta tag {prop or name} must use absolute https URL, found: '{content_val}'")
 
-        # 5. Heading hierarchy check
-        headings = re.findall(r'<h([1-6])[\s>]', active_content, flags=re.IGNORECASE)
-        h_levels = [int(h) for h in headings]
-        checked_headings += len(h_levels)
-        if h_levels.count(1) != 1:
-            errors.append(f"[{hf}] Document must have exactly one <h1>, found {h_levels.count(1)}")
-        for i in range(len(h_levels) - 1):
-            curr, nxt = h_levels[i], h_levels[i+1]
-            if nxt > curr + 1:
-                errors.append(f"[{hf}] Heading level skipped: <h{curr}> followed by <h{nxt}>")
+        # G. Strict Claim Verification (Banned / Unsupported substrings)
+        # Check for unverified compiled latency claim in quadruped locomotion context
+        if 'quadruped' in hf or hf == 'index.html':
+            banned_patterns = [
+                'sub-10 µs compiled',
+                'sub-10 us compiled',
+                '<10 µs c++',
+                '< 10 µs compiled'
+            ]
+            for bp in banned_patterns:
+                if bp in raw_content.lower():
+                    errors.append(f"[{hf}] Found unverified compiled latency claim: '{bp}'")
 
-        # 6. Image alt attribute check
-        img_tags = re.findall(r'<img([^>]+)>', active_content, flags=re.IGNORECASE)
-        for tag in img_tags:
-            checked_images_alt += 1
-            if not re.search(r'alt=["\']', tag):
-                errors.append(f"[{hf}] Image missing alt attribute: <img{tag}>")
+    print("\nVerified across DOM elements:")
+    print(f"  • {len(html_files)} HTML documents parsed via html.parser")
+    print(f"  • {total_ids} element IDs (all unique per document)")
+    print(f"  • {total_headings} headings checked (strict h1-h6 hierarchy)")
+    print(f"  • {total_images} images verified for accessible alt text")
+    print(f"  • {total_srcs} local source assets confirmed on disk")
+    print(f"  • {total_hrefs} local href and cross-document anchors verified")
+    print("  • All social meta images use absolute https URLs")
+    print("  • All external target='_blank' links have rel='noopener noreferrer'")
+    print("  • Quadruped IK benchmarks purged of unverified compiled claims")
 
-        # 7. External link security check (target="_blank" -> rel="noopener")
-        blank_links = re.findall(r'<a[^>]+target=["\']_blank["\'][^>]*>', active_content, flags=re.IGNORECASE)
-        for bl in blank_links:
-            if not re.search(r'rel=["\'][^"\']*noopener', bl):
-                errors.append(f"[{hf}] External blank link missing rel='noopener': {bl}")
-
-    print(f"Verified:")
-    print(f"  • {checked_srcs} active local src assets")
-    print(f"  • {checked_hrefs} active local href links & targets")
-    print(f"  • {checked_meta_assets} meta/social preview assets & favicons")
-    print(f"  • {checked_headings} headings checked for hierarchy (h1-h6)")
-    print(f"  • {checked_images_alt} image tags checked for accessibility alt text")
-    
     if errors:
         print(f"\nFAILED with {len(errors)} error(s):")
         for err in errors:
             print(f"  - {err}")
         exit(1)
     else:
-        print("\nALL QUALITY, ACCESSIBILITY, LINK, AND ASSET TESTS PASSED!")
+        print("\nALL PORTFOLIO V4.1 PRODUCTION HARDENING TESTS PASSED!")
 
 if __name__ == '__main__':
-    test_links_and_assets()
+    test_portfolio_quality()

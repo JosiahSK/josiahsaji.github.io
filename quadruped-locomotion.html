@@ -9,16 +9,16 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
-  <meta property="og:description" content="Analytical Inverse Kinematics (sub-30 µs Python / sub-10 µs compiled), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
-  <meta property="og:image" content="assets/og-image.png" />
+  <meta property="og:description" content="Analytical Inverse Kinematics (sub-30 µs in Python), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
+  <meta property="og:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
   <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/quadruped-locomotion.html" />
   <meta property="og:type" content="article" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
-  <meta name="twitter:description" content="Analytical Inverse Kinematics (sub-30 µs Python / sub-10 µs compiled), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
-  <meta name="twitter:image" content="assets/og-image.png" />
+  <meta name="twitter:description" content="Analytical Inverse Kinematics (sub-30 µs in Python), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
+  <meta name="twitter:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
 
   <!-- Favicon -->
   <link rel="icon" href="assets/favicon.ico" />
@@ -174,7 +174,7 @@
       <a href="index.html#hero" class="nav-logo">JS<span class="accent">.</span></a>
       <div style="display:flex;align-items:center;gap:16px;">
         <a href="index.html#projects" class="cs-back" style="margin-bottom:0;">← Back to Projects</a>
-        <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener" class="proj-link proj-github" style="font-size:0.75rem;">GitHub Repo ↗</a>
+        <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener noreferrer" class="proj-link proj-github" style="font-size:0.75rem;">GitHub Repo ↗</a>
       </div>
     </div>
   </nav>
@@ -188,7 +188,7 @@
     <div class="cs-badges">
       <span class="cs-badge badge-cyan">ROS 2 Humble</span>
       <span class="cs-badge">12-DOF URDF / Xacro</span>
-      <span class="cs-badge badge-cyan">Analytical IK (sub-30 µs Py / &lt;10 µs C++)</span>
+      <span class="cs-badge badge-cyan">Analytical IK (~25 µs Python)</span>
       <span class="cs-badge">3D Cycloid Gait</span>
       <span class="cs-badge badge-cyan">ros2_control</span>
       <span class="cs-badge">Gazebo Classic 11</span>
@@ -349,7 +349,7 @@
           <span class="decision-badge">quadruped_kinematics</span>
           <div class="decision-title">Closed-Form Analytical IK Solver</div>
           <p class="decision-text">
-            Developed a deterministic, closed-form trigonometric inverse kinematics solver for the 3-DOF leg mechanism (Hip Roll, Thigh Pitch, Knee Pitch). Eliminates the divergence and matrix inversion costs of Jacobian pseudo-inverse algorithms, calculating exact joint positions in <strong>sub-30 µs in Python (sub-10 µs compiled)</strong> with analytical reachability workspace clamping.
+            Developed a deterministic, closed-form trigonometric inverse kinematics solver for the 3-DOF leg mechanism (Hip Roll, Thigh Pitch, Knee Pitch). Eliminates the divergence and matrix inversion costs of Jacobian pseudo-inverse algorithms, calculating exact joint positions in <strong>sub-30 µs in Python (~25–26 µs CPython 3.12 benchmark over 100,000 Cartesian targets)</strong> with analytical reachability workspace clamping.
           </p>
         </div>
 
@@ -471,7 +471,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
             <tr>
               <td><strong>Robot Kinematics</strong></td>
               <td>Custom analytical solver (Python / NumPy)</td>
-              <td>Sub-30µs Cartesian-to-Joint angle transformation (pure Python; sub-10µs compiled)</td>
+              <td>Sub-30 µs Cartesian-to-Joint angle transformation (~25–26 µs CPython 3.12 benchmark)</td>
             </tr>
             <tr>
               <td><strong>Leg Geometry</strong></td>
@@ -502,7 +502,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
           <div class="decision-title">Analytical IK vs. Numerical Jacobian</div>
           <p class="decision-text">
             <strong>Decision:</strong> Closed-form analytical trigonometry.<br>
-            <strong>Rationale:</strong> Numerical solvers (DLS, Levenberg-Marquardt) require iterative loops that consume CPU cycles and risk divergence near workspace boundaries. The closed-form analytical approach guarantees sub-30µs compute time in Python (sub-10µs compiled) with zero numerical divergence.
+            <strong>Rationale:</strong> Numerical solvers (DLS, Levenberg-Marquardt) require iterative loops that consume CPU cycles and risk divergence near workspace boundaries. The closed-form analytical approach guarantees sub-30 µs compute time in Python (~25–26 µs CPython 3.12 benchmark over 100,000 Cartesian targets) with zero numerical divergence.
           </p>
         </div>
 
@@ -563,7 +563,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
       <div style="text-align:center;padding:24px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);">
         <h3 style="font-family:var(--font-head);font-size:1.15rem;color:#fff;margin-bottom:8px;">Inspect Source Code &amp; Launch System</h3>
         <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">Complete ROS 2 workspace containing URDF models, Gazebo worlds, launch scripts, and kinematics packages.</p>
-        <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;">View Repository on GitHub ↗</a>
+        <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-flex;">View Repository on GitHub ↗</a>
       </div>
     </section>
 

@@ -10,7 +10,7 @@
   <!-- Open Graph -->
   <meta property="og:title" content="ROS 2 Jazzy 2WD Mobile Robot &amp; SLAM — Case Study | Josiah Saji" />
   <meta property="og:description" content="Autonomous navigation, SLAM Toolbox mapping, and Gazebo Harmonic simulation on ROS 2 Jazzy &amp; Ubuntu 24.04." />
-  <meta property="og:image" content="assets/og-image.png" />
+  <meta property="og:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
   <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/ros2-mobile-robot.html" />
   <meta property="og:type" content="article" />
 
@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ROS 2 Jazzy 2WD Mobile Robot &amp; SLAM — Case Study | Josiah Saji" />
   <meta name="twitter:description" content="Autonomous navigation, SLAM Toolbox mapping, and Gazebo Harmonic simulation on ROS 2 Jazzy &amp; Ubuntu 24.04." />
-  <meta name="twitter:image" content="assets/og-image.png" />
+  <meta name="twitter:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
 
   <!-- Favicon -->
   <link rel="icon" href="assets/favicon.ico" />
@@ -223,7 +223,7 @@
       <a href="index.html#hero" class="nav-logo">JS<span class="accent">.</span></a>
       <div style="display:flex;align-items:center;gap:16px;">
         <a href="index.html#projects" class="cs-back" style="margin-bottom:0;">← Back to Projects</a>
-        <a href="https://github.com/JosiahSK/ros2_jazzy_2wd_robot" target="_blank" rel="noopener" class="proj-link proj-github" style="font-size:0.75rem;">GitHub Repo ↗</a>
+        <a href="https://github.com/JosiahSK/ros2_jazzy_2wd_robot" target="_blank" rel="noopener noreferrer" class="proj-link proj-github" style="font-size:0.75rem;">GitHub Repo ↗</a>
       </div>
     </div>
   </nav>
@@ -233,7 +233,7 @@
     <a href="index.html#projects" class="cs-back">← Back to Projects</a>
     <span class="cs-tag">// case study · 03</span>
     <h1 class="cs-title">ROS 2 Jazzy 2WD<br><span class="accent-text">Mobile Robot &amp; SLAM</span></h1>
-    <p class="cs-subtitle">A full-stack autonomous mobile robot framework built on Ubuntu 24.04 LTS and ROS 2 Jazzy Jalisco — featuring URDF/Xacro modeling, RPLidar A1 laser scanning, SLAM Toolbox mapping, and Nav2 path planning in Gazebo Harmonic.</p>
+    <p class="cs-subtitle">A modular educational and reference mobile robot architecture built on Ubuntu 24.04 LTS and ROS 2 Jazzy Jalisco — featuring URDF/Xacro modeling, RPLidar A1 driver integration, SLAM Toolbox mapping, and Nav2 navigation in Gazebo Harmonic.</p>
     <div class="cs-badges">
       <span class="cs-badge">ROS 2 Jazzy Jalisco</span>
       <span class="cs-badge badge-purple">Ubuntu 24.04 LTS</span>
@@ -255,31 +255,35 @@
         Deploying autonomous mobile robots requires bridging abstract geometric kinematic models to physical perception and actuation streams. With the transition to <strong>Ubuntu 24.04 LTS</strong> and <strong>ROS 2 Jazzy Jalisco</strong>, major middleware conventions evolved: Ignition was fully superseded by modern <strong>Gazebo Harmonic</strong>, sensor message headers adopted strict microsecond stamping, and velocity command publishers transitioned from unversioned geometry vectors to deterministic <code style="color:var(--accent2);">TwistStamped</code> topics.
       </p>
       <p style="color:var(--text-muted);line-height:1.75;margin-bottom:24px;">
-        <strong>Project Objectives:</strong> Architect a clean, modular, and open-source mobile robot repository that models a 2-wheel differential drive chassis with dual castor stabilizers, interfaces a real 360° RPLidar A1 scanner, constructs real-time 2D occupancy grids via SLAM Toolbox, and executes autonomous waypoint navigation with dynamic obstacle inflation layers in Nav2.
+        <strong>Project Objectives:</strong> Architect a clean, modular, and open-source mobile robot repository that models a 2-wheel differential drive chassis with dual castor stabilizers, interfaces a real 360° RPLidar A1 scanner, configures real-time 2D occupancy grids via SLAM Toolbox, and executes autonomous waypoint navigation with dynamic obstacle inflation layers in Nav2.
       </p>
 
       <div class="metrics-grid">
         <div class="metric-card">
           <span class="metric-val">360° / 8m</span>
-          <span class="metric-label">RPLidar A1 Range</span>
+          <span class="metric-label">RPLidar A1 M8 Spec</span>
         </div>
         <div class="metric-card">
-          <span class="metric-val">5.5–12 Hz</span>
-          <span class="metric-label">LiDAR Scan Frequency</span>
+          <span class="metric-val">5.5–10 Hz</span>
+          <span class="metric-label">Scan Rate (Mfr Spec)</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">0.05 m</span>
-          <span class="metric-label">Grid Map Resolution</span>
+          <span class="metric-label">Configured Map Resolution</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">0.5 m/s</span>
-          <span class="metric-label">Top Linear Velocity</span>
+          <span class="metric-label">Max Linear Vel Limit</span>
         </div>
       </div>
 
       <div class="verification-status-box">
-        <h3>Verification Status: Simulation-Validated (SLAM &amp; Nav2)</h3>
-        <p>This system is validated across indoor maze and office environments inside <strong>Gazebo Harmonic</strong> and <strong>RViz2</strong> on Ubuntu 24.04 LTS. URDF coordinate frames, joint state publishers, diff-drive plugins, and laser scan pipelines are verified with zero TF tree discontinuities (<code style="color:var(--accent3);">map → odom → base_footprint → base_link → laser_frame</code>).</p>
+        <h3>Implementation &amp; Validation Status: Configured &amp; Simulation-Modeled</h3>
+        <p><strong>Evidence Categorization:</strong><br>
+        • <strong>Implemented in Code:</strong> Full 2WD + dual castor URDF/Xacro kinematic chain, Gazebo Harmonic simulation launch pipeline (<code style="color:var(--accent2);">gazebo.launch.py</code>), and unified system bringup (<code style="color:var(--accent2);">robot_bringup.launch.py</code>).<br>
+        • <strong>Configured &amp; Parameterized:</strong> SLAM Toolbox online asynchronous mapping (<code style="color:var(--accent2);">mapper_params_online_async.yaml</code>) and Nav2 controller parameters.<br>
+        • <strong>Simulation-Modeled:</strong> Spawning, kinematic motion, and LiDAR raycasting verified inside Gazebo Harmonic (<code style="color:var(--accent2);">simple_room.world</code>) with RViz2 visualization.<br>
+        • <strong>Hardware Driver Integration:</strong> Slamtec RPLidar A1 M8 driver (<code style="color:var(--accent2);">rplidar_ros</code>) integrated for physical deployment via USB-UART serial (<code style="color:var(--accent2);">/dev/ttyUSB0</code> at 115200 baud). Physical field mapping logs and runtime traces are documented separately.</p>
       </div>
     </section>
 
@@ -412,8 +416,8 @@
             </tr>
             <tr>
               <td><strong>Perception Sensor</strong></td>
-              <td>Slamtec RPLidar A1 M8</td>
-              <td>360° FOV · 8.0 m Range · 12 Hz Scan Rate</td>
+              <td>Slamtec RPLidar A1 M8 (Spec)</td>
+              <td>360° FOV · 0.15–8.0 m Range · 5.5–10 Hz Scan Rate</td>
               <td>Laser scan streaming for SLAM and local costmap</td>
             </tr>
             <tr>
@@ -442,7 +446,7 @@
       </p>
 
       <div class="code-snippet">
-<span class="code-comment">&lt;!-- Excerpt from: 02_robot_description/urdf/robot_core.xacro --&gt;</span>
+<span class="code-comment">&lt;!-- Excerpt from: 02_robot_description/urdf/robot_base.xacro --&gt;</span>
 &lt;<span class="code-kw">link</span> <span class="code-fn">name</span>=<span class="code-str">"base_link"</span>&gt;
   &lt;<span class="code-kw">visual</span>&gt;
     &lt;<span class="code-kw">origin</span> <span class="code-fn">xyz</span>=<span class="code-str">"0.15 0 0.04"</span> <span class="code-fn">rpy</span>=<span class="code-str">"0 0 0"</span>/&gt;
@@ -563,7 +567,7 @@ omega_right = (v_x + (omega_z * L / 2.0)) / r
       <div style="text-align:center;padding:24px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);">
         <h3 style="font-family:var(--font-head);font-size:1.15rem;color:#fff;margin-bottom:8px;">Inspect Complete Course &amp; Code Repository</h3>
         <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">Comprehensive open-source repository containing URDF models, automated setup scripts, SLAM launch files, and RViz configurations.</p>
-        <a href="https://github.com/JosiahSK/ros2_jazzy_2wd_robot" target="_blank" rel="noopener" class="btn btn-primary" style="display:inline-flex;">View Repository on GitHub ↗</a>
+        <a href="https://github.com/JosiahSK/ros2_jazzy_2wd_robot" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-flex;">View Repository on GitHub ↗</a>
       </div>
     </section>
 

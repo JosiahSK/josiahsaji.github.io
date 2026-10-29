@@ -180,8 +180,8 @@ def generate_resume_pdf():
       <span class="item-date">ROS 2 Humble · C++ / Python · Gazebo</span>
     </div>
     <ul>
-      <li>Engineered closed-form analytical 3-DOF leg kinematics achieving <strong>sub-30 µs solve time</strong> in Python (sub-10 µs compiled) with zero iterative numerical divergence.</li>
-      <li>Implemented parametric 3D cycloid foot trajectory generator guaranteeing <strong>C¹ velocity continuity</strong> and zero impact shock at ground touchdown.</li>
+      <li>Engineered closed-form analytical 3-DOF leg kinematics achieving <strong>sub-30 µs solve time</strong> in Python (~25–26 µs CPython 3.12 benchmark) with zero iterative numerical divergence.</li>
+      <li>Implemented parametric 3D cycloid foot trajectory generator guaranteeing <strong>C¹ velocity continuity</strong> and zero horizontal/vertical velocity boundary conditions at touchdown.</li>
       <li>Validated multi-gait sequencing (Trot, Walk, Crawl, Bound) and IMU active roll/pitch balance loop at 100 Hz in Gazebo.</li>
     </ul>
   </div>
@@ -204,9 +204,9 @@ def generate_resume_pdf():
       <span class="item-date">ROS 2 Jazzy · Ubuntu 24.04 · Gazebo Harmonic · Nav2</span>
     </div>
     <ul>
-      <li>Developed complete open-source navigation stack for 2WD + dual-castor chassis with RPLidar A1 (360°, 8m range).</li>
-      <li>Configured SLAM Toolbox 2D occupancy mapping, Nav2 dynamic costmaps, and global/local trajectory planner.</li>
-      <li>Authored multi-module modular curriculum covering URDF/Xacro, TF2 trees, RViz2, and automated bash installation.</li>
+      <li>Developed modular navigation framework for 2WD + dual-castor chassis with RPLidar A1 M8 (360° FOV, 8m range, 5.5–10 Hz).</li>
+      <li>Configured SLAM Toolbox 2D occupancy mapping, Nav2 dynamic costmaps, and global/local path planning in Gazebo Harmonic.</li>
+      <li>Authored multi-module curriculum covering URDF/Xacro, TF2 trees, RViz2, and automated bash installation.</li>
     </ul>
   </div>
 
