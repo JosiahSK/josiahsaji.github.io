@@ -369,8 +369,8 @@ try {
 
 
 // ---- CONTACT FORM (Formspree) ------------------------------------------
-// PLACEHOLDER: create a free form at formspree.io, then replace YOUR_FORM_ID
-// in the <form action="..."> attribute in index.html.
+// To activate: set data-form-id="xyzabc" on the <form id="contactForm"> element.
+// Get a free form ID at formspree.io → New Form.
 try {
   (function initForm() {
     var form = document.getElementById('contactForm');
@@ -378,19 +378,71 @@ try {
     var btn  = document.getElementById('formSubmit');
     if (!form) return;
 
+    var formId = form.getAttribute('data-form-id') || '';
+    var formConfigured = formId && formId.length > 4;
+
+    if (!formConfigured) {
+      // Show a graceful setup state — form is visible but submitting directs to email
+      if (btn) {
+        btn.textContent = 'Send via Email →';
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var name    = (document.getElementById('formName')    || {}).value || '';
+          var subject = (document.getElementById('formSubject') || {}).value || 'Portfolio contact';
+          var message = (document.getElementById('formMessage') || {}).value || '';
+          var mailto  = 'mailto:josiahsaji2k03@gmail.com'
+            + '?subject=' + encodeURIComponent(subject || 'Portfolio contact from ' + name)
+            + '&body='    + encodeURIComponent(message);
+          window.location.href = mailto;
+        });
+      }
+      if (note) {
+        note.textContent = 'Or email me directly: josiahsaji2k03@gmail.com';
+        note.style.color = 'var(--text-dim)';
+      }
+      return;
+    }
+
+    var submitted = false;
+
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      if (submitted) return; // prevent double-submit
+
+      // Client-side validation
+      var name    = (document.getElementById('formName')    || {}).value || '';
+      var email   = (document.getElementById('formEmail')   || {}).value || '';
+      var message = (document.getElementById('formMessage') || {}).value || '';
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!name.trim()) {
+        if (note) { note.textContent = 'Please enter your name.'; note.style.color = '#ef4444'; }
+        document.getElementById('formName').focus();
+        return;
+      }
+      if (!emailRe.test(email.trim())) {
+        if (note) { note.textContent = 'Please enter a valid email address.'; note.style.color = '#ef4444'; }
+        document.getElementById('formEmail').focus();
+        return;
+      }
+      if (!message.trim()) {
+        if (note) { note.textContent = 'Please enter a message.'; note.style.color = '#ef4444'; }
+        document.getElementById('formMessage').focus();
+        return;
+      }
+
       btn.textContent = 'Sending\u2026';
       btn.disabled = true;
       if (note) { note.textContent = ''; note.style.color = ''; }
 
-      fetch(form.action, {
+      fetch('https://formspree.io/f/' + formId, {
         method: 'POST',
         body: new FormData(form),
         headers: { 'Accept': 'application/json' }
       })
       .then(function(res) {
         if (res.ok) {
+          submitted = true;
           if (note) { note.textContent = '\u2713 Message sent! I will get back to you soon.'; note.style.color = '#22c55e'; }
           form.reset();
         } else {
@@ -401,13 +453,15 @@ try {
       })
       .catch(function(err) {
         if (note) {
-          note.textContent = 'Oops \u2014 ' + err.message + ' Try emailing me directly.';
+          note.textContent = 'Could not send \u2014 ' + err.message + ' Try emailing me directly at josiahsaji2k03@gmail.com';
           note.style.color = '#ef4444';
         }
       })
       ['finally'](function() {
-        btn.textContent = 'Send Message \u2192';
-        btn.disabled = false;
+        if (!submitted) {
+          btn.textContent = 'Send Message \u2192';
+          btn.disabled = false;
+        }
       });
     });
   })();
@@ -503,4 +557,43 @@ try {
   var s = document.createElement('style');
   s.textContent = '.nav-links a.active{color:#fff!important}.nav-links a.active::after{transform:scaleX(1)!important}';
   document.head.appendChild(s);
+} catch(e) {}
+
+
+// ---- RESUME AVAILABILITY CHECK -----------------------------------------
+// Shows resume download buttons only if the PDF actually exists (avoids 404 downloads).
+try {
+  (function checkResume() {
+    var resumePath = 'assets/resume/resume.pdf';
+    fetch(resumePath, { method: 'HEAD' })
+      .then(function(res) {
+        if (res.ok) {
+          var ids = ['heroResume', 'navResumeBtn', 'mobileResumeBtn'];
+          ids.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.style.display = '';
+          });
+        }
+        // If 404, buttons stay hidden — no broken download link presented to visitor
+      })
+      .catch(function() { /* network error: leave buttons hidden */ });
+  })();
+} catch(e) {}
+
+
+// ---- REDUCED MOTION SUPPORT --------------------------------------------
+// Disable non-essential animations for users who prefer reduced motion.
+try {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var rm = document.createElement('style');
+    rm.textContent = [
+      '.reveal { transition: none !important; opacity: 1 !important; transform: none !important; }',
+      '.reveal.visible { transition: none !important; }',
+      '.avatar-ring { animation: none !important; }',
+      '.badge-dot { animation: none !important; }',
+      '.scroll-line { animation: none !important; }',
+      '#heroCanvas { display: none !important; }',
+    ].join('');
+    document.head.appendChild(rm);
+  }
 } catch(e) {}

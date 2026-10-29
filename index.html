@@ -43,8 +43,8 @@
         <li><a href="#experience">Experience</a></li>
         <li><a href="#media">Media</a></li>
         <li><a href="#contact">Contact</a></li>
-        <!-- PLACEHOLDER: upload resume PDF to assets/resume/resume.pdf -->
-        <li><a href="assets/resume/resume.pdf" class="nav-resume-btn" id="navResumeBtn" download>&#x2193;&nbsp;Resume</a></li>
+        <!-- Resume button: shown by JS if assets/resume/resume.pdf is present -->
+        <li><a href="assets/resume/resume.pdf" class="nav-resume-btn" id="navResumeBtn" download style="display:none">&#x2193;&nbsp;Resume</a></li>
       </ul>
       <button class="hamburger" id="hamburger" aria-label="Open menu">
         <span></span><span></span><span></span>
@@ -57,8 +57,8 @@
       <a href="#experience" class="mobile-link">Experience</a>
       <a href="#media" class="mobile-link">Media</a>
       <a href="#contact" class="mobile-link">Contact</a>
-      <!-- PLACEHOLDER: upload resume PDF to assets/resume/resume.pdf -->
-      <a href="assets/resume/resume.pdf" class="mobile-link" id="mobileResumeBtn" download>&#x2193; Download Resume</a>
+      <!-- Resume link: shown by JS if assets/resume/resume.pdf is present -->
+      <a href="assets/resume/resume.pdf" class="mobile-link" id="mobileResumeBtn" download style="display:none">&#x2193; Download Resume</a>
     </div>
   </nav>
 
@@ -71,20 +71,20 @@
         Available for Opportunities
       </div>
       <h1 class="hero-name">Josiah <span class="accent-text">Saji</span></h1>
-      <p class="hero-title">Robotics Engineer &nbsp;|&nbsp; ROS2 Developer &nbsp;|&nbsp; Embedded Systems Enthusiast</p>
-      <p class="hero-tagline">"Building intelligent machines that interact with the real world."</p>
+      <p class="hero-title">Robotics Engineer &nbsp;|&nbsp; ROS 2 &nbsp;|&nbsp; Embedded Systems &nbsp;|&nbsp; Autonomous Robots</p>
+      <p class="hero-tagline">"Building autonomous systems that interact reliably with the real world."</p>
       <div class="hero-cta">
         <a href="#projects" class="btn btn-primary" id="heroViewProjects">View Projects</a>
         <a href="#contact" class="btn btn-outline" id="heroContact">Contact Me</a>
-        <!-- PLACEHOLDER: upload resume PDF to assets/resume/resume.pdf -->
-        <a href="assets/resume/resume.pdf" class="btn btn-resume" id="heroResume" download>&#x2193; Resume</a>
+        <!-- Resume button: shown by JS only if the file resolves (404-checked at runtime) -->
+        <a href="assets/resume/resume.pdf" class="btn btn-resume" id="heroResume" download style="display:none">&#x2193; Resume</a>
       </div>
       <div class="hero-stats">
+        <div class="stat"><span class="stat-num">ROS 2</span><span class="stat-label">Jazzy &amp; Humble</span></div>
+        <div class="stat-divider"></div>
         <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Major Projects</span></div>
         <div class="stat-divider"></div>
-        <div class="stat"><span class="stat-num">ROS2</span><span class="stat-label">Jazzy Expert</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat"><span class="stat-num">Kerala</span><span class="stat-label">India</span></div>
+        <div class="stat"><span class="stat-num">Evolve</span><span class="stat-label">Robotics</span></div>
       </div>
     </div>
     <div class="hero-scroll-hint">
@@ -129,10 +129,10 @@
           </div>
         </div>
         <div class="about-text reveal">
-          <p class="about-lead">Final-year committee member &amp; Secretary of the Robotics Society at <strong>Saintgits College</strong>, Kerala.</p>
-          <p>I specialize in <strong>ROS2</strong>, <strong>embedded systems</strong>, and <strong>autonomous robotics</strong> — turning ideas into machines that operate in real environments. My work spans hardware-software integration, sensor fusion, and power system design.</p>
-          <p>My current research interests include autonomous navigation, agricultural robotics, and intelligent sensing. I'm passionate about building systems that solve genuine problems — not just proof-of-concept demos.</p>
-          <p>Beyond engineering, I lead technical workshops, coordinate with industry professionals, and mentor peers in robotics fundamentals and ROS2 development.</p>
+          <p class="about-lead">Robotics Engineer at <strong>Evolve Robotics</strong>, graduated B.Tech in Robotics &amp; Automation from <strong>Saintgits College of Engineering</strong>, Kerala (2025).</p>
+          <p>I specialize in <strong>ROS 2</strong>, <strong>embedded systems</strong>, and <strong>autonomous robotics</strong> — turning ideas into machines that operate in real environments. My work spans hardware-software integration, sensor fusion, mobile robot navigation, and manipulation.</p>
+          <p>I have built and deployed robots ranging from ESP32-powered differential-drive cars with micro-ROS to full SLAM-capable mobile robots and a 12-DOF quadruped locomotion framework in simulation. I care about the engineering rigor behind systems that have to work in the real world.</p>
+          <p>Beyond engineering, I have led technical workshops in ROS 2 and embedded systems, served as Secretary of the college Robotics Society, and coordinated with industry professionals to deliver hands-on training.</p>
           <div class="about-highlights">
             <div class="highlight-item">
               <span class="highlight-icon">📍</span>
@@ -140,11 +140,11 @@
             </div>
             <div class="highlight-item">
               <span class="highlight-icon">🎓</span>
-              <span>Saintgits College of Engineering</span>
+              <span>Saintgits College of Engineering — B.Tech Robotics &amp; Automation, 2025</span>
             </div>
             <div class="highlight-item">
-              <span class="highlight-icon">🏛</span>
-              <span>Secretary – Robotics Society</span>
+              <span class="highlight-icon">🏢</span>
+              <span>Robotics Engineer · Evolve Robotics (Jan 2026–present)</span>
             </div>
           </div>
         </div>
@@ -236,8 +236,7 @@
             <div class="project-footer">
               <span class="project-badge">YIP 7.0 Submission</span>
               <div class="project-links">
-                <!-- PLACEHOLDER: replace REPLACE-ME-tilling-robot with the real GitHub repo name -->
-                <a href="https://github.com/JosiahSK/REPLACE-ME-tilling-robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubTilling">
+                <a href="https://github.com/JosiahSK/autonomous-tilling-robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubTilling">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                   View on GitHub
                 </a>
@@ -323,8 +322,7 @@
             <div class="project-footer">
               <span class="project-badge">Legged Locomotion</span>
               <div class="project-links">
-                <!-- PLACEHOLDER: replace REPLACE-ME-quadruped-robot with the real GitHub repo name -->
-                <a href="https://github.com/JosiahSK/REPLACE-ME-quadruped-robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubQuadruped">
+                <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" class="proj-link proj-github" target="_blank" rel="noopener" id="githubQuadruped">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                   View on GitHub
                 </a>
@@ -409,8 +407,7 @@
             <div class="project-footer">
               <span class="project-badge">Autonomous Navigation</span>
               <div class="project-links">
-                <!-- PLACEHOLDER: replace REPLACE-ME-ros2-systems with the real GitHub repo name -->
-                <a href="https://github.com/JosiahSK/REPLACE-ME-ros2-systems" class="proj-link proj-github" target="_blank" rel="noopener" id="githubRos2">
+                <a href="https://github.com/JosiahSK/ros2_jazzy_2wd_robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubRos2">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                   View on GitHub
                 </a>
@@ -495,8 +492,7 @@
             <div class="project-footer">
               <span class="project-badge">Hardware + Software</span>
               <div class="project-links">
-                <!-- PLACEHOLDER: replace REPLACE-ME-embedded-systems with the real GitHub repo name -->
-                <a href="https://github.com/JosiahSK/REPLACE-ME-embedded-systems" class="proj-link proj-github" target="_blank" rel="noopener" id="githubEmbedded">
+                <a href="https://github.com/JosiahSK/esp32-microros-2wd-car" class="proj-link proj-github" target="_blank" rel="noopener" id="githubEmbedded">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                   View on GitHub
                 </a>
@@ -616,6 +612,20 @@
         <h2 class="section-title">Experience &amp; Leadership</h2>
       </div>
       <div class="timeline">
+
+        <div class="timeline-item reveal" id="exp-evolve">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <span class="timeline-role">Robotics Engineer</span>
+              <span class="timeline-org">Evolve Robotics — Jan 2026–present</span>
+            </div>
+            <p class="timeline-desc">Working on robotics software development at Evolve Robotics. Applying expertise in ROS 2, embedded systems, and autonomous robot design to real-world engineering challenges.</p>
+            <div class="timeline-tags">
+              <span>ROS 2</span><span>Embedded Systems</span><span>Autonomous Robotics</span>
+            </div>
+          </div>
+        </div>
 
         <div class="timeline-item reveal" id="exp-secretary">
           <div class="timeline-dot"></div>
@@ -748,30 +758,29 @@
           </div>
           <p class="contact-location">📍 Kerala, India</p>
         </div>
-        <!-- PLACEHOLDER: Create account at formspree.io → New Form → copy form ID → replace YOUR_FORM_ID below -->
+        <!-- NOTE: To enable this form, create a free account at formspree.io → New Form → copy your form ID → set data-form-id below -->
         <form class="contact-form reveal" id="contactForm"
-              action="https://formspree.io/f/YOUR_FORM_ID"
-              method="POST"
+              data-form-id=""
               novalidate>
           <input type="hidden" name="_subject" value="Portfolio Contact — Josiah Saji" />
           <div class="form-group">
             <label for="formName">Name</label>
-            <input type="text" id="formName" name="name" placeholder="Your name" required />
+            <input type="text" id="formName" name="name" placeholder="Your name" required autocomplete="name" />
           </div>
           <div class="form-group">
             <label for="formEmail">Email</label>
-            <input type="email" id="formEmail" name="email" placeholder="your@email.com" required />
+            <input type="email" id="formEmail" name="email" placeholder="your@email.com" required autocomplete="email" />
           </div>
           <div class="form-group">
             <label for="formSubject">Subject</label>
-            <input type="text" id="formSubject" name="subject" placeholder="What's this about?" />
+            <input type="text" id="formSubject" name="subject" placeholder="What's this about?" autocomplete="off" />
           </div>
           <div class="form-group">
             <label for="formMessage">Message</label>
             <textarea id="formMessage" name="message" rows="5" placeholder="Tell me about your project or opportunity..." required></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-full" id="formSubmit">Send Message →</button>
-          <p class="form-note" id="formNote"></p>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>
@@ -781,7 +790,7 @@
   <footer id="footer">
     <div class="container">
       <p class="footer-text">Built by <span class="accent">Josiah Saji</span> &nbsp;·&nbsp; Robotics Engineer &amp; Embedded Systems Developer</p>
-      <p class="footer-sub">Kerala, India &nbsp;·&nbsp; 2025</p>
+      <p class="footer-sub">Kerala, India &nbsp;·&nbsp; 2026</p>
     </div>
   </footer>
 

@@ -733,3 +733,49 @@ span.skill-pill { cursor: default; }
   .project-footer { flex-direction: column; align-items: flex-start; }
   .hero-cta { flex-direction: column; align-items: center; }
 }
+
+/* ===== FOCUS STATES (Accessibility) ===== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ===== HERO CANVAS ===== */
+/* Canvas is fixed so it renders over other sections while scrolling.
+   Setting pointer-events:none (already done) prevents interaction issues.
+   The canvas is correctly z-index:-1 relative to the hero. */
+#hero { isolation: isolate; }
+
+/* ===== TIMELINE — current job entry accent ===== */
+#exp-evolve .timeline-dot {
+  background: var(--accent2);
+  box-shadow: 0 0 12px var(--glow2);
+}
+#exp-evolve .timeline-role { color: var(--accent2); }
+
+/* ===== ABOUT — longer highlight text wraps cleanly ===== */
+.highlight-item span { line-height: 1.4; }
+
+/* ===== REDUCED MOTION: stop animations for accessibility ===== */
+@media (prefers-reduced-motion: reduce) {
+  .avatar-ring, .badge-dot, .scroll-line { animation: none !important; }
+  .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
+  .btn:hover, .project-card:hover, .skill-pill:hover, .tag:hover, .goal-item:hover {
+    transform: none !important;
+  }
+}
+
+/* ===== SMALL MOBILE FIXES (< 480px) ===== */
+@media(max-width: 480px) {
+  .skills-pill-grid { grid-template-columns: 1fr; }
+  .timeline { padding-left: 20px; }
+  .timeline-dot { left: -28px; }
+  .container { padding: 0 16px; }
+  .hero-stats { flex-direction: column; gap: 12px; align-items: center; }
+  .stat-divider { display: none; }
+}
