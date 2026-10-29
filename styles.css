@@ -12,7 +12,7 @@
   --accent3: #a78bfa;
   --text: #e2e8f0;
   --text-muted: #8b9ab0;
-  --text-dim: #4b5563;
+  --text-dim: #94a3b8;
   --glow: rgba(124,58,237,0.35);
   --glow2: rgba(6,182,212,0.25);
   --font-main: 'Inter', sans-serif;
@@ -23,6 +23,29 @@
 }
 
 html { scroll-behavior: smooth; }
+
+/* Skip Link for Accessibility */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 20px;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  z-index: 9999;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 16px;
+}
+
+code, pre {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
 
 body {
   background: var(--bg);
@@ -252,13 +275,12 @@ img { max-width: 100%; }
 }
 .about-avatar { position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; }
 .avatar-ring {
-  position: absolute; border-radius: 50%; border: 1px solid var(--border);
-  animation: spin linear infinite;
+  position: absolute; border-radius: 50%;
+  pointer-events: none;
 }
-.ring-1 { width: 180px; height: 180px; animation-duration: 12s; border-color: rgba(124,58,237,0.4); }
-.ring-2 { width: 140px; height: 140px; animation-duration: 8s; animation-direction: reverse; border-color: rgba(6,182,212,0.3); }
-.ring-3 { width: 100px; height: 100px; animation-duration: 6s; border-color: rgba(167,139,250,0.3); }
-@keyframes spin { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+.ring-1 { width: 180px; height: 180px; border: 1px dashed rgba(124,58,237,0.35); }
+.ring-2 { width: 144px; height: 144px; border: 1px solid rgba(6,182,212,0.25); }
+.ring-3 { width: 110px; height: 110px; border: 1px solid rgba(167,139,250,0.2); }
 .avatar-core {
   width: 80px; height: 80px; border-radius: 50%;
   background: var(--surface2);
@@ -294,14 +316,14 @@ img { max-width: 100%; }
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 .project-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(124,58,237,0.5);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px var(--glow);
+  transform: translateY(-4px);
+  border-color: rgba(6,182,212,0.4);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.35);
 }
 .project-card:hover .project-glow { opacity: 1; }
 .project-glow {
   position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.12), transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(6,182,212,0.06), transparent 70%);
   opacity: 0; transition: opacity var(--transition); pointer-events: none;
 }
 .project-card-inner { padding: 28px; position: relative; z-index: 1; }
@@ -736,11 +758,11 @@ span.skill-pill { cursor: default; }
 
 /* ===== FOCUS STATES (Accessibility) ===== */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent3);
   outline-offset: 3px;
 }
 a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent3);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -761,8 +783,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* ===== ABOUT — longer highlight text wraps cleanly ===== */
 .highlight-item span { line-height: 1.4; }
 
+/* ===== CASE STUDY NAV RESPONSIVE ===== */
+.cs-nav-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; flex-wrap: wrap; gap: 8px;
+}
+
 /* ===== REDUCED MOTION: stop animations for accessibility ===== */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
   .avatar-ring, .badge-dot, .scroll-line { animation: none !important; }
   .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
   .btn:hover, .project-card:hover, .skill-pill:hover, .tag:hover, .goal-item:hover {

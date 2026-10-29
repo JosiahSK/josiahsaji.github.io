@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji</title>
   <meta name="description" content="Technical case study: 12-DOF Quadruped Robot Locomotion Framework in ROS 2 Humble — analytical inverse kinematics, 3D cycloid trajectory generation, and Gazebo dynamic simulation." />
+  <link rel="canonical" href="https://josiahsk.github.io/josiahsaji.github.io/quadruped-locomotion.html" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
@@ -168,11 +169,13 @@
 <body>
 
   <!-- MINIMAL NAV -->
-  <nav id="navbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(8,11,18,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(124,58,237,0.18);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;">
-    <a href="index.html#hero" style="font-family:'Poppins',sans-serif;font-weight:800;font-size:1.4rem;color:#e2e8f0;">JS<span style="color:#7c3aed;">.</span></a>
-    <div style="display:flex;align-items:center;gap:16px;">
-      <a href="index.html#projects" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:#06b6d4;display:flex;align-items:center;gap:6px;">← Back to Projects</a>
-      <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener" class="proj-link proj-github" style="font-size:0.75rem;">GitHub Repo ↗</a>
+  <nav id="navbar">
+    <div class="cs-nav-inner">
+      <a href="index.html#hero" class="nav-logo">JS<span class="accent">.</span></a>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <a href="index.html#projects" class="cs-back" style="margin-bottom:0;">← Back to Projects</a>
+        <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener" class="proj-link proj-github" style="font-size:0.75rem;">GitHub Repo ↗</a>
+      </div>
     </div>
   </nav>
 
@@ -185,7 +188,7 @@
     <div class="cs-badges">
       <span class="cs-badge badge-cyan">ROS 2 Humble</span>
       <span class="cs-badge">12-DOF URDF / Xacro</span>
-      <span class="cs-badge badge-cyan">Analytical IK (&lt;10µs)</span>
+      <span class="cs-badge badge-cyan">Analytical IK (sub-30 µs Py / &lt;10 µs C++)</span>
       <span class="cs-badge">3D Cycloid Gait</span>
       <span class="cs-badge badge-cyan">ros2_control</span>
       <span class="cs-badge">Gazebo Classic 11</span>
@@ -212,8 +215,8 @@
           <span class="metric-label">3 Revolute Joints / Leg</span>
         </div>
         <div class="metric-card">
-          <span class="metric-val">&lt; 10 µs</span>
-          <span class="metric-label">IK Compute Latency</span>
+          <span class="metric-val">&lt; 30 µs</span>
+          <span class="metric-label">IK Latency (CPython 3.12)</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">100 Hz</span>
@@ -226,7 +229,7 @@
       </div>
 
       <div class="verification-status-box">
-        <h4>Verification Status: Simulation-Validated</h4>
+        <h3 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.95rem;margin-bottom:8px;">Verification Status: Simulation-Validated</h3>
         <p>This framework is fully implemented and validated in <strong>Gazebo Classic 11.10 (ODE physics)</strong> and <strong>RViz2</strong> on Ubuntu 22.04 LTS. Hardware deployment architecture is pre-configured via the <code style="color:var(--accent3);">ros2_control</code> C++ Hardware Interface abstraction layer, ready for physical motor drivers.</p>
       </div>
     </section>
@@ -395,7 +398,7 @@
     <span class="code-comment"># 1. Decouple Hip Roll Angle (theta_hip)</span>
     l_yz = math.sqrt(y**<span class="code-num">2</span> + z**<span class="code-num">2</span>)
     <span class="code-kw">if</span> l_yz &lt; self.l1:
-        <span class="code-kw">raise</span> ValueError(<span class="code-str">"Target position mathematically unreachable inside hip sphere"</span>)
+        <span class="code-kw">return</span> <span class="code-kw">None</span>  <span class="code-comment"># Target unreachable inside hip sphere</span>
 
     d = math.sqrt(l_yz**<span class="code-num">2</span> - self.l1**<span class="code-num">2</span>)
     theta_hip = math.atan2(y, -z) - math.atan2(self.l1, d)
@@ -540,7 +543,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
       <h2 class="cs-section-title">Known Limitations &amp; Future Engineering Steps</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:28px;">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;">
-          <h4 style="color:#f87171;font-family:var(--font-mono);font-size:0.85rem;margin-bottom:10px;">CURRENT LIMITATIONS</h4>
+          <h3 style="color:#f87171;font-family:var(--font-mono);font-size:0.85rem;margin-bottom:10px;text-transform:uppercase;">Current Limitations</h3>
           <ul style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;padding-left:18px;">
             <li>Open-loop swing trajectory lacks ground reaction force (GRF) foot contact switches.</li>
             <li>Attitude balancing relies on kinematic IMU tilt compensation rather than full Model Predictive Control (MPC).</li>
@@ -548,7 +551,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
           </ul>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;">
-          <h4 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.85rem;margin-bottom:10px;">FUTURE IMPROVEMENTS</h4>
+          <h3 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.85rem;margin-bottom:10px;text-transform:uppercase;">Future Improvements</h3>
           <ul style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;padding-left:18px;">
             <li>Implement Convex MPC + Whole-Body Impulse Control (WBC) for active push recovery.</li>
             <li>Integrate foot contact pressure sensors or motor back-EMF current estimation.</li>

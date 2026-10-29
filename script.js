@@ -7,6 +7,7 @@ try {
   (function initCanvas() {
     var canvas = document.getElementById('heroCanvas');
     if (!canvas) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var ctx = canvas.getContext('2d');
 
     // ── dimensions ──────────────────────────────────────────────────────
@@ -280,6 +281,9 @@ try {
     var mobileMenu = document.getElementById('mobileMenu');
     if (!navbar || !hamburger || !mobileMenu) return;
 
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-controls', 'mobileMenu');
+
     window.addEventListener('scroll', function() {
       if (window.scrollY > 50) {
         navbar.style.background = 'rgba(8,11,18,0.95)';
@@ -291,13 +295,22 @@ try {
     });
 
     hamburger.addEventListener('click', function() {
-      mobileMenu.classList.toggle('open');
+      var isOpen = mobileMenu.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+        mobileMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
     });
 
     var mobileLinks = document.querySelectorAll('.mobile-link');
     for (var i = 0; i < mobileLinks.length; i++) {
       mobileLinks[i].addEventListener('click', function() {
         mobileMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
       });
     }
 
@@ -565,23 +578,8 @@ try {
 } catch(e) {}
 
 
-// ---- TILT ON PROJECT CARDS (desktop only) ------------------------------
-try {
-  if (window.matchMedia('(hover: hover)').matches) {
-    var cards = document.querySelectorAll('.project-card');
-    for (var i = 0; i < cards.length; i++) {
-      (function(card) {
-        card.addEventListener('mousemove', function(e) {
-          var rect = card.getBoundingClientRect();
-          var rotX = (((e.clientY - rect.top) / rect.height) - 0.5) * -10;
-          var rotY = (((e.clientX - rect.left) / rect.width) - 0.5) * 10;
-          card.style.transform = 'translateY(-8px) perspective(600px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
-        });
-        card.addEventListener('mouseleave', function() { card.style.transform = ''; });
-      })(cards[i]);
-    }
-  }
-} catch(e) {}
+// ---- PROJECT CARDS (clean industrial hover handled via CSS) -----------
+
 
 
 // ---- NAV ACTIVE STYLE --------------------------------------------------

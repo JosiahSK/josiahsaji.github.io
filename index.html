@@ -3,27 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Josiah Saji — Robotics &amp; ROS2 Engineer</title>
-  <meta name="description" content="Portfolio of Josiah Saji — Robotics Engineer, ROS2 Developer, and Embedded Systems Enthusiast based in Kerala, India." />
+  <title>Josiah Saji — Robotics &amp; ROS 2 Engineer</title>
+  <meta name="description" content="Portfolio of Josiah Saji — Robotics Engineer, ROS 2 Developer, and Embedded Systems Enthusiast based in Kerala, India." />
+  <link rel="canonical" href="https://josiahsk.github.io/josiahsaji.github.io/" />
 
   <!-- Open Graph / Social Previews -->
-  <meta property="og:title" content="Josiah Saji — Robotics &amp; ROS2 Engineer" />
-  <meta property="og:description" content="Robotics Engineer specialising in ROS2, autonomous navigation, and embedded systems. Based in Kerala, India." />
-  <!-- PLACEHOLDER: replace assets/og-image.png with a real 1200×630 image -->
+  <meta property="og:title" content="Josiah Saji — Robotics &amp; ROS 2 Engineer" />
+  <meta property="og:description" content="Robotics Engineer specialising in ROS 2, autonomous navigation, and embedded systems. Based in Kerala, India." />
   <meta property="og:image" content="assets/og-image.png" />
   <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/" />
   <meta property="og:type" content="website" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Josiah Saji — Robotics &amp; ROS2 Engineer" />
-  <meta name="twitter:description" content="Robotics Engineer specialising in ROS2, autonomous navigation, and embedded systems." />
-  <!-- PLACEHOLDER: replace assets/og-image.png with a real 1200×630 image -->
+  <meta name="twitter:title" content="Josiah Saji — Robotics &amp; ROS 2 Engineer" />
+  <meta name="twitter:description" content="Robotics Engineer specialising in ROS 2, autonomous navigation, and embedded systems." />
   <meta name="twitter:image" content="assets/og-image.png" />
 
   <!-- Favicon -->
-  <!-- PLACEHOLDER: replace assets/favicon.ico with your real favicon -->
   <link rel="icon" href="assets/favicon.ico" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Josiah Saji",
+    "jobTitle": "Robotics Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Evolve Robotics"
+    },
+    "alumniOf": {
+      "@type": "EducationalOrganization",
+      "name": "Saintgits College of Engineering"
+    },
+    "url": "https://josiahsk.github.io/josiahsaji.github.io/",
+    "sameAs": [
+      "https://github.com/JosiahSK",
+      "https://linkedin.com/in/josiah-saji-aa5080232/"
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,6 +52,9 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+  <!-- Skip Link for Accessibility -->
+  <a href="#main" class="skip-link">Skip to main content</a>
 
   <!-- NAV -->
   <nav id="navbar">
@@ -43,8 +67,7 @@
         <li><a href="#experience">Experience</a></li>
         <li><a href="#media">Media</a></li>
         <li><a href="#contact">Contact</a></li>
-        <!-- Resume button: shown by JS if assets/resume/resume.pdf is present -->
-        <li><a href="assets/resume/resume.pdf" class="nav-resume-btn" id="navResumeBtn" download style="display:none">&#x2193;&nbsp;Resume</a></li>
+        <li><a href="assets/resume/resume.pdf" class="nav-resume-btn" id="navResumeBtn" download>&#x2193;&nbsp;Resume</a></li>
       </ul>
       <button class="hamburger" id="hamburger" aria-label="Open menu">
         <span></span><span></span><span></span>
@@ -57,10 +80,11 @@
       <a href="#experience" class="mobile-link">Experience</a>
       <a href="#media" class="mobile-link">Media</a>
       <a href="#contact" class="mobile-link">Contact</a>
-      <!-- Resume link: shown by JS if assets/resume/resume.pdf is present -->
-      <a href="assets/resume/resume.pdf" class="mobile-link" id="mobileResumeBtn" download style="display:none">&#x2193; Download Resume</a>
+      <a href="assets/resume/resume.pdf" class="mobile-link" id="mobileResumeBtn" download>&#x2193; Download Resume</a>
     </div>
   </nav>
+
+  <main id="main">
 
   <!-- HERO -->
   <section id="hero">
@@ -76,8 +100,7 @@
       <div class="hero-cta">
         <a href="#projects" class="btn btn-primary" id="heroViewProjects">View Projects</a>
         <a href="#contact" class="btn btn-outline" id="heroContact">Contact Me</a>
-        <!-- Resume button: shown by JS only if the file resolves (404-checked at runtime) -->
-        <a href="assets/resume/resume.pdf" class="btn btn-resume" id="heroResume" download style="display:none">&#x2193; Resume</a>
+        <a href="assets/resume/resume.pdf" class="btn btn-resume" id="heroResume" download>&#x2193; Resume</a>
       </div>
       <div class="hero-stats">
         <div class="stat"><span class="stat-num">ROS 2</span><span class="stat-label">Jazzy &amp; Humble</span></div>
@@ -163,30 +186,39 @@
 
         <!-- ── PROJECT 01: AUTONOMOUS TILLING ROBOT ── -->
         <div class="project-card reveal" id="proj-tilling">
-          <!-- IMAGE CAROUSEL -->
-          <div class="proj-carousel" data-carousel>
-            <div class="carousel-track">
-              <!-- ADD IMAGES: Uncomment each <figure> block and fill in the src path
-              <figure>
-                <img src="assets/projects/tilling-robot/images/photo1.jpg" alt="Autonomous Tilling Robot – front view" loading="lazy">
-                <figcaption>Front view</figcaption>
-              </figure>
-              <figure>
-                <img src="assets/projects/tilling-robot/images/photo2.jpg" alt="Autonomous Tilling Robot – field test" loading="lazy">
-                <figcaption>Field test</figcaption>
-              </figure>
-              <figure>
-                <img src="assets/projects/tilling-robot/images/photo3.jpg" alt="Autonomous Tilling Robot – CAD render" loading="lazy">
-                <figcaption>CAD render</figcaption>
-              </figure>
-              -->
-            </div>
-            <div class="carousel-placeholder">
-              <span>📷</span>
-              <p>Drop images in <code>assets/projects/tilling-robot/images/</code></p>
-            </div>
-            <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
-            <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+          <!-- TECHNICAL SCHEMATIC HEADER -->
+          <div class="proj-media-header" style="background:#090d16;border-bottom:1px solid var(--border);padding:16px;overflow:hidden;">
+            <svg viewBox="0 0 540 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:'JetBrains Mono',monospace;">
+              <rect x="10" y="10" width="520" height="150" rx="8" fill="#0d131f" stroke="#1e293b" stroke-width="1"/>
+              
+              <!-- Front Tiller -->
+              <rect x="25" y="25" width="145" height="120" rx="6" fill="rgba(124,58,237,0.12)" stroke="#7c3aed" stroke-width="1.2"/>
+              <text x="97" y="47" fill="#c084fc" font-size="10" font-weight="700" text-anchor="middle">FRONT MECHANISM</text>
+              <text x="97" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">Two-Stroke Engine</text>
+              <text x="97" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">Tilling Blades / Tines</text>
+              <text x="97" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">Furrow Depth Control</text>
+              <text x="97" y="127" fill="#38bdf8" font-size="8" text-anchor="middle">Centrifugal Clutch</text>
+
+              <!-- Central Power & Compute -->
+              <rect x="195" y="25" width="150" height="120" rx="6" fill="rgba(6,182,212,0.12)" stroke="#06b6d4" stroke-width="1.2"/>
+              <text x="270" y="47" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">POWER &amp; CONTROL</text>
+              <text x="270" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">24V LiFePO4 Battery</text>
+              <text x="270" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">Raspberry Pi 4B</text>
+              <text x="270" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">ESP32 Motor Bridge</text>
+              <text x="270" y="127" fill="#10b981" font-size="8" text-anchor="middle">Optocoupled Isolation</text>
+
+              <!-- Navigation & Rear Drivetrain -->
+              <rect x="370" y="25" width="145" height="120" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.2"/>
+              <text x="442" y="47" fill="#34d399" font-size="10" font-weight="700" text-anchor="middle">REAR DRIVE &amp; GPS</text>
+              <text x="442" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">High-Torque DC Motors</text>
+              <text x="442" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">NEO-6M GPS Receiver</text>
+              <text x="442" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">2.4 GHz RF Teleop</text>
+              <text x="442" y="127" fill="#f59e0b" font-size="8" text-anchor="middle">Relay Safety Cutoff</text>
+
+              <!-- Connecting Bus Lines -->
+              <line x1="170" y1="85" x2="195" y2="85" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="345" y1="85" x2="370" y2="85" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </svg>
           </div>
 
           <div class="project-card-inner">
@@ -219,22 +251,8 @@
               <li>Two-Stroke Engine</li>
             </ul>
 
-            <!-- VIDEO SLOT -->
-            <div class="proj-video">
-              <!-- ADD VIDEO: Uncomment when ready
-              <video controls preload="none" poster="assets/projects/tilling-robot/images/thumb.jpg">
-                <source src="assets/projects/tilling-robot/videos/demo.mp4" type="video/mp4" />
-                Your browser does not support video.
-              </video>
-              -->
-              <div class="video-placeholder">
-                <span>🎬</span>
-                <p>Demo coming soon — drop <code>demo.mp4</code> in <code>assets/projects/tilling-robot/videos/</code></p>
-              </div>
-            </div>
-
             <div class="project-footer">
-              <span class="project-badge">YIP 7.0 Submission</span>
+              <span class="project-badge">Hardware Prototype · YIP 7.0</span>
               <div class="project-links">
                 <a href="https://github.com/JosiahSK/autonomous-tilling-robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubTilling">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
@@ -268,10 +286,6 @@
                 <img src="assets/projects/quadruped-robot/images/support_polygon_diagram.png" alt="Quadruped Robot - CoM Support Polygon Stability Margin" loading="lazy">
                 <figcaption>Support Polygon Stability Margin</figcaption>
               </figure>
-            </div>
-            <div class="carousel-placeholder">
-              <span>📷</span>
-              <p>Drop images in <code>assets/projects/quadruped-robot/images/</code></p>
             </div>
             <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
             <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
@@ -307,22 +321,8 @@
               <li>Gazebo Classic 11</li>
             </ul>
 
-            <!-- VIDEO SLOT -->
-            <div class="proj-video">
-              <!-- ADD VIDEO: Uncomment when ready
-              <video controls preload="none" poster="assets/projects/quadruped-robot/images/thumb.jpg">
-                <source src="assets/projects/quadruped-robot/videos/demo.mp4" type="video/mp4" />
-                Your browser does not support video.
-              </video>
-              -->
-              <div class="video-placeholder">
-                <span>🎬</span>
-                <p>Demo coming soon — drop <code>demo.mp4</code> in <code>assets/projects/quadruped-robot/videos/</code></p>
-              </div>
-            </div>
-
             <div class="project-footer">
-              <span class="project-badge">Legged Locomotion (Simulation)</span>
+              <span class="project-badge">Simulation-Validated (Gazebo Classic)</span>
               <div class="project-links">
                 <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" class="proj-link proj-github" target="_blank" rel="noopener" id="githubQuadruped">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
@@ -337,30 +337,39 @@
 
         <!-- ── PROJECT 03: ROS2-BASED ROBOTICS SYSTEMS ── -->
         <div class="project-card reveal" id="proj-ros2">
-          <!-- IMAGE CAROUSEL -->
-          <div class="proj-carousel" data-carousel>
-            <div class="carousel-track">
-              <!-- ADD IMAGES: Uncomment each <figure> block and fill in the src path
-              <figure>
-                <img src="assets/projects/ros2-robotics-systems/images/photo1.jpg" alt="ROS2 System – RViz visualisation" loading="lazy">
-                <figcaption>RViz visualisation</figcaption>
-              </figure>
-              <figure>
-                <img src="assets/projects/ros2-robotics-systems/images/photo2.jpg" alt="ROS2 System – Nav2 in action" loading="lazy">
-                <figcaption>Nav2 in action</figcaption>
-              </figure>
-              <figure>
-                <img src="assets/projects/ros2-robotics-systems/images/photo3.jpg" alt="ROS2 System – URDF model" loading="lazy">
-                <figcaption>URDF model</figcaption>
-              </figure>
-              -->
-            </div>
-            <div class="carousel-placeholder">
-              <span>📷</span>
-              <p>Drop images in <code>assets/projects/ros2-robotics-systems/images/</code></p>
-            </div>
-            <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
-            <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+          <!-- TECHNICAL SCHEMATIC HEADER -->
+          <div class="proj-media-header" style="background:#090d16;border-bottom:1px solid var(--border);padding:16px;overflow:hidden;">
+            <svg viewBox="0 0 540 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:'JetBrains Mono',monospace;">
+              <rect x="10" y="10" width="520" height="150" rx="8" fill="#0d131f" stroke="#1e293b" stroke-width="1"/>
+              
+              <!-- Perception -->
+              <rect x="25" y="25" width="145" height="120" rx="6" fill="rgba(6,182,212,0.12)" stroke="#06b6d4" stroke-width="1.2"/>
+              <text x="97" y="47" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">PERCEPTION &amp; SIM</text>
+              <text x="97" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">RPLidar A1 (360°)</text>
+              <text x="97" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">Gazebo Harmonic</text>
+              <text x="97" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">Diff-Drive Physics</text>
+              <text x="97" y="127" fill="#06b6d4" font-size="8" text-anchor="middle">/scan (10 Hz)</text>
+
+              <!-- SLAM Mapping -->
+              <rect x="195" y="25" width="150" height="120" rx="6" fill="rgba(124,58,237,0.12)" stroke="#7c3aed" stroke-width="1.2"/>
+              <text x="270" y="47" fill="#c084fc" font-size="10" font-weight="700" text-anchor="middle">SLAM TOOLBOX</text>
+              <text x="270" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">Online Async Mapping</text>
+              <text x="270" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">Ceres Graph Matcher</text>
+              <text x="270" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">TF: map → odom</text>
+              <text x="270" y="127" fill="#a78bfa" font-size="8" text-anchor="middle">/map (5cm resolution)</text>
+
+              <!-- Nav2 Stack -->
+              <rect x="370" y="25" width="145" height="120" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.2"/>
+              <text x="442" y="47" fill="#34d399" font-size="10" font-weight="700" text-anchor="middle">NAV2 STACK</text>
+              <text x="442" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">Costmap 2D Layers</text>
+              <text x="442" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">Smac Global Planner</text>
+              <text x="442" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">DWB Local Controller</text>
+              <text x="442" y="127" fill="#34d399" font-size="8" text-anchor="middle">/cmd_vel (TwistStamped)</text>
+
+              <!-- Data Flow Arrows -->
+              <line x1="170" y1="85" x2="195" y2="85" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="345" y1="85" x2="370" y2="85" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </svg>
           </div>
 
           <div class="project-card-inner">
@@ -393,27 +402,14 @@
               <li>RViz2 &amp; Gazebo</li>
             </ul>
 
-            <!-- VIDEO SLOT -->
-            <div class="proj-video">
-              <!-- ADD VIDEO: Uncomment when ready
-              <video controls preload="none" poster="assets/projects/ros2-robotics-systems/images/thumb.jpg">
-                <source src="assets/projects/ros2-robotics-systems/videos/demo.mp4" type="video/mp4" />
-                Your browser does not support video.
-              </video>
-              -->
-              <div class="video-placeholder">
-                <span>🎬</span>
-                <p>Demo coming soon — drop <code>demo.mp4</code> in <code>assets/projects/ros2-robotics-systems/videos/</code></p>
-              </div>
-            </div>
-
             <div class="project-footer">
-              <span class="project-badge">Autonomous Navigation (SLAM)</span>
+              <span class="project-badge">Simulation-Validated (SLAM &amp; Nav2)</span>
               <div class="project-links">
                 <a href="https://github.com/JosiahSK/ros2_jazzy_2wd_robot" class="proj-link proj-github" target="_blank" rel="noopener" id="githubRos2">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                   View on GitHub
                 </a>
+                <a href="ros2-mobile-robot.html" class="proj-link proj-casestudy" id="caseStudyRos2">Read case study →</a>
               </div>
             </div>
           </div>
@@ -422,30 +418,39 @@
 
         <!-- ── PROJECT 04: EMBEDDED SYSTEMS PROJECTS ── -->
         <div class="project-card reveal" id="proj-embedded">
-          <!-- IMAGE CAROUSEL -->
-          <div class="proj-carousel" data-carousel>
-            <div class="carousel-track">
-              <!-- ADD IMAGES: Uncomment each <figure> block and fill in the src path
-              <figure>
-                <img src="assets/projects/embedded-systems/images/photo1.jpg" alt="Embedded Systems – sensor array" loading="lazy">
-                <figcaption>Sensor array</figcaption>
-              </figure>
-              <figure>
-                <img src="assets/projects/embedded-systems/images/photo2.jpg" alt="Embedded Systems – power system" loading="lazy">
-                <figcaption>Power system</figcaption>
-              </figure>
-              <figure>
-                <img src="assets/projects/embedded-systems/images/photo3.jpg" alt="Embedded Systems – circuit board" loading="lazy">
-                <figcaption>Circuit board</figcaption>
-              </figure>
-              -->
-            </div>
-            <div class="carousel-placeholder">
-              <span>📷</span>
-              <p>Drop images in <code>assets/projects/embedded-systems/images/</code></p>
-            </div>
-            <button class="carousel-btn carousel-prev" aria-label="Previous image">&#8249;</button>
-            <button class="carousel-btn carousel-next" aria-label="Next image">&#8250;</button>
+          <!-- TECHNICAL SCHEMATIC HEADER -->
+          <div class="proj-media-header" style="background:#090d16;border-bottom:1px solid var(--border);padding:16px;overflow:hidden;">
+            <svg viewBox="0 0 540 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:'JetBrains Mono',monospace;">
+              <rect x="10" y="10" width="520" height="150" rx="8" fill="#0d131f" stroke="#1e293b" stroke-width="1"/>
+              
+              <!-- Host PC -->
+              <rect x="25" y="25" width="145" height="120" rx="6" fill="rgba(124,58,237,0.12)" stroke="#7c3aed" stroke-width="1.2"/>
+              <text x="97" y="47" fill="#c084fc" font-size="10" font-weight="700" text-anchor="middle">ROS 2 HOST PC</text>
+              <text x="97" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">Teleop / Nav2 Node</text>
+              <text x="97" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">/cmd_vel (Twist)</text>
+              <text x="97" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">micro-ROS Agent</text>
+              <text x="97" y="127" fill="#c084fc" font-size="8" text-anchor="middle">Docker Container</text>
+
+              <!-- Wireless Transport -->
+              <rect x="195" y="25" width="150" height="120" rx="6" fill="rgba(6,182,212,0.12)" stroke="#06b6d4" stroke-width="1.2"/>
+              <text x="270" y="47" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">WI-FI UDP LINK</text>
+              <text x="270" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">UDP XRCE-DDS</text>
+              <text x="270" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">Port 8888 · Sub-8ms</text>
+              <text x="270" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">ESP32 Client Node</text>
+              <text x="270" y="127" fill="#38bdf8" font-size="8" text-anchor="middle">FreeRTOS Task Loop</text>
+
+              <!-- Motor Actuation -->
+              <rect x="370" y="25" width="145" height="120" rx="6" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1.2"/>
+              <text x="442" y="47" fill="#fbbf24" font-size="10" font-weight="700" text-anchor="middle">MOTOR ACTUATION</text>
+              <text x="442" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">4-Pin Pure PWM</text>
+              <text x="442" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">1 kHz LEDC Timer</text>
+              <text x="442" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">MIN_PWM = 60 (Deadband)</text>
+              <text x="442" y="127" fill="#ef4444" font-size="8" text-anchor="middle">500ms Watchdog Cutoff</text>
+
+              <!-- Connection Lines -->
+              <line x1="170" y1="85" x2="195" y2="85" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <line x1="345" y1="85" x2="370" y2="85" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </svg>
           </div>
 
           <div class="project-card-inner">
@@ -477,20 +482,6 @@
               <li>Kinematic Mixing</li>
               <li>Failsafe Watchdog</li>
             </ul>
-
-            <!-- VIDEO SLOT -->
-            <div class="proj-video">
-              <!-- ADD VIDEO: Uncomment when ready
-              <video controls preload="none" poster="assets/projects/embedded-systems/images/thumb.jpg">
-                <source src="assets/projects/embedded-systems/videos/demo.mp4" type="video/mp4" />
-                Your browser does not support video.
-              </video>
-              -->
-              <div class="video-placeholder">
-                <span>🎬</span>
-                <p>Demo coming soon — drop <code>demo.mp4</code> in <code>assets/projects/embedded-systems/videos/</code></p>
-              </div>
-            </div>
 
             <div class="project-footer">
               <span class="project-badge">Hardware Benchtop Tested</span>
@@ -525,12 +516,12 @@
             <h3>Robotics &amp; ROS2</h3>
           </div>
           <div class="skill-pills">
-            <a href="#proj-ros2" class="skill-pill">ROS2 Jazzy</a>
+            <a href="#proj-ros2" class="skill-pill">ROS 2 Jazzy</a>
             <a href="#proj-ros2" class="skill-pill">URDF</a>
             <a href="#proj-ros2" class="skill-pill">TF2</a>
             <a href="#proj-ros2" class="skill-pill">RViz</a>
             <a href="#proj-ros2" class="skill-pill">Nav2</a>
-            <a href="#proj-ros2" class="skill-pill">micro-ROS</a>
+            <a href="#proj-embedded" class="skill-pill">micro-ROS</a>
             <a href="#proj-ros2" class="skill-pill">SLAM</a>
             <a href="#proj-quadruped" class="skill-pill">Gait Algorithms</a>
             <a href="#proj-quadruped" class="skill-pill">Inverse Kinematics</a>
@@ -543,9 +534,9 @@
             <h3>Languages</h3>
           </div>
           <div class="skill-pills">
-            <a href="#proj-embedded" class="skill-pill">Python</a>
+            <a href="#proj-quadruped" class="skill-pill">Python</a>
             <a href="#proj-embedded" class="skill-pill">C</a>
-            <a href="#proj-embedded" class="skill-pill">C++</a>
+            <a href="#proj-quadruped" class="skill-pill">C++</a>
             <a href="#proj-embedded" class="skill-pill">MicroPython</a>
           </div>
         </div>
@@ -556,7 +547,7 @@
             <h3>Embedded Systems</h3>
           </div>
           <div class="skill-pills">
-            <a href="#proj-embedded" class="skill-pill">Raspberry Pi</a>
+            <a href="#proj-tilling" class="skill-pill">Raspberry Pi</a>
             <a href="#proj-embedded" class="skill-pill">Raspberry Pi Pico</a>
             <a href="#proj-embedded" class="skill-pill">ESP32</a>
             <a href="#proj-tilling" class="skill-pill">Embedded Control</a>
@@ -571,7 +562,7 @@
           <div class="skill-pills">
             <a href="#proj-quadruped" class="skill-pill">Servo Actuators</a>
             <a href="#proj-embedded" class="skill-pill">Motor Drivers</a>
-            <a href="#proj-embedded" class="skill-pill">LiDAR</a>
+            <a href="#proj-ros2" class="skill-pill">LiDAR</a>
             <a href="#proj-embedded" class="skill-pill">Ultrasonic Sensors</a>
             <a href="#proj-embedded" class="skill-pill">LDR</a>
             <a href="#proj-embedded" class="skill-pill">Buck Converters</a>
@@ -705,25 +696,25 @@
           <div class="media-icon-wrap">
             <span class="media-icon">🎥</span>
           </div>
-          <h3>Helmet POV Riding Videos</h3>
-          <p>Captures immersive first-person riding footage using a <strong>GoPro Hero 12</strong>. Wide-angle lens setup for cinematic, dynamic video content.</p>
-          <span class="media-tag">GoPro Hero 12</span>
+          <h3>Field Robotics &amp; POV Testing</h3>
+          <p>Captures first-person field testing and machinery dynamics using a <strong>GoPro Hero 12</strong>. High-frame-rate, wide-angle documentation of agricultural rover maneuvers and mobile terrain traversal.</p>
+          <span class="media-tag">Field Testing · 4K</span>
         </div>
         <div class="media-card reveal" id="media-sony">
           <div class="media-icon-wrap">
             <span class="media-icon">📷</span>
           </div>
-          <h3>Photography &amp; Videography</h3>
-          <p>Uses a <strong>Sony Alpha 6300</strong> mirrorless camera for high-quality photography and video production. Focused on technical and natural subject matter.</p>
-          <span class="media-tag">Sony α6300</span>
+          <h3>Hardware &amp; PCB Macro Documentation</h3>
+          <p>Uses a <strong>Sony Alpha 6300</strong> mirrorless camera for macro circuit inspection, component solder verification, and mechanical chassis fabrication logs.</p>
+          <span class="media-tag">Sony α6300 · Macro</span>
         </div>
         <div class="media-card reveal" id="media-vision">
           <div class="media-icon-wrap">
             <span class="media-icon">🌐</span>
           </div>
-          <h3>Wide-Angle Immersive Visuals</h3>
-          <p>Specializes in wide-angle and immersive visual storytelling — bringing the same attention to detail from engineering into visual composition and framing.</p>
-          <span class="media-tag">Cinematic</span>
+          <h3>Technical Demos &amp; Training Content</h3>
+          <p>Produces technical demonstrations and instructional video content covering ROS 2 workspaces, embedded micro-ROS bringup, and hands-on robotics society workshops.</p>
+          <span class="media-tag">Technical Media</span>
         </div>
       </div>
     </div>
@@ -750,14 +741,14 @@
             <div class="contact-link-icon">💼</div>
             <div>
               <span class="contact-link-label">LinkedIn</span>
-              <a href="https://www.linkedin.com/in/josiah-saji-aa5080232/" target="_blank" class="contact-link-val">linkedin.com/in/josiah-saji</a>
+              <a href="https://www.linkedin.com/in/josiah-saji-aa5080232/" target="_blank" rel="noopener noreferrer" class="contact-link-val">linkedin.com/in/josiah-saji</a>
             </div>
           </div>
           <div class="contact-link-item" id="contact-github">
             <div class="contact-link-icon">🐙</div>
             <div>
               <span class="contact-link-label">GitHub</span>
-              <a href="https://github.com/JosiahSK" target="_blank" class="contact-link-val">github.com/JosiahSK</a>
+              <a href="https://github.com/JosiahSK" target="_blank" rel="noopener noreferrer" class="contact-link-val">github.com/JosiahSK</a>
             </div>
           </div>
           <p class="contact-location">📍 Kerala, India</p>
@@ -789,6 +780,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- FOOTER -->
   <footer id="footer">
