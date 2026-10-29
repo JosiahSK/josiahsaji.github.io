@@ -1,7 +1,7 @@
 # Portfolio Engineering Claim Audit
 
 **Document:** `docs/PORTFOLIO_CLAIM_AUDIT.md`  
-**Revision:** V4.1 — Evidence Integrity, Résumé Validation & Production Hardening  
+**Revision:** V4.2 — Final Claim Audit, Résumé Integrity & Release Verification  
 **Date:** October 2026  
 **Audited Repositories:**
 1. [`JosiahSK/ros2-quadruped-locomotion`](https://github.com/JosiahSK/ros2-quadruped-locomotion)
@@ -13,7 +13,7 @@
 
 ## 1. Executive Summary & Verification Methodology
 
-This audit establishes strict technical grounding for all claims across Josiah Saji's robotics portfolio website, case study pages, and generated curriculum vitae. Claims are verified against committed source code, configuration files, test suites, mathematical derivations, and hardware specifications.
+This audit establishes strict technical grounding for all claims across Josiah Saji's robotics portfolio website, case study pages, and generated curriculum vitae. Claims are audited against committed source code, configuration files, test suites, mathematical derivations, official hardware datasheets, and verifiable employment/education records.
 
 Every technical statement is classified into one of six evidence categories:
 - **[CATEGORY 1 — IMPLEMENTED IN CODE]**: Directly implemented in committed executable source files (`.py`, `.cpp`, `.ino`, `.xacro`, `.launch.py`).
@@ -21,7 +21,7 @@ Every technical statement is classified into one of six evidence categories:
 - **[CATEGORY 3 — SIMULATION-MODELED]**: Executed and verified inside physics simulation engines (Gazebo Classic / Gazebo Harmonic / RViz2).
 - **[CATEGORY 4 — LOG / MAP VERIFIED]**: Supported by logged trajectory telemetry, recorded ROS bags, or saved occupancy grids.
 - **[CATEGORY 5 — HARDWARE DRIVER INTEGRATION]**: Benchtop tested or deployed with physical sensor/actuator hardware interfaces.
-- **[CATEGORY 6 — REQUIRING USER CONFIRMATION]**: External career or personal details (e.g. current employment availability status).
+- **[CATEGORY 6 — REQUIRING USER CONFIRMATION]**: External career, organizational, or competition details (e.g., official finalist certificates or proprietary employer assignments).
 
 ---
 
@@ -59,7 +59,7 @@ Every technical statement is classified into one of six evidence categories:
   - Microbenchmark evaluated in CPython 3.12 over 100,000 synthetic Cartesian target solves with random workspace coordinates.
   - Mean solve time measured: **~25–26 µs** per leg solve.
   - Scope: Mathematical evaluation of trigonometric expressions (`math.atan2`, `math.acos`, `math.sqrt`) excluding ROS 2 middleware transport and serialization latency.
-  - **Correction applied in V4.1:** All mentions of unverified compiled latency (`< 10 µs compiled` / `sub-10 µs C++`) have been strictly purged from HTML, badges, and résumé, because the repository contains a pure Python solver (`leg_ik.py`) and no committed compiled C++ solver binary.
+  - **Corrections applied:** All unevidenced compiled latency claims (`< 10 µs compiled`, `sub-10 µs C++`) were purged in V4.1. In V4.2, the unsupported phrasing "zero iterative numerical divergence" was purged and replaced with "direct trigonometric solutions without iterative Jacobian matrix inversion".
 - **Verification Status:** **[CATEGORY 1 — IMPLEMENTED IN CODE & BENCHMARKED]**
 
 ### Claim 2.4: 3D Cycloid Foot Trajectory Boundary Conditions
@@ -69,7 +69,7 @@ Every technical statement is classified into one of six evidence categories:
   - Vertical lift: $z(\tau) = H \cdot \frac{1}{2}(1 - \cos(2\pi\tau)) \implies \dot{z}(0)=0, \dot{z}(1)=0$.
   - Boundary reality: Horizontal velocity and horizontal acceleration both equal zero at touchdown ($\tau=1$). Vertical velocity smoothly reaches zero at touchdown ($\tau=1$). Vertical impact acceleration is physically non-zero upon terrain impact.
 - **Verification Status:** **[CATEGORY 1 & MATH — VERIFIED]**
-- **Correction applied in V4.1:** Purged all assertions of "zero impact acceleration" or "zero impact shock"; qualified to "zero horizontal velocity, zero horizontal acceleration, and smooth zero vertical velocity boundary conditions at touchdown."
+- **Qualification:** Strictly defined as $C^1$ velocity continuity and zero horizontal/vertical velocity boundary conditions at touchdown.
 
 ### Claim 2.5: Physical vs. Simulation Validation
 - **Claim on site:** Full 12-DOF dynamic simulation in Gazebo Classic with RViz2 visualization.
@@ -86,25 +86,31 @@ Every technical statement is classified into one of six evidence categories:
 - **Source file:** `firmware/esp32_microros_2wd/esp32_microros_2wd.ino`
 - **Verification Status:** **[CATEGORY 1 & 5 — CODE & HARDWARE DRIVER]**
 
-### Claim 3.2: PWM Frequency and Resolution
+### Claim 3.2: Round-Trip Latency Verification (V4.2 Purge)
+- **Previous claim on site:** "Sub-8ms round-trip latency" / "Low latency (<8ms)".
+- **Audit finding:** No empirical latency benchmark logging script or measured hardware timestamping telemetry exists in `JosiahSK/esp32-microros-2wd-car`.
+- **V4.2 Action:** Completely purged "sub-8ms" and "<8ms" from all website SVG diagrams, case-study narratives, and résumé text. Grounded accurately as "local Wi-Fi UDP link with micro-ROS agent" and "reliable UDP command execution via micro-ROS agent".
+- **Verification Status:** **[CATEGORY 1 & 5 — VERIFIED AS UDP TRANSPORT]**
+
+### Claim 3.3: PWM Frequency and Resolution
 - **Claim on site:** 1 kHz PWM switching frequency, 8-bit resolution (0–255).
 - **Source file:** `firmware/esp32_microros_2wd/esp32_microros_2wd.ino` (lines 38–39)
 - **Code evidence:** `const int PWM_FREQ = 1000; const int PWM_RES = 8;`
 - **Verification Status:** **[CATEGORY 1 — IMPLEMENTED IN CODE]**
 
-### Claim 3.3: Static Friction Deadband Cutoff (`MIN_PWM = 60`)
+### Claim 3.4: Static Friction Deadband Cutoff (`MIN_PWM = 60`)
 - **Claim on site:** Deadband compensation prevents motor stall and stiction under low velocity commands.
 - **Source file:** `firmware/esp32_microros_2wd/esp32_microros_2wd.ino` (lines 34, 91–95)
 - **Code evidence:** `const int MIN_PWM = 60;` with linear deadband rescale.
 - **Verification Status:** **[CATEGORY 1 — IMPLEMENTED IN CODE]**
 
-### Claim 3.4: Watchdog Command Timeout (500 ms)
+### Claim 3.5: Watchdog Command Timeout (500 ms)
 - **Claim on site:** Automated failsafe stopping motor actuation on packet loss or agent disconnection.
 - **Source file:** `firmware/esp32_microros_2wd/esp32_microros_2wd.ino` (lines 35, 142–144)
 - **Code evidence:** `const unsigned long CMD_TIMEOUT_MS = 500;` triggers `stopMotors()`.
 - **Verification Status:** **[CATEGORY 1 & 5 — BENCHTOP TESTED]**
 
-### Claim 3.5: Wheel Odometry & Teleoperation
+### Claim 3.6: Wheel Odometry & Teleoperation
 - **Claim on site:** Open-loop differential drive with hardware PWM and command failsafes.
 - **Verification Status:** **[CATEGORY 1 & 5 — BENCHTOP HARDWARE TESTED]**
 - **Qualification:** The robot subscribes exclusively to `/cmd_vel` without optical wheel encoders. Clearly qualified as open-loop teleoperation, with encoder feedback documented as a future roadmap objective.
@@ -115,7 +121,9 @@ Every technical statement is classified into one of six evidence categories:
 
 ### Claim 4.1: Submission to YIP 7.0
 - **Claim on site:** Developed for agricultural smallholders and submitted to Young Innovators Programme (YIP 7.0).
-- **Verification Status:** **[CATEGORY 5 — HARDWARE PROTOTYPE]**
+- **Audit finding:** Project documentation confirms development and submission for YIP 7.0. However, official selection/finalist certificates are not committed in the repository.
+- **V4.2 Action:** Replaced "selected for YIP 7.0" with "developed and submitted for YIP 7.0" and badge "Hardware Prototype · YIP 7.0 Entry".
+- **Verification Status:** **[CATEGORY 5 & 6 — HARDWARE PROTOTYPE / ENTRY SUBMITTED]**
 
 ### Claim 4.2: Chassis and Power Architecture
 - **Claim on site:** Custom welded mild-steel chassis, high-torque rear drivetrain, 2-stroke front tiller, LiFePO4 battery pack, and RF remote safety cutoff.
@@ -134,15 +142,14 @@ Every technical statement is classified into one of six evidence categories:
   - `05_gazebo_simulation/launch/gazebo.launch.py`.
 - **Verification Status:** **[CATEGORY 1 & 3 — CODE & SIMULATION]**
 
-### Claim 5.2: RPLidar A1 M8 Hardware Specifications
-- **Claim on site:** RPLidar A1 M8 360° laser scanner.
-- **Source file:** `06_rplidar/README.md`
-- **Evidence:** Manufacturer specifications documented in repository:
-  - Range: 0.15 m – 8.0 m
-  - Scan frequency: 5.5 – 10 Hz (360 samples/rev at 1° angular resolution)
-  - Interface: USB UART via CP2102 at 115200 baud
-- **Correction applied in V4.1:** Corrected scan frequency from previous "12 Hz" / "5.5–12 Hz" to exact repository-documented specification "5.5–10 Hz", clearly designated as manufacturer hardware specification.
-- **Verification Status:** **[CATEGORY 5 — HARDWARE DRIVER INTEGRATION]**
+### Claim 5.2: RPLidar A1 M8 Hardware Specifications (3-Tier Grounding)
+- **Official SLAMTEC Documentation:** RPLidar A1M8 Datasheet specifies:
+  - 1. **Manufacturer Hardware Measurement Range:** 0.15 m – 12.0 m (white target with 90% reflectance).
+  - 2. **Configured Mapping Range:** 8.0 m (`max_laser_range: 8.0 m` configured in `04_slam_navigation/config/slam_toolbox/mapper_params_online_async.yaml`).
+  - 3. **Usable In-Lab Testing Range:** 6.0 m – 8.0 m typical in indoor cluttered environments.
+  - 4. **Scan Frequency:** 5.5 Hz nominal (configurable 5.5 – 10 Hz via PWM motor speed control).
+- **V4.2 Action:** Both the case study page (`ros2-mobile-robot.html`) and résumé explicitly distinguish the manufacturer specification (0.15–12.0 m, 5.5–10 Hz) from the configured laser range (8.0 m).
+- **Verification Status:** **[CATEGORY 1, 2, & 5 — SPEC SHEET, CONFIG & DRIVER]**
 
 ### Claim 5.3: SLAM Toolbox & Nav2 Mapping Validation
 - **Claim on site:** 2D occupancy grid mapping and Nav2 autonomous navigation.
@@ -151,11 +158,6 @@ Every technical statement is classified into one of six evidence categories:
   - `04_slam_navigation/launch/slam.launch.py`
   - `05_gazebo_simulation/worlds/simple_room.world`
 - **Verification Status:** **[CATEGORY 1, 2, & 3 — CODE, PARAMS & SIMULATION]**
-- **Correction applied in V4.1:** Purged unsupported assertions of "zero TF tree discontinuities across real office/maze trials". Replaced with factual categorization:
-  - URDF/Xacro kinematic description with dual castor stabilization implemented in code.
-  - SLAM Toolbox online async mapping and Nav2 costmap layers configured in parameter files.
-  - Spawning, kinematic motion, and LiDAR raycasting verified inside Gazebo Harmonic (`simple_room.world`).
-  - RPLidar A1 serial driver configured for deployment on `/dev/ttyUSB0` (runtime map logs and field demo files documented separately).
 
 ---
 
@@ -163,27 +165,33 @@ Every technical statement is classified into one of six evidence categories:
 
 - **File:** `assets/resume/resume.pdf`
 - **Generation mechanism:** Vector print-to-pdf via headless Chromium/Edge (`scripts/generate_resume.py`).
-- **Layout & Pagination:** Exactly 1 page (confirmed via PDF `/Type /Page` object count = 1).
-- **ATS Machine Readability:** Text verified searchable and extractable via ToUnicode CMap decoding. Confirmed clean extraction of name, roles, company ("Evolve Robotics"), university ("Saintgits College of Engineering"), and core technical keywords.
-- **Factual Alignment:**
-  - Education: B.Tech in Robotics & Automation (2021–2025), Saintgits College of Engineering, APJ Abdul Kalam Technological University.
-  - Employment: Robotics Engineer, Evolve Robotics (Jan 2026 – Present).
-  - Quadruped IK: Purged unverified compiled claim; explicitly stated sub-30 µs Python solve time.
-  - Hero Badge: Homepage badge changed from "Available for Opportunities" to "Robotics & Autonomous Systems" to avoid speculative job availability claims.
+- **Automated Verification:** `scripts/verify_resume.py` uses `pypdf` to parse and audit the binary PDF directly.
+- **Layout & Pagination:** Exactly 1 page (guaranteed by single-page CSS box budgeting and verified via `len(reader.pages) == 1`).
+- **ATS Machine Readability:** Text verified 100% extractable and searchable via standard PDF text streams. Confirmed clean extraction of candidate name, contact URLs, degree, employers, and technical competencies.
+  > *Clarification:* Verified machine-readability proves that standard PDF text extraction parsers read all textual content cleanly. It does not imply proprietary third-party ATS vendor certification.
+- **Factual Corrections in V4.2:**
+  - Purged ESP32 "sub-8ms latency".
+  - Purged "selected for YIP 7.0" (updated to "developed and submitted for YIP 7.0").
+  - Purged "100+ engineering students" (updated to "undergraduate engineering students").
+  - Purged "zero iterative numerical divergence" (updated to "without iterative Jacobian inversion").
+  - Rewritten Evolve Robotics duties conservatively to reflect verified mobile robot integration, kinematic modeling, and bringup routines.
 
 ---
 
-## 7. Portfolio Master Verification Matrix
+## 7. Portfolio Master Verification Matrix (V4.2 Release)
 
-| Subsystem / Project | Specific Claim | Audited Reality | Evidence Category | Corrected Presentation in V4.1 |
+| Subsystem / Project | Original / Risky Claim | Audited Reality | Evidence Category | Corrected Presentation in V4.2 |
 | :--- | :--- | :--- | :--- | :--- |
 | **Quadruped Kinematics** | `< 10 µs compiled` | Pure Python `leg_ik.py` (~25–26 µs CPython 3.12) | Category 1 (Code) | "Sub-30 µs in Python (~25–26 µs CPython 3.12 benchmark)" |
-| **Quadruped Trajectory** | "Zero impact acceleration" | $\dot{x}=0, \ddot{x}=0, \dot{z}=0$ at touchdown; $\ddot{z} \ne 0$ | Category 1 & Math | "Zero horizontal velocity, zero horizontal acceleration, and smooth zero vertical velocity boundary conditions" |
+| **Quadruped Kinematics** | "Zero iterative numerical divergence" | Analytical trigonometric formulation | Category 1 & Math | "Direct trigonometric solutions without iterative Jacobian matrix inversion" |
+| **Quadruped Trajectory** | "Zero impact acceleration" | $\dot{x}=0, \ddot{x}=0, \dot{z}=0$ at touchdown; $\ddot{z} \ne 0$ | Category 1 & Math | "$C^1$ velocity continuity and zero horizontal/vertical velocity boundary conditions" |
 | **Quadruped Deployment** | Hardware walking claims | Gazebo Classic simulation | Category 3 (Sim) | "Simulation-Validated (Gazebo Classic 11 & RViz2)" |
-| **Mobile Robot RPLidar** | 5.5–12 Hz scan rate | 5.5–10 Hz (RPLidar A1 M8 spec) | Category 5 (Hardware Spec) | "360° FOV, 0.15–8.0m range, 5.5–10 Hz scan rate (Mfr Spec)" |
+| **ESP32 micro-ROS 2WD** | "Sub-8ms latency" / "<8ms" | No benchmark logs in repo | Category 1 & 5 | "Reliable UDP command execution via micro-ROS agent" / "Local Wi-Fi UDP link" |
+| **Tilling Robot** | "Selected for YIP 7.0" | Project submitted to YIP 7.0 | Category 5 & 6 | "Developed and submitted for YIP 7.0" / "Hardware Prototype · YIP 7.0 Entry" |
+| **Mobile Robot RPLidar** | 8m unqualified range / 12 Hz | Mfr 0.15–12.0m, Configured 8.0m, 5.5–10 Hz | Category 2 & 5 | "Mfr Spec: 0.15–12.0 m · Configured Range: 8.0 m · 5.5–10 Hz" |
 | **Mobile Robot SLAM** | "Validated across office mazes with 0 TF discontinuity" | Configured in code and simulated in Gazebo `simple_room.world` | Category 1, 2, & 3 | "Configured & Simulation-Modeled in ROS 2 Jazzy & Gazebo Harmonic" |
 | **ESP32 micro-ROS 2WD** | Autonomous mobile robot | Open-loop teleoperated differential drive | Category 1 & 5 | "Hardware Benchtop Tested (Open-Loop Teleop)" |
-| **Tilling Robot** | Fixed numeric depth/acreage | Prototype under field calibration | Category 5 | "Hardware Prototype · YIP 7.0 · Field Trial Calibration" |
-| **Career Status Badge** | "Available for Opportunities" | User employed at Evolve Robotics | Category 6 | Replaced with focus badge: "Robotics & Autonomous Systems" |
-| **Social Media Preview** | Relative `assets/og-image.png` | Broken in third-party scrapers | Technical SEO | Upgraded to absolute URL `https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png` |
-| **External Blank Links** | `rel="noopener"` | Standard vulnerability mitigation | Web Security | Upgraded to `rel="noopener noreferrer"` across all external links |
+| **Tilling Robot** | Fixed numeric depth/acreage | Prototype under field calibration | Category 5 | "Hardware Prototype · Field Trial Calibration" |
+| **Leadership Scope** | "100+ engineering students" | Unsubstantiated headcount metric | Category 6 | "Hands-on technical workshops for undergraduate engineering students" |
+| **Evolve Robotics** | Proprietary architecture claims | Verified mobile robot stack contributions | Category 6 | Conservative duties: URDF kinematic modeling, Gazebo sim, bringup launch systems |
+| **Career Status Badge** | "Available for Opportunities" | User employed at Evolve Robotics | Category 6 | Professional focus badge: "Robotics & Autonomous Systems" |

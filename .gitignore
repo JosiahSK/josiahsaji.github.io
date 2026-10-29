@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+*$py.class
+edge_pdf_profile/
+.DS_Store
+Thumbs.db

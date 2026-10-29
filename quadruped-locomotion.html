@@ -502,7 +502,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
           <div class="decision-title">Analytical IK vs. Numerical Jacobian</div>
           <p class="decision-text">
             <strong>Decision:</strong> Closed-form analytical trigonometry.<br>
-            <strong>Rationale:</strong> Numerical solvers (DLS, Levenberg-Marquardt) require iterative loops that consume CPU cycles and risk divergence near workspace boundaries. The closed-form analytical approach guarantees sub-30 µs compute time in Python (~25–26 µs CPython 3.12 benchmark over 100,000 Cartesian targets) with zero numerical divergence.
+            <strong>Rationale:</strong> Numerical solvers (DLS, Levenberg-Marquardt) require iterative loops that consume CPU cycles and risk divergence near workspace boundaries. The closed-form analytical approach guarantees sub-30 µs compute time in Python (~25–26 µs CPython 3.12 benchmark over 100,000 Cartesian targets) by solving direct trigonometric geometry without iterative Jacobian matrix inversion.
           </p>
         </div>
 

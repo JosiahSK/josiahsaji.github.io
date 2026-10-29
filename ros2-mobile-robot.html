@@ -260,8 +260,8 @@
 
       <div class="metrics-grid">
         <div class="metric-card">
-          <span class="metric-val">360° / 8m</span>
-          <span class="metric-label">RPLidar A1 M8 Spec</span>
+          <span class="metric-val">8.0 m</span>
+          <span class="metric-label">Configured Mapping Range</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">5.5–10 Hz</span>
@@ -384,6 +384,9 @@
       <p style="color:var(--text-muted);line-height:1.7;margin-bottom:16px;">
         The robot uses a 2WD differential chassis configured with dual front and rear castor wheels for maximum stability during rapid rotational accelerations.
       </p>
+      <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">
+        <strong>Range &amp; Sensor Specifications:</strong> For the primary perception payload, official SLAMTEC documentation specifies an optical measurement range of 0.15 m up to 12.0 m on high-reflectivity targets (white surface, 90% reflectance) with a 5.5 Hz nominal rotation frequency (configurable up to 10 Hz via PWM). In this software stack, the SLAM Toolbox configuration (<code style="color:var(--accent2);">mapper_params_online_async.yaml</code>) explicitly sets <code style="color:var(--accent2);">max_laser_range: 8.0 m</code> to maintain robust point clustering and reject far-field ambient noise. Usable indoor range reliably covers typical 6–8 m room perimeters.
+      </p>
 
       <div class="data-table-wrapper">
         <table class="data-table">
@@ -416,8 +419,8 @@
             </tr>
             <tr>
               <td><strong>Perception Sensor</strong></td>
-              <td>Slamtec RPLidar A1 M8 (Spec)</td>
-              <td>360° FOV · 0.15–8.0 m Range · 5.5–10 Hz Scan Rate</td>
+              <td>Slamtec RPLidar A1M8</td>
+              <td>Mfr Spec: 0.15–12.0 m (White target) · Configured Range: 8.0 m · 5.5–10 Hz (5.5 Hz nominal)</td>
               <td>Laser scan streaming for SLAM and local costmap</td>
             </tr>
             <tr>

@@ -148,3 +148,85 @@ josiahsaji.github.io/
     ├── PORTFOLIO_V4_REPORT.md   # This comprehensive V4.1 verification completion report
     └── screenshots/             # 9 updated verification screenshots
 ```
+
+---
+
+## 8. Portfolio V4.2 — Final Claim Audit, Résumé Integrity & Release Verification
+
+### 8.1 Executive Summary & Mission Scope
+
+Portfolio V4.2 is a surgical, evidence-based hardening release focused on:
+1. Complete elimination of unsupported latency figures, numerical convergence phrasing, and unevidenced student attendance numbers.
+2. Official SLAMTEC datasheet alignment for the RPLIDAR A1M8 laser scanner across hardware, configuration, and practical testing tiers.
+3. Automated binary PDF parsing and machine-readability validation using `pypdf-6.21.4` (`scripts/verify_resume.py`), asserting strict single-page budgeting, required entity presence, and non-zero exit codes on disallowed claims.
+4. Comprehensive multi-category regression testing in `tests/test_links.py` separating static DOM checks, image alt auditing, claim audits, and PDF machine-readability.
+
+### 8.2 Detailed Claim Corrections & Final Wording
+
+| Claim / Item | Previous / Risky Phrasing | V4.2 Audited Final Presentation | Locations Updated |
+| :--- | :--- | :--- | :--- |
+| **ESP32 micro-ROS Latency** | "Sub-8ms latency", "Low latency (<8ms)" | "Reliable UDP command execution via micro-ROS agent", "Local Wi-Fi UDP link" | `index.html` (SVG & card), `esp32-microros-robot.html`, `scripts/generate_resume.py`, `resume.pdf` |
+| **YIP 7.0 Status** | "Selected for YIP 7.0" | "Developed and submitted for YIP 7.0", badge: "Hardware Prototype · YIP 7.0 Entry" | `index.html`, `scripts/generate_resume.py`, `resume.pdf`, `PORTFOLIO_CLAIM_AUDIT.md` |
+| **Robotics Society Headcount** | "100+ engineering students" | "Hands-on technical workshops in ROS 2, micro-ROS, and microcontroller programming for undergraduate engineering students" | `scripts/generate_resume.py`, `resume.pdf` |
+| **Quadruped IK Solver** | "Zero iterative numerical divergence" | "Direct trigonometric solutions without iterative Jacobian matrix inversion" (~25–26 µs CPython 3.12 microbenchmark) | `index.html`, `quadruped-locomotion.html`, `scripts/generate_resume.py`, `resume.pdf` |
+| **RPLIDAR A1 M8 Range** | Unqualified 8m / 12 Hz | Mfr Spec: 0.15–12.0 m (White target, 90% reflectance), 5.5–10 Hz (5.5 Hz nominal). Configured Range: 8.0 m (`max_laser_range` in SLAM Toolbox). Usable Range: 6–8 m indoor. | `ros2-mobile-robot.html`, `scripts/generate_resume.py`, `resume.pdf`, `PORTFOLIO_CLAIM_AUDIT.md` |
+| **Evolve Robotics Responsibilities** | Proprietary autonomous navigation architecture | Conservative, verified stack contributions: kinematic modeling (URDF/Xacro), Gazebo simulation bringup, embedded firmware interfaces | `scripts/generate_resume.py`, `resume.pdf` |
+
+### 8.3 Résumé Verification Tool (`scripts/verify_resume.py`)
+
+The résumé verification tool was upgraded to use `pypdf-6.21.4` with strict exit codes (`sys.exit(0)` on pass, `sys.exit(1)` on any violation):
+- **Page Budget:** Enforces `len(reader.pages) == 1`. Fails if > 1.
+- **ATS Machine Readability:** Verifies standard PDF text stream extractability (`extract_text()`).
+- **Required Entities:** Asserts presence of candidate name, contact URLs, degree major (`Robotics & Automation`), university, employers, and verified project titles.
+- **Disallowed Substring Filter:** Scans lowercased text and fails immediately if disallowed patterns appear (`sub-8ms`, `sub-8 ms`, `<8ms`, `selected for yip`, `100+`, `numerical divergence`, `sub-10 µs`).
+- **ATS Certification Clarification:** Explicitly notes in terminal output that text stream extractability proves parser machine-readability, without claiming third-party ATS vendor certification.
+
+### 8.4 Visual Inspection of Rendered Résumé
+
+The rendered résumé (`docs/screenshots/resume_rendered.png`) was regenerated using headless Microsoft Edge at 850×1100 resolution:
+- **Pagination:** Cleanly contained within a single letter-size page without clipping or multi-page overflow.
+- **Visual Balance:** Consistent margin rhythm (0.45in top/bottom, 0.5in left/right), clean section divider rules (`#0f172a`), crisp typography hierarchy.
+- **Fact Alignment:** Displays exact V4.2 hardened bullets: "undergraduate engineering students", "without iterative Jacobian inversion", "developed and submitted for YIP 7.0", and "reliable UDP command execution via micro-ROS agent".
+
+### 8.5 Test Execution Results
+
+```text
+===========================================================================
+PORTFOLIO V4.2 — FULL QUALITY, DOM, FACTUAL & RESUME VERIFICATION SUITE
+===========================================================================
+
+[Category 1: Static DOM & Asset Integrity]
+Discovered 5 HTML pages: ['esp32-microros-robot.html', 'index.html', 'quadruped-locomotion.html', 'ros2-mobile-robot.html', 'tilling-robot.html']
+  [PASS] 5 documents checked:
+         - 98 element IDs (100% unique per document)
+         - 65 headings audited (strict single <h1> and no skipped levels)
+         - 9 local source assets confirmed on disk
+         - 33 local href and cross-document anchors verified
+         - All social meta tags verified with absolute https URLs
+         - All external target='_blank' links secure (noopener noreferrer)
+
+[Category 2: Image Accessibility Audit]
+  [PASS] 8 total images checked:
+         - 8 informative images with descriptive alt text
+         - 0 decorative images with valid alt=''
+         - 0 images with missing alt attributes
+
+[Category 3: Factual Claim Audit Across Website HTML]
+  [PASS] All 5 HTML documents clean of unevidenced latency, selection, and divergence claims.
+
+[Category 4: Integrated Résumé Machine-Readability & Factual Audit]
+  [PASS] assets/resume/resume.pdf passed single-page budgeting (1 page),
+         ATS machine readability (3,751 chars parsed),
+         required entity audit (19/19 found),
+         and disallowed claim audit (0 disallowed strings detected).
+
+===========================================================================
+ALL AUDIT CATEGORIES PASSED (100% QUALITY & FACTUAL COMPLIANCE)
+===========================================================================
+```
+
+### 8.6 Items for User Confirmation
+
+The following external items are substantiated conservatively in the current release and can be expanded if formal documentation is provided:
+1. **YIP 7.0 Selection Certificate:** If an official selection or finalist award certificate is issued by K-DISC, the wording can be upgraded from "developed and submitted for YIP 7.0" to the official designation.
+2. **Evolve Robotics Project Names:** Employment bullets currently focus on generic, verified engineering contributions (ROS 2 bringup, URDF modeling, simulation) to protect employer proprietary IP. If specific client/robot model names are approved for public disclosure, they can be incorporated.

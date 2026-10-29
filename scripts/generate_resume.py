@@ -153,9 +153,9 @@ def generate_resume_pdf():
     </div>
     <div class="item-subtitle">Evolve Robotics · Kerala, India</div>
     <ul>
-      <li>Developing end-to-end ROS 2 mobile robot software stacks and hardware-in-the-loop embedded interfaces.</li>
-      <li>Architecting autonomous navigation pipelines with costmap tuning, waypoint tracking, and safety watchdog failsafes.</li>
-      <li>Building kinematic models (URDF/Xacro), Gazebo simulation environments, and ROS 2 bringup launch systems.</li>
+      <li>Contributing to ROS 2 mobile robot software integration, URDF/Xacro kinematic modeling, and system bringup launch systems.</li>
+      <li>Configuring autonomous navigation pipelines, sensor parameters, and Gazebo simulation environments.</li>
+      <li>Developing microcontroller firmware and hardware-in-the-loop test routines for mobile robotics platforms.</li>
     </ul>
   </div>
   <div class="item" style="margin-top: 5px;">
@@ -165,8 +165,8 @@ def generate_resume_pdf():
     </div>
     <div class="item-subtitle">Saintgits College of Engineering · Kottayam, Kerala</div>
     <ul>
-      <li>Led hands-on technical workshops in ROS 2, micro-ROS, and microcontroller programming for 100+ engineering students.</li>
-      <li>Managed hardware procurement, rapid prototyping facilities, and student robotics project mentorship.</li>
+      <li>Organized and facilitated hands-on technical workshops in ROS 2, micro-ROS, and microcontroller programming for undergraduate engineering students.</li>
+      <li>Coordinated hardware procurement, prototyping components, and student technical mentorship.</li>
     </ul>
   </div>
 </div>
@@ -180,7 +180,7 @@ def generate_resume_pdf():
       <span class="item-date">ROS 2 Humble · C++ / Python · Gazebo</span>
     </div>
     <ul>
-      <li>Engineered closed-form analytical 3-DOF leg kinematics achieving <strong>sub-30 µs solve time</strong> in Python (~25–26 µs CPython 3.12 benchmark) with zero iterative numerical divergence.</li>
+      <li>Formulated closed-form analytical 3-DOF leg inverse kinematics (~25–26 µs CPython 3.12 microbenchmark per leg solve) providing direct trigonometric solutions without iterative Jacobian inversion.</li>
       <li>Implemented parametric 3D cycloid foot trajectory generator guaranteeing <strong>C¹ velocity continuity</strong> and zero horizontal/vertical velocity boundary conditions at touchdown.</li>
       <li>Validated multi-gait sequencing (Trot, Walk, Crawl, Bound) and IMU active roll/pitch balance loop at 100 Hz in Gazebo.</li>
     </ul>
@@ -192,7 +192,7 @@ def generate_resume_pdf():
       <span class="item-date">ROS 2 Humble · Raspberry Pi 4B · ESP32 · LiFePO4</span>
     </div>
     <ul>
-      <li>Architected hybrid 24V agricultural rover with front 2-stroke engine and rear high-torque drive; selected for <strong>YIP 7.0</strong>.</li>
+      <li>Architected hybrid 24V agricultural rover with front 2-stroke engine and rear high-torque drive; developed and submitted for <strong>YIP 7.0</strong>.</li>
       <li>Integrated GPS waypoint navigation (NEO-6M), multi-sensor power telemetry, and wireless emergency RF teleoperation.</li>
       <li>Engineered custom chassis and LiFePO4 battery distribution architecture for high-vibration agricultural environments.</li>
     </ul>
@@ -204,7 +204,7 @@ def generate_resume_pdf():
       <span class="item-date">ROS 2 Jazzy · Ubuntu 24.04 · Gazebo Harmonic · Nav2</span>
     </div>
     <ul>
-      <li>Developed modular navigation framework for 2WD + dual-castor chassis with RPLidar A1 M8 (360° FOV, 8m range, 5.5–10 Hz).</li>
+      <li>Developed modular navigation framework for 2WD + dual-castor chassis with RPLidar A1 M8 (360° FOV, 8m configured mapping range, 5.5–10 Hz).</li>
       <li>Configured SLAM Toolbox 2D occupancy mapping, Nav2 dynamic costmaps, and global/local path planning in Gazebo Harmonic.</li>
       <li>Authored multi-module curriculum covering URDF/Xacro, TF2 trees, RViz2, and automated bash installation.</li>
     </ul>
@@ -216,7 +216,7 @@ def generate_resume_pdf():
       <span class="item-date">ESP32 · FreeRTOS · micro-ROS (UDP) · C++</span>
     </div>
     <ul>
-      <li>Built native micro-ROS node on ESP32 executing command subscriptions over Wi-Fi UDP at sub-8ms latency.</li>
+      <li>Built native micro-ROS node on ESP32 executing command subscriptions over Wi-Fi UDP with micro-ROS agent.</li>
       <li>Implemented 4-pin pure PWM motor driver with static friction deadband cutoff (MIN_PWM = 60) and 1 kHz LEDC switching.</li>
       <li>Integrated 500 ms watchdog failsafe shutting off motors on Wi-Fi packet drop or agent disconnection; benchtop tested.</li>
     </ul>
