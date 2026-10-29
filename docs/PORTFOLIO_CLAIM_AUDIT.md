@@ -1,7 +1,7 @@
 # Portfolio Engineering Claim Audit
 
 **Document:** `docs/PORTFOLIO_CLAIM_AUDIT.md`  
-**Revision:** V4.2 — Final Claim Audit, Résumé Integrity & Release Verification  
+**Revision:** V4.2.1 — Final Evidence Cleanup & Usable-Range Resolution  
 **Date:** October 2026  
 **Audited Repositories:**
 1. [`JosiahSK/ros2-quadruped-locomotion`](https://github.com/JosiahSK/ros2-quadruped-locomotion)
@@ -142,13 +142,13 @@ Every technical statement is classified into one of six evidence categories:
   - `05_gazebo_simulation/launch/gazebo.launch.py`.
 - **Verification Status:** **[CATEGORY 1 & 3 — CODE & SIMULATION]**
 
-### Claim 5.2: RPLidar A1 M8 Hardware Specifications (3-Tier Grounding)
-- **Official SLAMTEC Documentation:** RPLidar A1M8 Datasheet specifies:
+### Claim 5.2: RPLidar A1 M8 Hardware Specifications & Range Grounding
+- **Official SLAMTEC Documentation:** The [official SLAMTEC RPLIDAR A1 documentation](https://www.slamtec.com/en/Lidar/A1) specifies:
   - 1. **Manufacturer Hardware Measurement Range:** 0.15 m – 12.0 m (white target with 90% reflectance).
   - 2. **Configured Mapping Range:** 8.0 m (`max_laser_range: 8.0 m` configured in `04_slam_navigation/config/slam_toolbox/mapper_params_online_async.yaml`).
-  - 3. **Usable In-Lab Testing Range:** 6.0 m – 8.0 m typical in indoor cluttered environments.
-  - 4. **Scan Frequency:** 5.5 Hz nominal (configurable 5.5 – 10 Hz via PWM motor speed control).
-- **V4.2 Action:** Both the case study page (`ros2-mobile-robot.html`) and résumé explicitly distinguish the manufacturer specification (0.15–12.0 m, 5.5–10 Hz) from the configured laser range (8.0 m).
+  - 3. **Scan Frequency:** 5.5 Hz nominal (configurable 5.5 – 10 Hz via PWM motor speed control).
+- **Empirical Measurement Audit:** A comprehensive audit of all project files, launch configurations, and documentation in `ros2_jazzy_2wd_robot` (and related repositories) confirmed that no recorded sensor bag files, distance-error test logs, or repeatable indoor ground-truth measurement logs exist.
+- **V4.2.1 Action:** Strictly removed all assertions of an empirical "6–8 m usable range". The case study page (`ros2-mobile-robot.html`), claim audit, and résumé strictly distinguish the manufacturer hardware detection range (0.15–12.0 m, 5.5–10 Hz) from the configured mapping range (8.0 m) in SLAM Toolbox without inferring or asserting an unmeasured in-situ operating range.
 - **Verification Status:** **[CATEGORY 1, 2, & 5 — SPEC SHEET, CONFIG & DRIVER]**
 
 ### Claim 5.3: SLAM Toolbox & Nav2 Mapping Validation

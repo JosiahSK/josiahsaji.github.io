@@ -2,14 +2,18 @@
 """
 tests/test_links.py
 Comprehensive Quality, Link Integrity, Accessibility, and Factual Claim Suite
-for Josiah Saji's Robotics Portfolio (V4.2 Release Verification).
+for Josiah Saji's Robotics Portfolio (V4.2.1 Release Verification).
 
 Categories:
 1. Static DOM Structure & Asset Verification (Unique IDs, Heading Hierarchy, Asset Paths, Cross-document Anchors)
-2. Accessible Image Alt Text Audit (Informative vs Decorative, Rejection of Missing Alt)
-3. Factual Claim Audit Across HTML (Purges of sub-8ms, YIP selection, numerical divergence, compiled IK)
+2. Accessible Image Alt Text Audit (Attribute presence, Informative vs Empty alt, Manual Review Checklist)
+3. Factual Claim Audit Across HTML (Purges of sub-8ms, YIP selection, numerical divergence, compiled IK, unevidenced 6-8m usable range)
 4. Integrated Résumé Verification (Single-page PDF ATS machine-readability & factual integrity)
 5. Live Deployment Verification (HTTP 200 checks on live endpoints when invoked with --live)
+
+NOTE: This script performs static automated DOM, file, and text pattern audits.
+It does NOT substitute for interactive keyboard traversal, screen-reader testing,
+or full subjective WCAG 2.2 AA conformance certification.
 """
 
 import os
@@ -90,7 +94,7 @@ class ComprehensiveDOMParser(HTMLParser):
 
 def run_suite(check_live=False):
     print("=" * 75)
-    print("PORTFOLIO V4.2 — FULL QUALITY, DOM, FACTUAL & RESUME VERIFICATION SUITE")
+    print("PORTFOLIO V4.2.1 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
     print("=" * 75)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -105,8 +109,9 @@ def run_suite(check_live=False):
     total_hrefs = 0
     total_headings = 0
     total_images = 0
-    informative_images = 0
-    decorative_images = 0
+    non_empty_alt_images = []
+    empty_alt_images = []
+    missing_alt_images = []
 
     parsed_docs = {}
     for hf_path in html_files:
@@ -141,12 +146,14 @@ def run_suite(check_live=False):
         total_images += len(parser.images)
         for img in parser.images:
             alt_val = img['alt']
+            src_val = img['src']
             if alt_val is None:
-                errors.append(f"[{hf}] Image missing alt attribute: {img['src']}")
+                missing_alt_images.append((hf, src_val))
+                errors.append(f"[{hf}] Image missing alt attribute: {src_val}")
             elif alt_val.strip() == '':
-                decorative_images += 1
+                empty_alt_images.append((hf, src_val))
             else:
-                informative_images += 1
+                non_empty_alt_images.append((hf, src_val, alt_val))
 
         # D. Source assets exist locally
         for item in parser.srcs:
@@ -206,12 +213,31 @@ def run_suite(check_live=False):
     print(f"         - All social meta tags verified with absolute https URLs")
     print(f"         - All external target='_blank' links secure (noopener noreferrer)")
 
-    # 2. Image Accessibility Audit
-    print(f"\n[Category 2: Image Accessibility Audit]")
-    print(f"  [PASS] {total_images} total images checked:")
-    print(f"         - {informative_images} informative images with descriptive alt text")
-    print(f"         - {decorative_images} decorative images with valid alt=''")
-    print(f"         - 0 images with missing alt attributes")
+    # 2. Image Accessibility Audit (Precise Scope Reporting)
+    print(f"\n[Category 2: Image Accessibility Automated Syntax Audit]")
+    print(f"  Total <img> elements parsed: {total_images}")
+    print(f"  - Non-empty alt attribute string present: {len(non_empty_alt_images)}")
+    print(f"    (Automated check confirms attribute presence and non-whitespace text;")
+    print(f"     it does not evaluate qualitative accuracy, clarity, or contextual suitability.)")
+    print(f"  - Empty alt attribute (alt=''): {len(empty_alt_images)}")
+    print(f"    (Images with empty alt require manual review to confirm they are purely decorative")
+    print(f"     and do not convey substantive technical information.)")
+    print(f"  - Missing alt attribute entirely: {len(missing_alt_images)}")
+    if missing_alt_images:
+        print(f"    [FAIL] {len(missing_alt_images)} images lack an alt attribute.")
+    else:
+        print(f"    [PASS] 0 images lack an alt attribute.")
+
+    print("\n  [Parsed Image Catalog for Manual Review]")
+    for hf, src, alt in non_empty_alt_images:
+        print(f"    • [{hf}] {os.path.basename(src)}")
+        print(f"      alt: \"{alt}\"")
+
+    print("\n  [Manual Accessibility Review Checklist for Informative Images]")
+    print("  [ ] Qualitative Description: Does the alt text communicate the core technical takeaway of the diagram?")
+    print("  [ ] Contextual Explanation: Is the diagram reinforced by adjacent heading and narrative copy for screen readers?")
+    print("  [ ] Decorative Verification: If alt='' is used on any element, is it genuinely decorative with zero lost context?")
+    print("  [ ] Keyboard Traversal: Do interactive carousels and buttons support sequential Tab navigation with visible focus rings?")
 
     # 3. Factual Claim Audit Across HTML
     print(f"\n[Category 3: Factual Claim Audit Across Website HTML]")
@@ -226,6 +252,9 @@ def run_suite(check_live=False):
         ("sub-10 µs compiled", "Unverified compiled IK execution metric"),
         ("sub-10 us compiled", "Unverified compiled IK execution metric"),
         ("<10 µs c++", "Unverified compiled IK execution metric"),
+        ("6–8 m", "Unevidenced in-situ usable range metric"),
+        ("6-8 m", "Unevidenced in-situ usable range metric"),
+        ("usable indoor range", "Unevidenced in-situ usable range claim"),
     ]
 
     claims_clean = True
@@ -237,7 +266,7 @@ def run_suite(check_live=False):
                 claims_clean = False
 
     if claims_clean:
-        print("  [PASS] All 5 HTML documents clean of unevidenced latency, selection, and divergence claims.")
+        print("  [PASS] All 5 HTML documents clean of unevidenced latency, selection, divergence, and 6-8m usable-range claims.")
 
     # 4. Integrated Résumé Verification
     print(f"\n[Category 4: Integrated Résumé Machine-Readability & Factual Audit]")
@@ -280,14 +309,24 @@ def run_suite(check_live=False):
         else:
             print("  [PASS] All 7 live production endpoints verified HTTP 200.")
 
-    print("\n" + "=" * 75)
+    # Scope and Testing Boundary Clarification
+    print("\n" + "-" * 75)
+    print("Scope & Testing Boundary Clarification:")
+    print("  • Automated Static Scope: DOM syntax, unique element IDs, heading hierarchy,")
+    print("    local asset file existence, anchor target validation, alt attribute presence,")
+    print("    disallowed string pattern absence, and PDF text stream extractability.")
+    print("  • Interactive & Assistive Scope: Full WCAG 2.2 AA certification, contrast under")
+    print("    all dynamic states, screen reader annunciation (NVDA/JAWS), and keyboard focus")
+    print("    require real browser interaction and human manual audit.")
+    print("-" * 75)
+
     if errors:
-        print(f"AUDIT FAILED with {len(errors)} error(s):")
+        print(f"\nAUDIT FAILED with {len(errors)} error(s):")
         for err in errors:
             print(f"  [-] {err}")
         return False
     else:
-        print("ALL AUDIT CATEGORIES PASSED (100% QUALITY & FACTUAL COMPLIANCE)")
+        print("\nAUTOMATED QUALITY, DOM, AND INTEGRITY CHECKS PASSED WITHIN DEFINED SCOPE")
         print("=" * 75)
         return True
 

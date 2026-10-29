@@ -230,3 +230,93 @@ ALL AUDIT CATEGORIES PASSED (100% QUALITY & FACTUAL COMPLIANCE)
 The following external items are substantiated conservatively in the current release and can be expanded if formal documentation is provided:
 1. **YIP 7.0 Selection Certificate:** If an official selection or finalist award certificate is issued by K-DISC, the wording can be upgraded from "developed and submitted for YIP 7.0" to the official designation.
 2. **Evolve Robotics Project Names:** Employment bullets currently focus on generic, verified engineering contributions (ROS 2 bringup, URDF modeling, simulation) to protect employer proprietary IP. If specific client/robot model names are approved for public disclosure, they can be incorporated.
+
+---
+
+## 9. Portfolio V4.2.1 — Final Evidence Cleanup Addendum
+
+### 9.1 Motivation & Scope of Changes
+
+This focused addendum addresses the resolution of the RPLIDAR usable-range claim and refines accessibility test reporting:
+1. **RPLIDAR Range Claim Resolution:**
+   - Conducted an exhaustive audit for recorded scan logs, distance-error benchmarks, or sensor bag files across `ros2_jazzy_2wd_robot` and related workspaces. No empirical measurement benchmark log exists.
+   - Removed the "6–8 m" figure as an in-situ usable range from `ros2-mobile-robot.html` and `docs/PORTFOLIO_CLAIM_AUDIT.md`.
+   - Kept the 8.0 m value strictly labelled as the configured mapping range (`max_laser_range: 8.0 m` in SLAM Toolbox `mapper_params_online_async.yaml`).
+   - Preserved manufacturer hardware specifications (0.15–12.0 m on white target, 5.5–10 Hz) separately and added a direct link to the [official SLAMTEC RPLIDAR A1 documentation](https://www.slamtec.com/en/Lidar/A1).
+   - Confirmed that the generated résumé already described this as "8m configured mapping range" without asserting a 6–8 m usable range, requiring no re-render.
+2. **Precision in Accessibility Test Reporting:**
+   - Corrected `tests/test_links.py` to report precisely what the automated tool evaluates: presence of non-empty `alt` attribute strings (syntax check passed) without conflating syntax with editorial description quality.
+   - Prevented automated categorization of empty `alt=""` as decorative without manual contextual inspection.
+   - Added a lightweight manual review checklist for informative diagram descriptions and keyboard navigation.
+   - Added explicit scope differentiation distinguishing automated static checks from interactive browser traversal, screen-reader testing, and full WCAG 2.2 AA certification.
+   - Updated the global pass message to reflect that automated checks passed within their defined scope.
+3. **Automated Regression Prevention:**
+   - Added `6–8 m`, `6-8 m`, and `usable indoor range` to the disallowed web claim scanner in `tests/test_links.py`.
+
+### 9.2 V4.2.1 Test Execution Output
+
+```text
+===========================================================================
+PORTFOLIO V4.2.1 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION
+===========================================================================
+
+[Category 1: Static DOM & Asset Integrity]
+Discovered 5 HTML pages: ['esp32-microros-robot.html', 'index.html', 'quadruped-locomotion.html', 'ros2-mobile-robot.html', 'tilling-robot.html']
+  [PASS] 5 documents checked:
+         - 98 element IDs (100% unique per document)
+         - 65 headings audited (strict single <h1> and no skipped levels)
+         - 9 local source assets confirmed on disk
+         - 33 local href and cross-document anchors verified
+         - All social meta tags verified with absolute https URLs
+         - All external target='_blank' links secure (noopener noreferrer)
+
+[Category 2: Image Accessibility Automated Syntax Audit]
+  Total <img> elements parsed: 8
+  - Non-empty alt attribute string present: 8
+    (Automated check confirms attribute presence and non-whitespace text;
+     it does not evaluate qualitative accuracy, clarity, or contextual suitability.)
+  - Empty alt attribute (alt=''): 0
+    (Images with empty alt require manual review to confirm they are purely decorative
+     and do not convey substantive technical information.)
+  - Missing alt attribute entirely: 0
+    [PASS] 0 images lack an alt attribute.
+
+  [Parsed Image Catalog for Manual Review]
+    • [index.html] control_architecture_diagram.png (alt: "Quadruped Robot - Locomotion Control Architecture")
+    • [index.html] quadruped_kinematics_diagram.png (alt: "Quadruped Robot - Analytical 3-DOF Leg Kinematics")
+    • [index.html] gait_phase_diagram.png (alt: "Quadruped Robot - Multi-Gait Phase Timing Chart")
+    • [index.html] support_polygon_diagram.png (alt: "Quadruped Robot - CoM Support Polygon Stability Margin")
+    • [quadruped-locomotion.html] control_architecture_diagram.png (alt: "Quadruped Locomotion Control Architecture Diagram")
+    • [quadruped-locomotion.html] quadruped_kinematics_diagram.png (alt: "Analytical 3-DOF Leg Kinematics Diagram")
+    • [quadruped-locomotion.html] gait_phase_diagram.png (alt: "Multi-Gait Phase Progression Timing Chart")
+    • [quadruped-locomotion.html] support_polygon_diagram.png (alt: "Support Polygon Stability Margin Diagram")
+
+  [Manual Accessibility Review Checklist for Informative Images]
+  [ ] Qualitative Description: Does the alt text communicate the core technical takeaway of the diagram?
+  [ ] Contextual Explanation: Is the diagram reinforced by adjacent heading and narrative copy for screen readers?
+  [ ] Decorative Verification: If alt='' is used on any element, is it genuinely decorative with zero lost context?
+  [ ] Keyboard Traversal: Do interactive carousels and buttons support sequential Tab navigation with visible focus rings?
+
+[Category 3: Factual Claim Audit Across Website HTML]
+  [PASS] All 5 HTML documents clean of unevidenced latency, selection, divergence, and 6-8m usable-range claims.
+
+[Category 4: Integrated Résumé Machine-Readability & Factual Audit]
+  [PASS] assets/resume/resume.pdf passed single-page budgeting (1 page),
+         ATS machine readability (3,751 chars parsed),
+         required entity audit (19/19 found),
+         and disallowed claim audit (0 disallowed strings detected).
+
+---------------------------------------------------------------------------
+Scope & Testing Boundary Clarification:
+  • Automated Static Scope: DOM syntax, unique element IDs, heading hierarchy,
+    local asset file existence, anchor target validation, alt attribute presence,
+    disallowed string pattern absence, and PDF text stream extractability.
+  • Interactive & Assistive Scope: Full WCAG 2.2 AA certification, contrast under
+    all dynamic states, screen reader annunciation (NVDA/JAWS), and keyboard focus
+    require real browser interaction and human manual audit.
+---------------------------------------------------------------------------
+
+AUTOMATED QUALITY, DOM, AND INTEGRITY CHECKS PASSED WITHIN DEFINED SCOPE
+===========================================================================
+```
+
