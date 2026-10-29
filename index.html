@@ -252,20 +252,22 @@
           <!-- IMAGE CAROUSEL -->
           <div class="proj-carousel" data-carousel>
             <div class="carousel-track">
-              <!-- ADD IMAGES: Uncomment each <figure> block and fill in the src path
               <figure>
-                <img src="assets/projects/quadruped-robot/images/photo1.jpg" alt="Quadruped Robot – standing pose" loading="lazy">
-                <figcaption>Standing pose</figcaption>
+                <img src="assets/projects/quadruped-robot/images/control_architecture_diagram.png" alt="Quadruped Robot - Locomotion Control Architecture" loading="lazy">
+                <figcaption>Control Architecture Diagram</figcaption>
               </figure>
               <figure>
-                <img src="assets/projects/quadruped-robot/images/photo2.jpg" alt="Quadruped Robot – terrain test" loading="lazy">
-                <figcaption>Terrain test</figcaption>
+                <img src="assets/projects/quadruped-robot/images/quadruped_kinematics_diagram.png" alt="Quadruped Robot - Analytical 3-DOF Leg Kinematics" loading="lazy">
+                <figcaption>Analytical 3-DOF Kinematics</figcaption>
               </figure>
               <figure>
-                <img src="assets/projects/quadruped-robot/images/photo3.jpg" alt="Quadruped Robot – CAD render" loading="lazy">
-                <figcaption>CAD render</figcaption>
+                <img src="assets/projects/quadruped-robot/images/gait_phase_diagram.png" alt="Quadruped Robot - Multi-Gait Phase Timing Chart" loading="lazy">
+                <figcaption>Multi-Gait Phase Timing</figcaption>
               </figure>
-              -->
+              <figure>
+                <img src="assets/projects/quadruped-robot/images/support_polygon_diagram.png" alt="Quadruped Robot - CoM Support Polygon Stability Margin" loading="lazy">
+                <figcaption>Support Polygon Stability Margin</figcaption>
+              </figure>
             </div>
             <div class="carousel-placeholder">
               <span>📷</span>
@@ -293,7 +295,7 @@
               </div>
               <div class="narrative-block">
                 <span class="narrative-label result">Result</span>
-                <p>Achieved <strong>&lt;10 µs</strong> analytical IK compute latency with zero singularity drift, validated in Gazebo Classic &amp; RViz2 with synchronized 100 Hz <code>ros2_control</code> trajectory execution.</p>
+                <p>Achieved <strong>sub-30 µs</strong> analytical IK solve latency in Python (sub-10 µs compiled) with zero iterative numerical divergence, validated in Gazebo Classic &amp; RViz2 with synchronized 100 Hz <code>ros2_control</code> trajectory execution.</p>
               </div>
             </div>
 

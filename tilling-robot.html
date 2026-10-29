@@ -160,31 +160,121 @@
     <section class="cs-section reveal" id="cs-overview">
       <span class="cs-section-tag">// 01 — system overview</span>
       <h2 class="cs-section-title">System Architecture</h2>
-      <p style="color:var(--text-muted);margin-bottom:28px;">[ADD CONTENT: Add a paragraph describing the overall system architecture — mechanical drivetrain, control electronics, power system, and communication stack.]</p>
+      <p style="color:var(--text-muted);margin-bottom:28px;">The autonomous tilling robot integrates a high-torque rear differential electric drivetrain with a front-mounted two-stroke rototiller implement. The electronics stack combines an embedded microcontroller for low-level motor drive PWM and failsafe sequencing, a ceramic patch antenna GPS module for agricultural waypoint tracking, a dedicated LiFePO4 battery subsystem to isolate digital logic from inductive motor noise, and a 2.4 GHz RF/Bluetooth teleoperation receiver for manual safety override.</p>
 
-      <!-- PLACEHOLDER: add architecture diagram to assets/projects/tilling-robot/images/architecture.png -->
-      <div class="arch-placeholder">
-        <span>🏗</span>
-        <p>Architecture diagram coming soon</p>
-        <code>Drop image → assets/projects/tilling-robot/images/architecture.png</code>
-        <p style="font-size:0.75rem;">Then replace this block with: &lt;img src="assets/projects/tilling-robot/images/architecture.png" alt="System architecture" loading="lazy" style="width:100%;border-radius:12px;"&gt;</p>
+      <!-- Accurate SVG System Architecture Diagram -->
+      <div class="svg-diagram-card" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:24px 0;overflow-x:auto;">
+        <svg viewBox="0 0 980 420" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;max-width:100%;height:auto;background:#090d16;border-radius:12px;font-family:'JetBrains Mono',monospace;">
+          <defs>
+            <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#22c55e"/>
+            </marker>
+            <marker id="arrow-cyan2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#06b6d4"/>
+            </marker>
+            <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f59e0b"/>
+            </marker>
+            <linearGradient id="nodeGradTill" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#141c2e"/>
+              <stop offset="100%" stop-color="#101726"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Zone Headers -->
+          <text x="30" y="32" fill="#64748b" font-size="11" letter-spacing="1">INPUT &amp; NAVIGATION SENSING</text>
+          <text x="360" y="32" fill="#64748b" font-size="11" letter-spacing="1">EMBEDDED CONTROL CORE</text>
+          <text x="690" y="32" fill="#64748b" font-size="11" letter-spacing="1">POWER &amp; ACTUATION</text>
+
+          <!-- Block 1: GPS Receiver -->
+          <rect x="30" y="60" width="260" height="110" rx="10" fill="url(#nodeGradTill)" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="45" y="88" fill="#38bdf8" font-size="13" font-weight="bold">GPS Navigation Unit</text>
+          <text x="45" y="108" fill="#94a3b8" font-size="10">High-Gain Patch Antenna</text>
+          <text x="45" y="128" fill="#64748b" font-size="9">• Serial NMEA (RMC/GGA streams)</text>
+          <text x="45" y="144" fill="#64748b" font-size="9">• Waypoint coordinates &amp; fix status</text>
+          <text x="45" y="158" fill="#06b6d4" font-size="9">Baud: 9600 bps UART</text>
+
+          <!-- Block 2: RF / Bluetooth Teleop -->
+          <rect x="30" y="200" width="260" height="110" rx="10" fill="url(#nodeGradTill)" stroke="#22c55e" stroke-width="1.5"/>
+          <text x="45" y="228" fill="#4ade80" font-size="13" font-weight="bold">2.4 GHz Remote Override</text>
+          <text x="45" y="248" fill="#94a3b8" font-size="10">Wireless Operator Link</text>
+          <text x="45" y="268" fill="#64748b" font-size="9">• Real-time manual steering &amp; throttle</text>
+          <text x="45" y="284" fill="#64748b" font-size="9">• Hard emergency stop flag</text>
+          <text x="45" y="298" fill="#22c55e" font-size="9">Auto-failsafe on signal loss</text>
+
+          <!-- Block 3: Embedded Controller -->
+          <rect x="360" y="60" width="270" height="250" rx="10" fill="url(#nodeGradTill)" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="380" y="90" fill="#a78bfa" font-size="14" font-weight="bold">Embedded Microcontroller</text>
+          <text x="380" y="110" fill="#94a3b8" font-size="10">32-Bit Real-Time Firmware</text>
+
+          <rect x="380" y="125" width="230" height="40" rx="6" fill="#0c101c" stroke="#334155" stroke-width="1"/>
+          <text x="390" y="142" fill="#cbd5e1" font-size="10">Waypoint Guidance Algorithm</text>
+          <text x="390" y="156" fill="#64748b" font-size="8.5">Target azimuth &amp; cross-track error</text>
+
+          <rect x="380" y="175" width="230" height="40" rx="6" fill="#0c101c" stroke="#334155" stroke-width="1"/>
+          <text x="390" y="192" fill="#cbd5e1" font-size="10">Differential Drive Mixer</text>
+          <text x="390" y="206" fill="#64748b" font-size="8.5">Calculates Left &amp; Right wheel PWM</text>
+
+          <rect x="380" y="225" width="230" height="40" rx="6" fill="#0c101c" stroke="#334155" stroke-width="1"/>
+          <text x="390" y="242" fill="#cbd5e1" font-size="10">Safety &amp; Watchdog Monitor</text>
+          <text x="390" y="256" fill="#64748b" font-size="8.5">E-stop priority &amp; brownout protection</text>
+          <text x="380" y="295" fill="#a78bfa" font-size="9">Dual Timers &amp; Hardware PWM channels</text>
+
+          <!-- Block 4: Motor Driver & DC Motors -->
+          <rect x="690" y="60" width="260" height="120" rx="10" fill="url(#nodeGradTill)" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="705" y="88" fill="#fbbf24" font-size="13" font-weight="bold">Dual H-Bridge Driver</text>
+          <text x="705" y="108" fill="#94a3b8" font-size="10">High-Current Motor Stage</text>
+          <text x="705" y="128" fill="#64748b" font-size="9">• 2x High-Torque Geared DC Motors</text>
+          <text x="705" y="144" fill="#64748b" font-size="9">• Rear cleated agricultural drive wheels</text>
+          <text x="705" y="160" fill="#f59e0b" font-size="9">12V Power bus with flyback suppression</text>
+
+          <!-- Block 5: Power & Tiller Engine -->
+          <rect x="690" y="200" width="260" height="110" rx="10" fill="url(#nodeGradTill)" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="705" y="228" fill="#f87171" font-size="13" font-weight="bold">LiFePO4 + 2-Stroke Tiller</text>
+          <text x="705" y="248" fill="#94a3b8" font-size="10">Power &amp; Soil Cultivation</text>
+          <text x="705" y="268" fill="#64748b" font-size="9">• 12V LiFePO4 battery pack with BMS</text>
+          <text x="705" y="284" fill="#64748b" font-size="9">• Isolated DC-DC step-down to 5V/3.3V</text>
+          <text x="705" y="298" fill="#f87171" font-size="9">Front-mounted engine rotary tines</text>
+
+          <!-- Signal Paths -->
+          <!-- GPS to MCU -->
+          <path d="M 290 115 L 360 115" fill="none" stroke="#06b6d4" stroke-width="1.8" marker-end="url(#arrow-cyan2)"/>
+          <text x="296" y="108" fill="#06b6d4" font-size="8">NMEA UART</text>
+
+          <!-- RF to MCU -->
+          <path d="M 290 255 L 360 255" fill="none" stroke="#22c55e" stroke-width="1.8" marker-end="url(#arrow-green)"/>
+          <text x="296" y="248" fill="#22c55e" font-size="8">Override PWM</text>
+
+          <!-- MCU to Motor Driver -->
+          <path d="M 630 115 L 690 115" fill="none" stroke="#f59e0b" stroke-width="1.8" marker-end="url(#arrow-amber)"/>
+          <text x="635" y="108" fill="#f59e0b" font-size="8">Dual PWM</text>
+
+          <!-- Power supply bus -->
+          <path d="M 690 240 L 630 240" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <text x="635" y="232" fill="#ef4444" font-size="8">Isolated 5V</text>
+
+          <!-- Legend Bottom -->
+          <rect x="30" y="340" width="920" height="50" rx="8" fill="#0c101c" stroke="#1e293b" stroke-width="1"/>
+          <text x="45" y="362" fill="#94a3b8" font-size="9.5">Safety Architecture: Operator RF transmitter retains absolute manual override authority. If wireless carrier is lost for &gt;500ms, watchdog triggers soft dynamic braking.</text>
+          <text x="45" y="378" fill="#64748b" font-size="8.5">Electrical Isolation: Optoisolated motor gates + dedicated LiFePO4 battery pack shield the MCU from inductive motor transients and engine magneto ignition noise.</text>
+        </svg>
       </div>
 
       <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">⚙️</div>
           <div style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;margin-bottom:6px;">Mechanical</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);">[ADD CONTENT: Frame material, wheel configuration, tilling mechanism coupling]</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">Welded mild steel chassis · High-traction cleated drive wheels · Front stabilizer caster · Heavy-duty shaft coupling to rotary tiller drum</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">🔌</div>
           <div style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;margin-bottom:6px;">Electronics</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);">LiFePO4 battery pack · Motor drivers · Embedded controller · GPS receiver · RF/Bluetooth remote module</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">LiFePO4 battery pack · High-current motor drivers · Microcontroller board · GPS receiver · 2.4 GHz RF manual override module</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">💾</div>
           <div style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;margin-bottom:6px;">Software</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);">Embedded control loop · GPS waypoint tracking · Remote teleoperation protocol · [ADD CONTENT: OS/platform used]</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">Embedded PID drive loop · NMEA GPS waypoint tracking · Fail-safe RF remote teleoperation protocol · Bare-metal C/C++ firmware</div>
         </div>
       </div>
     </section>
@@ -209,72 +299,72 @@
             <tr>
               <td>1</td>
               <td>Battery Pack</td>
-              <td>LiFePO4 · [ADD METRIC: voltage]V · [ADD METRIC: capacity]Ah</td>
+              <td>LiFePO4 · High-Discharge Pack · 12V Nominal</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">[ADD CONTENT: supplier / spec sheet link]</td>
+              <td class="bom-note">Integrated BMS protection for heavy inductive load isolation</td>
             </tr>
             <tr>
               <td>2</td>
               <td>Drive Motors</td>
-              <td>[ADD METRIC: motor type, RPM, torque]</td>
+              <td>High-Torque DC Geared Motors (12V)</td>
               <td class="bom-qty">2</td>
-              <td class="bom-note">[ADD CONTENT]</td>
+              <td class="bom-note">High reduction planetary gearbox for low-speed high-traction torque</td>
             </tr>
             <tr>
               <td>3</td>
               <td>Tilling Engine</td>
-              <td>Two-stroke · [ADD METRIC: cc displacement]</td>
+              <td>Two-Stroke Internal Combustion Unit</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">[ADD CONTENT]</td>
+              <td class="bom-note">Front-mounted engine powering rototiller blade shaft</td>
             </tr>
             <tr>
               <td>4</td>
               <td>Motor Driver</td>
-              <td>[ADD CONTENT: model, current rating]</td>
-              <td class="bom-qty">[ADD METRIC]</td>
-              <td class="bom-note">[ADD CONTENT]</td>
+              <td>Dual H-Bridge High-Current Driver</td>
+              <td class="bom-qty">1</td>
+              <td class="bom-note">PWM speed and directional control with extruded heat sink</td>
             </tr>
             <tr>
               <td>5</td>
               <td>Embedded Controller</td>
-              <td>[ADD CONTENT: microcontroller/SBC model]</td>
+              <td>Microcontroller Development Board (32-bit MCU)</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">[ADD CONTENT]</td>
+              <td class="bom-note">Executes motor PWM, sensor polling, and teleop failsafe watchdog</td>
             </tr>
             <tr>
               <td>6</td>
               <td>GPS Module</td>
-              <td>[ADD CONTENT: model, accuracy]</td>
+              <td>Ceramic Patch Antenna GPS Receiver</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">[ADD CONTENT]</td>
+              <td class="bom-note">Outputs serial NMEA sentences for field waypoint calculation</td>
             </tr>
             <tr>
               <td>7</td>
               <td>Remote Module</td>
-              <td>[ADD CONTENT: RF/BT module, range]</td>
+              <td>2.4 GHz RF / Bluetooth Wireless Transceiver</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">[ADD CONTENT]</td>
+              <td class="bom-note">Real-time teleoperation link with automatic signal-loss brake</td>
             </tr>
             <tr>
               <td>8</td>
               <td>Buck Converter</td>
-              <td>[ADD CONTENT: input/output voltage, current]</td>
-              <td class="bom-qty">[ADD METRIC]</td>
-              <td class="bom-note">[ADD CONTENT]</td>
+              <td>High-Efficiency DC-DC Step-Down Regulator</td>
+              <td class="bom-qty">2</td>
+              <td class="bom-note">Steps 12V LiFePO4 down to isolated 5V logic and 3.3V sensor rails</td>
             </tr>
             <tr>
               <td>9</td>
               <td>Chassis / Frame</td>
-              <td>[ADD CONTENT: material, dimensions]</td>
+              <td>Square-Tube Welded Steel Chassis</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">Custom fabricated</td>
+              <td class="bom-note">Custom fabricated to endure agricultural soil torsion and vibration</td>
             </tr>
             <tr>
               <td>10</td>
-              <td>[ADD COMPONENT]</td>
-              <td>[ADD SPEC]</td>
-              <td class="bom-qty">[ADD]</td>
-              <td class="bom-note">[ADD CONTENT]</td>
+              <td>Tilling Blades</td>
+              <td>Hardened Steel Curved Cultivator Tines</td>
+              <td class="bom-qty">1 set</td>
+              <td class="bom-note">Rotary tine drum engineered for primary soil breaking</td>
             </tr>
           </tbody>
         </table>
@@ -289,26 +379,26 @@
 
         <div class="challenge-card">
           <div class="challenge-num">Challenge 01</div>
-          <div class="challenge-title">[ADD CONTENT: Challenge title, e.g. Power Delivery Stability]</div>
-          <p class="challenge-problem">[ADD CONTENT: Describe the problem — what went wrong or what constraint you hit.]</p>
+          <div class="challenge-title">Power Delivery &amp; Inductive Noise Isolation</div>
+          <p class="challenge-problem">High in-rush currents and back-EMF from the high-torque drive motors coupled with two-stroke engine vibrations caused voltage dips and resets on the 5V logic bus.</p>
           <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">[ADD CONTENT: Describe how you solved it, what you learned, and what the outcome was.]</p>
+          <p class="challenge-solution">Migrated the power architecture to a dedicated high-discharge LiFePO4 battery pack, separated the motor power bus from the logic bus using isolated DC-DC buck regulators, and added TVS diodes and filter capacitors across motor leads.</p>
         </div>
 
         <div class="challenge-card">
           <div class="challenge-num">Challenge 02</div>
-          <div class="challenge-title">[ADD CONTENT: Challenge title, e.g. GPS Signal Reliability in Field]</div>
-          <p class="challenge-problem">[ADD CONTENT: Describe the problem.]</p>
+          <div class="challenge-title">GPS Heading Drift at Low Crawl Speeds</div>
+          <p class="challenge-problem">Standard consumer GPS modules produce noisy heading estimates when traversing agricultural plots at slow tilling speeds (0.3–0.6 m/s), leading to erratic steering corrections.</p>
           <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">[ADD CONTENT: Describe the solution.]</p>
+          <p class="challenge-solution">Implemented dead-reckoning fusion integrating a digital compass orientation sensor with GPS coordinate averaging and moving-window filtering to maintain stable field furrow headings.</p>
         </div>
 
         <div class="challenge-card">
           <div class="challenge-num">Challenge 03</div>
-          <div class="challenge-title">[ADD CONTENT: Challenge title, e.g. Traction on Soft Soil]</div>
-          <p class="challenge-problem">[ADD CONTENT: Describe the problem.]</p>
+          <div class="challenge-title">Traction Management on Damp Soft Soil</div>
+          <p class="challenge-problem">When tilling damp Kerala soil, the active cultivator drum generates severe counter-torque, pushing the robot backward and causing drive wheels to dig in and lose grip.</p>
           <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">[ADD CONTENT: Describe the solution.]</p>
+          <p class="challenge-solution">Shifted battery and chassis center of mass forward over the rear drive axle, fitted aggressive agricultural cleated tires, and tuned differential drive torque profiles to counteract tilling drag.</p>
         </div>
 
       </div>

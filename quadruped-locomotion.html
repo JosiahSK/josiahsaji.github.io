@@ -8,7 +8,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
-  <meta property="og:description" content="Analytical Inverse Kinematics (<10µs), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
+  <meta property="og:description" content="Analytical Inverse Kinematics (sub-30 µs Python / sub-10 µs compiled), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
   <meta property="og:image" content="assets/og-image.png" />
   <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/quadruped-locomotion.html" />
   <meta property="og:type" content="article" />
@@ -16,7 +16,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
-  <meta name="twitter:description" content="Analytical Inverse Kinematics (<10µs), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
+  <meta name="twitter:description" content="Analytical Inverse Kinematics (sub-30 µs Python / sub-10 µs compiled), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
   <meta name="twitter:image" content="assets/og-image.png" />
 
   <!-- Favicon -->
@@ -330,6 +330,11 @@
           <text x="45" y="402" fill="#94a3b8" font-size="10">Data Protocol: All real-time telemetry uses Best-Effort Volatile QoS depth 10 · Synchronous 12-joint updates eliminate inter-leg phase skew</text>
         </svg>
       </div>
+
+      <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
+        <img src="assets/projects/quadruped-robot/images/control_architecture_diagram.png" alt="Quadruped Locomotion Control Architecture Diagram" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(124,58,237,0.2);">
+        <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Figure 2.1: Generated Locomotion Control Architecture across Command, Gait, Kinematics, and Simulation Subsystems.</p>
+      </div>
     </section>
 
     <!-- § 03 — VERIFIED CONTRIBUTIONS -->
@@ -341,7 +346,7 @@
           <span class="decision-badge">quadruped_kinematics</span>
           <div class="decision-title">Closed-Form Analytical IK Solver</div>
           <p class="decision-text">
-            Developed a deterministic, closed-form trigonometric inverse kinematics solver for the 3-DOF leg mechanism (Hip Roll, Thigh Pitch, Knee Pitch). Eliminates the divergence and matrix inversion costs of Jacobian pseudo-inverse algorithms, calculating exact joint positions in under <strong>10 µs</strong> with analytical reachability workspace clamping.
+            Developed a deterministic, closed-form trigonometric inverse kinematics solver for the 3-DOF leg mechanism (Hip Roll, Thigh Pitch, Knee Pitch). Eliminates the divergence and matrix inversion costs of Jacobian pseudo-inverse algorithms, calculating exact joint positions in <strong>sub-30 µs in Python (sub-10 µs compiled)</strong> with analytical reachability workspace clamping.
           </p>
         </div>
 
@@ -349,7 +354,7 @@
           <span class="decision-badge">quadruped_gait</span>
           <div class="decision-title">3D Cycloid Foot Trajectory Generator</div>
           <p class="decision-text">
-            Implemented parametric cycloid curves for the swing phase trajectory. Unlike cubic or polynomial splines that impart acceleration spikes on touchdown, cycloid geometry ensures both velocity and acceleration smoothly reach zero at lift-off and ground impact, mitigating destructive ground impact shocks.
+            Implemented parametric cycloid curves for the swing phase trajectory. Unlike cubic or polynomial splines that impart acceleration spikes on touchdown, cycloid geometry ensures zero horizontal velocity, zero horizontal acceleration, and smooth zero vertical velocity at touchdown, preventing horizontal skidding and abrupt ground impact shocks.
           </p>
         </div>
 
@@ -378,6 +383,11 @@
       <p style="color:var(--text-muted);line-height:1.7;margin-bottom:16px;">
         Each leg possesses 3 degrees of freedom with link dimensions: hip offset <code style="color:var(--accent2);">l1 = 0.08 m</code>, thigh length <code style="color:var(--accent2);">l2 = 0.22 m</code>, and shank length <code style="color:var(--accent2);">l3 = 0.22 m</code>. The analytical solver decouples the 3D target coordinate into a roll rotation followed by planar 2-link trigonometry:
       </p>
+
+      <div style="margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
+        <img src="assets/projects/quadruped-robot/images/quadruped_kinematics_diagram.png" alt="Analytical 3-DOF Leg Kinematics Diagram" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(6,182,212,0.2);">
+        <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Figure 4.1: Geometric Vector Kinematics for 3-DOF Quadruped Leg (Hip Roll, Thigh Pitch, Knee Pitch).</p>
+      </div>
 
       <div class="code-snippet">
 <span class="code-comment"># Excerpt from: src/quadruped_kinematics/quadruped_kinematics/leg_ik.py</span>
@@ -413,6 +423,11 @@
 x_swing = start_x + step_length * (tau - (math.sin(<span class="code-num">2.0</span> * math.pi * tau) / (<span class="code-num">2.0</span> * math.pi)))
 <span class="code-comment"># z(tau): Cycloid ground clearance lift and descent</span>
 z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span class="code-num">1.0</span> - math.cos(<span class="code-num">2.0</span> * math.pi * tau)))
+      </div>
+
+      <div style="margin-top:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
+        <img src="assets/projects/quadruped-robot/images/gait_phase_diagram.png" alt="Multi-Gait Phase Progression Timing Chart" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(124,58,237,0.2);">
+        <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Figure 4.2: Stance and Swing Phase Timing Schedules for Trot, Walk, Crawl, and Bound Gaits.</p>
       </div>
     </section>
 
@@ -453,7 +468,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
             <tr>
               <td><strong>Robot Kinematics</strong></td>
               <td>Custom analytical solver (Python / NumPy)</td>
-              <td>Sub-10µs Cartesian-to-Joint angle transformation</td>
+              <td>Sub-30µs Cartesian-to-Joint angle transformation (pure Python; sub-10µs compiled)</td>
             </tr>
             <tr>
               <td><strong>Leg Geometry</strong></td>
@@ -484,7 +499,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
           <div class="decision-title">Analytical IK vs. Numerical Jacobian</div>
           <p class="decision-text">
             <strong>Decision:</strong> Closed-form analytical trigonometry.<br>
-            <strong>Rationale:</strong> Numerical solvers (DLS, Levenberg-Marquardt) require iterative loops that consume CPU cycles and risk divergence near workspace boundaries. The closed-form analytical approach guarantees sub-10µs compute time with zero drift.
+            <strong>Rationale:</strong> Numerical solvers (DLS, Levenberg-Marquardt) require iterative loops that consume CPU cycles and risk divergence near workspace boundaries. The closed-form analytical approach guarantees sub-30µs compute time in Python (sub-10µs compiled) with zero numerical divergence.
           </p>
         </div>
 
@@ -492,7 +507,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
           <div class="decision-title">Cycloid Curve vs. Polynomial Spline</div>
           <p class="decision-text">
             <strong>Decision:</strong> Parametric 3D Cycloid trajectory.<br>
-            <strong>Rationale:</strong> High-order splines often induce non-zero acceleration derivatives at boundary transitions. Cycloid trajectories naturally possess zero velocity and zero acceleration at touchdown, preventing foot bounce and motor current spikes.
+            <strong>Rationale:</strong> High-order splines often induce non-zero acceleration derivatives at boundary transitions. Cycloid trajectories naturally ensure zero horizontal velocity, zero horizontal acceleration, and zero vertical impact velocity at touchdown, preventing foot skidding and current spikes.
           </p>
         </div>
 
@@ -511,6 +526,11 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
             <strong>Rationale:</strong> Locomotion nodes never call Gazebo-specific services. Deploying to physical servos or CAN brushless motors requires only writing a C++ <code>hardware_interface::SystemInterface</code> plugin without modifying any Python locomotion logic.
           </p>
         </div>
+      </div>
+
+      <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
+        <img src="assets/projects/quadruped-robot/images/support_polygon_diagram.png" alt="Support Polygon Stability Margin Diagram" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(6,182,212,0.2);">
+        <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Figure 6.1: Real-Time Dynamic Center-of-Mass (CoM) Projection and Support Polygon Convex Hull Verification.</p>
       </div>
     </section>
 
