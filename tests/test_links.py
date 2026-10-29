@@ -2,7 +2,7 @@
 """
 tests/test_links.py
 Comprehensive Quality, Link Integrity, Accessibility, and Factual Claim Suite
-for Josiah Saji's Robotics Portfolio (V4.2.1 Release Verification).
+for Josiah Saji's Robotics Portfolio (V4.2.2 Release Verification).
 
 Categories:
 1. Static DOM Structure & Asset Verification (Unique IDs, Heading Hierarchy, Asset Paths, Cross-document Anchors)
@@ -94,7 +94,7 @@ class ComprehensiveDOMParser(HTMLParser):
 
 def run_suite(check_live=False):
     print("=" * 75)
-    print("PORTFOLIO V4.2.1 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
+    print("PORTFOLIO V4.2.2 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
     print("=" * 75)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

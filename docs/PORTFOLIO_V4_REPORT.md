@@ -320,3 +320,45 @@ AUTOMATED QUALITY, DOM, AND INTEGRITY CHECKS PASSED WITHIN DEFINED SCOPE
 ===========================================================================
 ```
 
+---
+
+## 10. Portfolio V4.2.2 — Final RPLIDAR Revision Verification Addendum
+
+### 10.1 Hardware Revision Audit & Evidence Findings
+
+1. **Hardware Revision Audit Finding:**
+   - An exhaustive search of all workspace files, launch parameters, driver setup documentation (`ros2_humble_rplidar_a1_slam/docs/lidar_setup.md`), and Git history confirms that the unit is identified only by generic model strings ("RPLIDAR A1", "RP-LiDAR A1M8") and its USB-to-UART bridge (`CP2102`, `idVendor=10c4, idProduct=ea60`).
+   - No physical device label photographs, barcode scans, hardware purchase records, or driver device-info logs (e.g., `sllidar_ros2` firmware/hardware query payloads) exist in committed repository assets.
+   - **Conclusion:** The exact physical sub-revision (whether **A1M8-R4**, **A1M8-R5**, or another revision) is **explicitly recorded as UNVERIFIED**.
+
+2. **Official SLAMTEC Revision Specifications:**
+   - In the [official SLAMTEC A1 specification](https://www.slamtec.com/en/lidar/a1spec) and manufacturer datasheets, maximum measurement range depends directly on hardware revision:
+     - **Revisions A1M8-R1 through A1M8-R4:** Measurement range is **0.15 m – 6.0 m**.
+     - **Revisions A1M8-R5 and above:** Measurement range is **0.15 m – 12.0 m** on high-reflectivity white targets (90% reflectance).
+     - **Rotational Frequency:** 5.5 Hz nominal (configurable 5.5 – 10 Hz via PWM).
+
+3. **Factual Evidence Rule Applied:**
+   - In accordance with strict factual integrity, because the physical unit's revision cannot be established, the portfolio refrains from claiming or implying that the specific hardware unit is guaranteed to achieve a 12 m measurement range.
+   - The **8.0 m** metric is retained **strictly and exclusively as the configured SLAM Toolbox mapping range** (`max_laser_range: 8.0 m` in `mapper_params_online_async.yaml`), acting as a software noise-rejection filter.
+   - The configured mapping range is never represented as experimentally measured hardware performance.
+   - The generated résumé (`assets/resume/resume.pdf`) already accurately reads `RPLidar A1 M8 (360° FOV, 8m configured mapping range, 5.5–10 Hz)`, remaining factually aligned without re-generation.
+
+### 10.2 Synchronized Files
+
+| File | Nature of Correction in V4.2.2 |
+| :--- | :--- |
+| `ros2-mobile-robot.html` | Updated narrative paragraph (§ 03) and component table to explicitly cite revision ranges (0.15–6.0 m for R1–R4 vs 0.15–12.0 m for R5+), record physical unit as an unverified revision, designate 8.0 m strictly as software configuration, and link the official SLAMTEC spec page. |
+| `docs/PORTFOLIO_CLAIM_AUDIT.md` | Updated Claim 5.2 and Section 7 master matrix to record the unverified revision status, official datasheet ranges, and configuration boundaries. |
+| `tests/test_links.py` | Updated suite title and documentation to V4.2.2. |
+| `docs/PORTFOLIO_V4_REPORT.md` | Added Section 10 detailing V4.2.2 evidence findings, test executions, and hardware status. |
+
+### 10.3 Verification Results & Testing Boundaries
+
+- **Automated Static Suite (`python tests/test_links.py`):** PASSED within defined scope.
+- **Live Deployment Suite (`python tests/test_links.py --live`):** All 7 production endpoints returned HTTP 200.
+- **Testing Boundaries & Limitations:**
+  - Automated tests verify HTML DOM syntax, element ID uniqueness, heading hierarchy, asset existence, link security, absence of disallowed claims, and PDF stream extractability.
+  - Manual interactive checks (keyboard focus rings, dynamic contrast under all states, screen reader annunciation) were not executed as part of this static script.
+  - The physical RPLIDAR sub-revision remains unverified until the hardware owner physically inspects the device underside label or queries `sllidar_ros2` device info at runtime.
+
+

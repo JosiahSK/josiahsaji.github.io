@@ -385,7 +385,7 @@
         The robot uses a 2WD differential chassis configured with dual front and rear castor wheels for maximum stability during rapid rotational accelerations.
       </p>
       <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">
-        <strong>Range &amp; Sensor Specifications:</strong> For the primary perception payload, <a href="https://www.slamtec.com/en/Lidar/A1" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline;">official SLAMTEC documentation</a> specifies an optical measurement range of 0.15 m up to 12.0 m on high-reflectivity targets (white surface, 90% reflectance) with a 5.5 Hz nominal rotation frequency (configurable up to 10 Hz via PWM). In this software stack, the SLAM Toolbox configuration (<code style="color:var(--accent2);">mapper_params_online_async.yaml</code>) explicitly sets <code style="color:var(--accent2);">max_laser_range: 8.0 m</code> as the configured mapping range to maintain robust point clustering and reject far-field ambient noise. (In the absence of a dedicated empirical benchmark log, no separate in-situ usable range is asserted beyond these manufacturer and configuration parameters.)
+        <strong>Range &amp; Sensor Specifications:</strong> For the primary perception payload, the <a href="https://www.slamtec.com/en/lidar/a1spec" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline;">official SLAMTEC RPLIDAR A1 documentation</a> defines measurement range specifications by hardware revision: earlier models (A1M8-R1 through A1M8-R4) specify a maximum range of 6.0 m (0.15–6.0 m), while later revisions (A1M8-R5 and above) specify up to 12.0 m on high-reflectivity white targets (90% reflectance) at 5.5–10 Hz. Because the specific physical unit's hardware sub-revision (e.g. R4 vs R5) is not recorded in repository hardware manifests, the physical unit is documented as an unverified A1M8 variant. In this software stack, the SLAM Toolbox configuration (<code style="color:var(--accent2);">mapper_params_online_async.yaml</code>) explicitly sets <code style="color:var(--accent2);">max_laser_range: 8.0 m</code> as a software mapping boundary to reject far-field ambient noise; this 8.0 m threshold represents the configured software parameter rather than an empirically measured sensor performance ceiling.
       </p>
 
       <div class="data-table-wrapper">
@@ -419,8 +419,8 @@
             </tr>
             <tr>
               <td><strong>Perception Sensor</strong></td>
-              <td>Slamtec RPLidar A1M8</td>
-              <td>Mfr Spec: 0.15–12.0 m (White target) · Configured Range: 8.0 m · 5.5–10 Hz (5.5 Hz nominal)</td>
+              <td>Slamtec RPLidar A1 (A1M8 Series, physical revision unverified)</td>
+              <td>Mfr Spec: 0.15–6.0 m (R1–R4) / 0.15–12.0 m (R5+) · Configured Mapping Range: 8.0 m · 5.5–10 Hz (5.5 Hz nominal)</td>
               <td>Laser scan streaming for SLAM and local costmap</td>
             </tr>
             <tr>
