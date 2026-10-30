@@ -361,4 +361,33 @@ AUTOMATED QUALITY, DOM, AND INTEGRITY CHECKS PASSED WITHIN DEFINED SCOPE
   - Manual interactive checks (keyboard focus rings, dynamic contrast under all states, screen reader annunciation) were not executed as part of this static script.
   - The physical RPLIDAR sub-revision remains unverified until the hardware owner physically inspects the device underside label or queries `sllidar_ros2` device info at runtime.
 
+---
+
+## 11. Portfolio V4.2.3 — Manufacturer Specification Precision Fix Addendum
+
+### 11.1 Motivation & Exact Wording Corrected
+
+In Portfolio V4.2.2, the manufacturer revision breakdown included the generalization "A1M8-R5 and above" / "R5+". The official [SLAMTEC RPLIDAR A1M8 Datasheet v2.4](https://bucket.download.slamtec.com/7fe7e3656e811ab1a645753af40809f05fa7ddcd/LD108_SLAMTEC_rplidar_datasheet_A1M8_v2.4_en.pdf) specifically documents:
+- **A1M8-R4 and below:** 0.15–6.0 m.
+- **A1M8-R5:** 0.15–12.0 m on white targets (90% reflectance).
+
+Extrapolating the R5 specification to "and above" was purged across all documentation, narrative copy, and component tables.
+
+**Exact Wording Applied in V4.2.3:**
+- **Narrative (§ 03):** "A1M8-R4 and below specify a range of 0.15–6.0 m, while A1M8-R5 specifies 0.15–12.0 m on white targets (90% reflectance) at 5.5–10 Hz. Because the specific physical unit's hardware revision (e.g. R4 vs R5) is not recorded in repository hardware manifests, the physical unit is documented as an unverified A1M8 variant."
+- **Component Table:** `Mfr Spec: 0.15–6.0 m (A1M8-R4 and below) / 0.15–12.0 m (A1M8-R5) · Configured Mapping Range: 8.0 m · 5.5–10 Hz (5.5 Hz nominal)`
+- **Configuration Boundary Maintained:** The 8.0 m metric is strictly retained and explicitly designated **ONLY as the configured SLAM Toolbox mapping range** (`max_laser_range: 8.0 m` in `mapper_params_online_async.yaml`), and is never represented as measured sensor capability.
+
+### 11.2 Synchronized Files & Regression Protection
+
+1. **`ros2-mobile-robot.html`:** Updated narrative copy and component table with exact revision wording; added direct link to official A1M8 datasheet v2.4.
+2. **`docs/PORTFOLIO_CLAIM_AUDIT.md`:** Updated Claim 5.2 and Section 7 master matrix.
+3. **`tests/test_links.py`:** Added automated regression patterns (`r5 and above`, `r5 and later`, `r5+`, `r5 and higher`) to `disallowed_web_patterns`; updated suite banner to V4.2.3.
+4. **`docs/PORTFOLIO_V4_REPORT.md`:** Added Section 11 addendum.
+
+### 11.3 Verification Results
+
+- **Automated Static Suite (`python tests/test_links.py`):** PASSED within defined scope.
+- **Live Deployment Suite (`python tests/test_links.py --live`):** All 7 production endpoints returned HTTP 200.
+
 

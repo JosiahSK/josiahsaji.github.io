@@ -1,7 +1,7 @@
 # Portfolio Engineering Claim Audit
 
 **Document:** `docs/PORTFOLIO_CLAIM_AUDIT.md`  
-**Revision:** V4.2.2 — Final RPLIDAR Hardware Revision Verification  
+**Revision:** V4.2.3 — Manufacturer Specification Precision Fix  
 **Date:** October 2026  
 **Audited Repositories:**
 1. [`JosiahSK/ros2-quadruped-locomotion`](https://github.com/JosiahSK/ros2-quadruped-locomotion)
@@ -143,12 +143,12 @@ Every technical statement is classified into one of six evidence categories:
 - **Verification Status:** **[CATEGORY 1 & 3 — CODE & SIMULATION]**
 
 ### Claim 5.2: RPLidar A1 M8 Hardware Revision Audit & Range Grounding
-- **Hardware Revision Audit:** A rigorous audit of all workspace repositories, BOM manifests, device logs, and driver configurations confirmed that the device is documented only as a generic "RPLIDAR A1" or "RPLIDAR A1M8". No physical label photos, barcode records, serial logs, or firmware revision outputs exist to identify whether the unit is an **A1M8-R4**, **A1M8-R5**, or another revision. Consequently, the physical hardware sub-revision is **explicitly recorded as UNVERIFIED**.
-- **Official SLAMTEC Documentation & Revision Ranges:** The [official SLAMTEC RPLIDAR A1 specification](https://www.slamtec.com/en/lidar/a1spec) and hardware datasheets establish revision-dependent measurement ranges:
-  - 1. **Revisions A1M8-R1 through A1M8-R4:** Measurement range is **0.15 m – 6.0 m**.
-  - 2. **Revisions A1M8-R5 and later:** Measurement range is **0.15 m – 12.0 m** (white target with 90% reflectance).
+- **Hardware Revision Audit:** A rigorous audit of all workspace repositories, BOM manifests, device logs, and driver configurations confirmed that the device is documented only as a generic "RPLIDAR A1" or "RPLIDAR A1M8". No physical label photos, barcode records, serial logs, or firmware revision outputs exist to identify whether the unit is an **A1M8-R4**, **A1M8-R5**, or another revision. Consequently, the physical hardware revision is **explicitly recorded as UNVERIFIED**.
+- **Official SLAMTEC Documentation & Precise Revision Ranges:** The [official SLAMTEC RPLIDAR A1 specification](https://www.slamtec.com/en/lidar/a1spec) and [A1M8 datasheet v2.4](https://bucket.download.slamtec.com/7fe7e3656e811ab1a645753af40809f05fa7ddcd/LD108_SLAMTEC_rplidar_datasheet_A1M8_v2.4_en.pdf) specifically document measurement ranges by revision:
+  - 1. **A1M8-R4 and below:** Measurement range is **0.15 m – 6.0 m**.
+  - 2. **A1M8-R5:** Measurement range is **0.15 m – 12.0 m** on white targets (90% reflectance).
   - 3. **Rotational Frequency:** 5.5 Hz nominal (configurable 5.5 – 10 Hz via PWM motor speed control).
-- **Factual Evidence Rule Applied (V4.2.2):** Because the physical revision cannot be confirmed from committed artifacts, the portfolio removes any guarantee that the physical unit achieves a 12 m range. The **8.0 m** parameter is strictly retained and explicitly identified **ONLY as the configured mapping range** in SLAM Toolbox (`max_laser_range: 8.0 m` in `mapper_params_online_async.yaml`) to reject far-field ambient noise. It is never represented as an experimentally measured sensor range.
+- **Factual Evidence Rule Applied (V4.2.3):** Because the physical revision cannot be confirmed from committed artifacts, the portfolio explicitly treats the revision as unverified and removes any guarantee that the physical unit achieves a 12 m range. The **8.0 m** parameter is strictly retained and explicitly identified **ONLY as the configured mapping range** in SLAM Toolbox (`max_laser_range: 8.0 m` in `mapper_params_online_async.yaml`) to reject far-field ambient noise. It is never represented as an experimentally measured sensor range.
 - **Verification Status:** **[CATEGORY 1 & 2 — CONFIG & SPEC SHEET; REVISION UNVERIFIED]**
 
 ### Claim 5.3: SLAM Toolbox & Nav2 Mapping Validation
@@ -188,7 +188,7 @@ Every technical statement is classified into one of six evidence categories:
 | **Quadruped Deployment** | Hardware walking claims | Gazebo Classic simulation | Category 3 (Sim) | "Simulation-Validated (Gazebo Classic 11 & RViz2)" |
 | **ESP32 micro-ROS 2WD** | "Sub-8ms latency" / "<8ms" | No benchmark logs in repo | Category 1 & 5 | "Reliable UDP command execution via micro-ROS agent" / "Local Wi-Fi UDP link" |
 | **Tilling Robot** | "Selected for YIP 7.0" | Project submitted to YIP 7.0 | Category 5 & 6 | "Developed and submitted for YIP 7.0" / "Hardware Prototype · YIP 7.0 Entry" |
-| **Mobile Robot RPLidar** | 12m unqualified hardware guarantee | Physical revision unverified (A1M8-R4 vs R5); config sets 8.0m in SLAM Toolbox | Category 2 & 5 | "Mfr Spec: 0.15–6.0 m (R1–R4) / 0.15–12.0 m (R5+) · Configured Mapping Range: 8.0 m · 5.5–10 Hz (Revision Unverified)" |
+| **Mobile Robot RPLidar** | 12m unqualified hardware guarantee | Physical revision unverified (A1M8-R4 vs R5); config sets 8.0m in SLAM Toolbox | Category 2 & 5 | "Mfr Spec: 0.15–6.0 m (A1M8-R4 and below) / 0.15–12.0 m (A1M8-R5) · Configured Mapping Range: 8.0 m · 5.5–10 Hz (Revision Unverified)" |
 | **Mobile Robot SLAM** | "Validated across office mazes with 0 TF discontinuity" | Configured in code and simulated in Gazebo `simple_room.world` | Category 1, 2, & 3 | "Configured & Simulation-Modeled in ROS 2 Jazzy & Gazebo Harmonic" |
 | **ESP32 micro-ROS 2WD** | Autonomous mobile robot | Open-loop teleoperated differential drive | Category 1 & 5 | "Hardware Benchtop Tested (Open-Loop Teleop)" |
 | **Tilling Robot** | Fixed numeric depth/acreage | Prototype under field calibration | Category 5 | "Hardware Prototype · Field Trial Calibration" |

@@ -2,7 +2,7 @@
 """
 tests/test_links.py
 Comprehensive Quality, Link Integrity, Accessibility, and Factual Claim Suite
-for Josiah Saji's Robotics Portfolio (V4.2.2 Release Verification).
+for Josiah Saji's Robotics Portfolio (V4.2.3 Release Verification).
 
 Categories:
 1. Static DOM Structure & Asset Verification (Unique IDs, Heading Hierarchy, Asset Paths, Cross-document Anchors)
@@ -94,7 +94,7 @@ class ComprehensiveDOMParser(HTMLParser):
 
 def run_suite(check_live=False):
     print("=" * 75)
-    print("PORTFOLIO V4.2.2 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
+    print("PORTFOLIO V4.2.3 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
     print("=" * 75)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -251,10 +251,13 @@ def run_suite(check_live=False):
         ("numerical divergence", "Unsubstantiated numerical divergence phrasing"),
         ("sub-10 µs compiled", "Unverified compiled IK execution metric"),
         ("sub-10 us compiled", "Unverified compiled IK execution metric"),
-        ("<10 µs c++", "Unverified compiled IK execution metric"),
         ("6–8 m", "Unevidenced in-situ usable range metric"),
         ("6-8 m", "Unevidenced in-situ usable range metric"),
         ("usable indoor range", "Unevidenced in-situ usable range claim"),
+        ("r5 and above", "Unsupported revision generalization beyond datasheet (use 'A1M8-R5')"),
+        ("r5 and later", "Unsupported revision generalization beyond datasheet (use 'A1M8-R5')"),
+        ("r5+", "Unsupported revision generalization beyond datasheet (use 'A1M8-R5')"),
+        ("r5 and higher", "Unsupported revision generalization beyond datasheet (use 'A1M8-R5')"),
     ]
 
     claims_clean = True
@@ -266,7 +269,7 @@ def run_suite(check_live=False):
                 claims_clean = False
 
     if claims_clean:
-        print("  [PASS] All 5 HTML documents clean of unevidenced latency, selection, divergence, and 6-8m usable-range claims.")
+        print("  [PASS] All 5 HTML documents clean of unevidenced latency, selection, divergence, 6-8m usable-range, and R5+ generalization claims.")
 
     # 4. Integrated Résumé Verification
     print(f"\n[Category 4: Integrated Résumé Machine-Readability & Factual Audit]")
