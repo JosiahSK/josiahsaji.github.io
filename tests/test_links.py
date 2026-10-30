@@ -2,7 +2,7 @@
 """
 tests/test_links.py
 Comprehensive Quality, Link Integrity, Accessibility, and Factual Claim Suite
-for Josiah Saji's Robotics Portfolio (V4.2.3 Release Verification).
+for Josiah Saji's Robotics Portfolio (Portfolio V5.2 Production Hardening).
 
 Categories:
 1. Static DOM Structure & Asset Verification (Unique IDs, Heading Hierarchy, Asset Paths, Cross-document Anchors)
@@ -94,7 +94,7 @@ class ComprehensiveDOMParser(HTMLParser):
 
 def run_suite(check_live=False):
     print("=" * 75)
-    print("PORTFOLIO V4.2.3 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
+    print("PORTFOLIO V5.2 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
     print("=" * 75)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -263,6 +263,8 @@ def run_suite(check_live=False):
         ("dwb active", "Misleading active planner telemetry claim on static portfolio"),
         ("360° @ 10 hz", "Unqualified LiDAR operational rate implying real running telemetry"),
         ("360deg @ 10 hz", "Unqualified LiDAR operational rate implying real running telemetry"),
+        ("map → odom (100 hz)", "Discrepant SLAM transform rate contradicting configured 50 Hz transform_publish_period"),
+        ("map -> odom (100 hz)", "Discrepant SLAM transform rate contradicting configured 50 Hz transform_publish_period"),
     ]
 
     claims_clean = True

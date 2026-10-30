@@ -450,7 +450,7 @@
           <text x="490" y="112" fill="#94a3b8" font-size="9.5" text-anchor="middle">Karto Graph Optimizer</text>
           <line x1="390" y1="126" x2="590" y2="126" stroke="rgba(168,85,247,0.2)" stroke-width="1"/>
           <text x="490" y="148" fill="#e2e8f0" font-size="11" text-anchor="middle">TF2 Publisher</text>
-          <text x="490" y="166" fill="#94a3b8" font-size="9.5" text-anchor="middle">map → odom (100 Hz)</text>
+          <text x="490" y="166" fill="#94a3b8" font-size="9.5" text-anchor="middle">map → odom (SLAM / 50 Hz Config)</text>
 
           <!-- ARROW 2 -> 3: /map & odom -->
           <line x1="610" y1="100" x2="710" y2="100" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrPurple)"/>
@@ -686,8 +686,9 @@ omega_right = (v_x + (omega_z * L / 2.0)) / r
   </main>
 
   <!-- DIAGRAM LIGHTBOX MODAL -->
-  <div id="diagramModal" class="diagram-modal" role="dialog" aria-modal="true" aria-label="Expanded technical diagram" tabindex="-1">
+  <div id="diagramModal" class="diagram-modal" role="dialog" aria-modal="true" aria-labelledby="diagramModalTitle" aria-describedby="diagramModalCaption" tabindex="-1">
     <div class="diagram-modal-dialog">
+      <div id="diagramModalTitle" class="sr-only">Expanded technical diagram</div>
       <button class="diagram-modal-close" id="diagramModalClose" aria-label="Close diagram preview">&times;</button>
       <div class="diagram-modal-body" id="diagramModalBody"></div>
       <p class="diagram-modal-caption" id="diagramModalCaption"></p>
@@ -716,16 +717,28 @@ omega_right = (v_x + (omega_z * L / 2.0)) / r
       }
     } catch(e) {}
 
-    // Diagram Lightbox & Zoom
+    // Robust Accessible Diagram Lightbox & Zoom with Focus Trap & Restoration
     (function initLightbox() {
       var modal = document.getElementById('diagramModal');
       var modalBody = document.getElementById('diagramModalBody');
       var modalCaption = document.getElementById('diagramModalCaption');
       var closeBtn = document.getElementById('diagramModalClose');
+      var previouslyFocusedEl = null;
+      var previousScrollY = 0;
       if (!modal || !modalBody) return;
+
+      function getFocusableElements() {
+        var focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        return Array.prototype.slice.call(focusable).filter(function(el) {
+          return !el.disabled && el.offsetParent !== null;
+        });
+      }
 
       function openModal(targetEl, captionText) {
         if (!targetEl) return;
+        previouslyFocusedEl = document.activeElement;
+        previousScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+
         modalBody.innerHTML = '';
         if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'svg') {
           var clone = targetEl.cloneNode(true);
@@ -743,21 +756,69 @@ omega_right = (v_x + (omega_z * L / 2.0)) / r
           img.style.borderRadius = '8px';
           modalBody.appendChild(img);
         }
-        if (modalCaption) modalCaption.textContent = captionText || targetEl.getAttribute('aria-label') || targetEl.getAttribute('alt') || '';
+
+        var labelText = captionText || targetEl.getAttribute('aria-label') || targetEl.getAttribute('alt') || 'Expanded diagram preview';
+        if (modalCaption) modalCaption.textContent = labelText;
+
         modal.classList.add('active');
-        modal.focus();
         document.body.style.overflow = 'hidden';
+
+        // Direct initial keyboard focus to close button or first focusable
+        var focusable = getFocusableElements();
+        if (focusable.length) {
+          focusable[0].focus();
+        } else {
+          modal.focus();
+        }
       }
 
       function closeModal() {
+        if (!modal.classList.contains('active')) return;
         modal.classList.remove('active');
         modalBody.innerHTML = '';
         document.body.style.overflow = '';
+        window.scrollTo(0, previousScrollY);
+
+        // Restore focus to original triggering element
+        if (previouslyFocusedEl && typeof previouslyFocusedEl.focus === 'function') {
+          previouslyFocusedEl.focus();
+        }
       }
+
+      // Trap Focus within Dialog
+      modal.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeModal();
+          return;
+        }
+        if (e.key === 'Tab') {
+          var focusable = getFocusableElements();
+          if (!focusable.length) {
+            e.preventDefault();
+            return;
+          }
+          var firstEl = focusable[0];
+          var lastEl = focusable[focusable.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === firstEl || document.activeElement === modal) {
+              e.preventDefault();
+              lastEl.focus();
+            }
+          } else {
+            if (document.activeElement === lastEl) {
+              e.preventDefault();
+              firstEl.focus();
+            }
+          }
+        }
+      });
 
       document.querySelectorAll('.zoomable-figure').forEach(function(el) {
         el.setAttribute('tabindex', '0');
         el.setAttribute('role', 'button');
+        el.setAttribute('aria-haspopup', 'dialog');
         el.addEventListener('click', function() {
           var container = el.closest('.tech-figure-wrap') || el.closest('div');
           var captionEl = container ? container.querySelector('.tech-figure-caption, p') : null;
@@ -775,9 +836,6 @@ omega_right = (v_x + (omega_z * L / 2.0)) / r
       if (closeBtn) closeBtn.addEventListener('click', closeModal);
       modal.addEventListener('click', function(e) {
         if (e.target === modal) closeModal();
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
       });
     })();
   </script>

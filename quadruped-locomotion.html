@@ -615,8 +615,9 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
   </main>
 
   <!-- DIAGRAM LIGHTBOX MODAL -->
-  <div id="diagramModal" class="diagram-modal" role="dialog" aria-modal="true" aria-label="Expanded technical diagram" tabindex="-1">
+  <div id="diagramModal" class="diagram-modal" role="dialog" aria-modal="true" aria-labelledby="diagramModalTitle" aria-describedby="diagramModalCaption" tabindex="-1">
     <div class="diagram-modal-dialog">
+      <div id="diagramModalTitle" class="sr-only">Expanded technical diagram</div>
       <button class="diagram-modal-close" id="diagramModalClose" aria-label="Close diagram preview">&times;</button>
       <div class="diagram-modal-body" id="diagramModalBody"></div>
       <p class="diagram-modal-caption" id="diagramModalCaption"></p>
@@ -645,37 +646,80 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
       }
     } catch(e) {}
 
-    // Quadruped Hero Tabs
+    // Quadruped Hero Tabs with WAI-ARIA Keyboard Pattern (Arrow Keys, Home, End)
     (function initQuadTabs() {
-      var tabs = document.querySelectorAll('.quad-tab-btn');
-      var panels = document.querySelectorAll('.quad-tab-panel');
-      if (!tabs.length) return;
-      tabs.forEach(function(tab) {
+      var tabList = document.querySelector('.quad-preview-tabs');
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.quad-tab-btn'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('.quad-tab-panel'));
+      if (!tabList || !tabs.length) return;
+
+      function activateTab(tab, setFocus) {
+        tabs.forEach(function(t) {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+          t.setAttribute('tabindex', '-1');
+        });
+        panels.forEach(function(p) { p.classList.remove('active'); });
+
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        tab.setAttribute('tabindex', '0');
+        if (setFocus) tab.focus();
+
+        var targetId = tab.getAttribute('data-target');
+        var targetPanel = document.getElementById(targetId);
+        if (targetPanel) targetPanel.classList.add('active');
+      }
+
+      tabs.forEach(function(tab, index) {
+        tab.setAttribute('tabindex', tab.classList.contains('active') ? '0' : '-1');
         tab.addEventListener('click', function() {
-          tabs.forEach(function(t) {
-            t.classList.remove('active');
-            t.setAttribute('aria-selected', 'false');
-          });
-          panels.forEach(function(p) { p.classList.remove('active'); });
-          tab.classList.add('active');
-          tab.setAttribute('aria-selected', 'true');
-          var targetId = tab.getAttribute('data-target');
-          var targetPanel = document.getElementById(targetId);
-          if (targetPanel) targetPanel.classList.add('active');
+          activateTab(tab, false);
+        });
+        tab.addEventListener('keydown', function(e) {
+          var targetIndex = -1;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            targetIndex = (index + 1) % tabs.length;
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            targetIndex = (index - 1 + tabs.length) % tabs.length;
+          } else if (e.key === 'Home') {
+            e.preventDefault();
+            targetIndex = 0;
+          } else if (e.key === 'End') {
+            e.preventDefault();
+            targetIndex = tabs.length - 1;
+          }
+          if (targetIndex >= 0) {
+            activateTab(tabs[targetIndex], true);
+          }
         });
       });
     })();
 
-    // Diagram Lightbox & Zoom
+    // Robust Accessible Diagram Lightbox & Zoom with Focus Trap & Restoration
     (function initLightbox() {
       var modal = document.getElementById('diagramModal');
       var modalBody = document.getElementById('diagramModalBody');
       var modalCaption = document.getElementById('diagramModalCaption');
       var closeBtn = document.getElementById('diagramModalClose');
+      var previouslyFocusedEl = null;
+      var previousScrollY = 0;
       if (!modal || !modalBody) return;
+
+      function getFocusableElements() {
+        var focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        return Array.prototype.slice.call(focusable).filter(function(el) {
+          return !el.disabled && el.offsetParent !== null;
+        });
+      }
 
       function openModal(targetEl, captionText) {
         if (!targetEl) return;
+        previouslyFocusedEl = document.activeElement;
+        previousScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+
         modalBody.innerHTML = '';
         if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'svg') {
           var clone = targetEl.cloneNode(true);
@@ -693,21 +737,69 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
           img.style.borderRadius = '8px';
           modalBody.appendChild(img);
         }
-        if (modalCaption) modalCaption.textContent = captionText || targetEl.getAttribute('aria-label') || targetEl.getAttribute('alt') || '';
+
+        var labelText = captionText || targetEl.getAttribute('aria-label') || targetEl.getAttribute('alt') || 'Expanded diagram preview';
+        if (modalCaption) modalCaption.textContent = labelText;
+
         modal.classList.add('active');
-        modal.focus();
         document.body.style.overflow = 'hidden';
+
+        // Direct initial keyboard focus to close button or first focusable
+        var focusable = getFocusableElements();
+        if (focusable.length) {
+          focusable[0].focus();
+        } else {
+          modal.focus();
+        }
       }
 
       function closeModal() {
+        if (!modal.classList.contains('active')) return;
         modal.classList.remove('active');
         modalBody.innerHTML = '';
         document.body.style.overflow = '';
+        window.scrollTo(0, previousScrollY);
+
+        // Restore focus to original triggering element
+        if (previouslyFocusedEl && typeof previouslyFocusedEl.focus === 'function') {
+          previouslyFocusedEl.focus();
+        }
       }
+
+      // Trap Focus within Dialog
+      modal.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeModal();
+          return;
+        }
+        if (e.key === 'Tab') {
+          var focusable = getFocusableElements();
+          if (!focusable.length) {
+            e.preventDefault();
+            return;
+          }
+          var firstEl = focusable[0];
+          var lastEl = focusable[focusable.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === firstEl || document.activeElement === modal) {
+              e.preventDefault();
+              lastEl.focus();
+            }
+          } else {
+            if (document.activeElement === lastEl) {
+              e.preventDefault();
+              firstEl.focus();
+            }
+          }
+        }
+      });
 
       document.querySelectorAll('.zoomable-figure').forEach(function(el) {
         el.setAttribute('tabindex', '0');
         el.setAttribute('role', 'button');
+        el.setAttribute('aria-haspopup', 'dialog');
         el.addEventListener('click', function() {
           var container = el.closest('.tech-figure-wrap') || el.closest('div');
           var captionEl = container ? container.querySelector('.tech-figure-caption, p') : null;
@@ -725,9 +817,6 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
       if (closeBtn) closeBtn.addEventListener('click', closeModal);
       modal.addEventListener('click', function(e) {
         if (e.target === modal) closeModal();
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
       });
     })();
   </script>

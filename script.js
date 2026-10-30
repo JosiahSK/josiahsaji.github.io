@@ -294,23 +294,65 @@ try {
       }
     });
 
+    function openMobileMenu() {
+      mobileMenu.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      hamburger.setAttribute('aria-label', 'Close menu');
+      var firstLink = mobileMenu.querySelector('.mobile-link');
+      if (firstLink) firstLink.focus();
+    }
+
+    function closeMobileMenu(returnFocus) {
+      if (!mobileMenu.classList.contains('open')) return;
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Open menu');
+      if (returnFocus !== false && typeof hamburger.focus === 'function') {
+        hamburger.focus();
+      }
+    }
+
     hamburger.addEventListener('click', function() {
-      var isOpen = mobileMenu.classList.toggle('open');
-      hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (mobileMenu.classList.contains('open')) {
+        closeMobileMenu(true);
+      } else {
+        openMobileMenu();
+      }
     });
 
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
-        mobileMenu.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
+        e.preventDefault();
+        closeMobileMenu(true);
+      }
+    });
+
+    // Trap focus inside mobile navigation when open
+    mobileMenu.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        var focusable = mobileMenu.querySelectorAll('.mobile-link');
+        if (!focusable.length) return;
+        var firstEl = focusable[0];
+        var lastEl = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstEl) {
+            e.preventDefault();
+            hamburger.focus();
+          }
+        } else {
+          if (document.activeElement === lastEl) {
+            e.preventDefault();
+            hamburger.focus();
+          }
+        }
       }
     });
 
     var mobileLinks = document.querySelectorAll('.mobile-link');
     for (var i = 0; i < mobileLinks.length; i++) {
       mobileLinks[i].addEventListener('click', function() {
-        mobileMenu.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
+        closeMobileMenu(false);
       });
     }
 

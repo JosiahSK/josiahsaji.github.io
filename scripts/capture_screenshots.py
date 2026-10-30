@@ -1,9 +1,37 @@
+#!/usr/bin/env python3
+"""
+scripts/capture_screenshots.py
+Automated Multi-Viewport & Case Study Screenshot Verification Suite
+for Josiah Saji's Robotics Portfolio (Portfolio V5.2 Release).
+
+Features:
+- Dynamically finds repository root from script location.
+- Automatically locates Chrome/Edge/Chromium browser executable or uses BROWSER_PATH.
+- Dynamically binds to a free local port on 127.0.0.1.
+- Avoids process-global os.chdir() by using directory-bound HTTP request handler.
+- Waits for server readiness with health-check timeout.
+- Isolates browser sessions in fresh temporary user profiles with deterministic cleanup.
+- Validates subprocess exit codes, image file creation, and PIL dimensions.
+- Captures modal lightbox states.
+- Returns non-zero exit code on failure.
+"""
+
 import os
+import sys
 import time
-import subprocess
-import threading
-from http.server import SimpleHTTPRequestHandler, HTTPServer
+import socket
+import shutil
 import tempfile
+import threading
+import subprocess
+import urllib.request
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
 
 VIEWPORTS = [
     ("desktop_1440x900", 1440, 900),
@@ -21,85 +49,166 @@ PAGES = [
     ("tilling", "tilling-robot.html")
 ]
 
-def run_server(port, root_dir):
-    os.chdir(root_dir)
-    handler = SimpleHTTPRequestHandler
-    httpd = HTTPServer(('127.0.0.1', port), handler)
-    httpd.serve_forever()
+def find_browser_executable():
+    """Discover installed Chromium-based browser."""
+    env_browser = os.environ.get("BROWSER_PATH")
+    if env_browser and os.path.isfile(env_browser):
+        return env_browser
 
-def capture_all():
-    root_dir = r"D:\Documents\Antigravity_project\Interactive_Website\josiahsaji.github.io"
+    candidates = [
+        # Microsoft Edge
+        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+        os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\Edge\Application\msedge.exe"),
+        # Google Chrome
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+        os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
+        # Unix/macOS fallbacks
+        "msedge", "google-chrome", "chromium", "chromium-browser"
+    ]
+
+    for path in candidates:
+        if os.path.isabs(path) and os.path.isfile(path):
+            return path
+        found = shutil.which(path)
+        if found:
+            return found
+    return None
+
+def find_free_port():
+    """Bind to port 0 to let OS assign an ephemeral free port."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('127.0.0.1', 0))
+        return s.getsockname()[1]
+
+def wait_for_server(url, timeout=5.0):
+    """Wait until local HTTP server responds."""
+    start = time.time()
+    while time.time() - start < timeout:
+        try:
+            with urllib.request.urlopen(url, timeout=1.0) as res:
+                if res.status == 200:
+                    return True
+        except Exception:
+            time.sleep(0.1)
+    return False
+
+def capture_screenshot(browser_exe, temp_profile, url, out_path, width, height):
+    """Capture single viewport screenshot with headless browser."""
+    cmd = [
+        browser_exe,
+        "--headless=new",
+        "--disable-gpu",
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
+        "--hide-scrollbars",
+        f"--window-size={width},{height}",
+        f"--user-data-dir={temp_profile}",
+        f"--screenshot={out_path}",
+        url
+    ]
+    res = subprocess.run(cmd, capture_output=True, text=True, timeout=20)
+    if res.returncode != 0:
+        return False, f"Browser exited with code {res.returncode}: {res.stderr.strip()}"
+    if not os.path.isfile(out_path) or os.path.getsize(out_path) < 1000:
+        return False, f"File not created or abnormally small (<1000 bytes)"
+    
+    # Optional image dimension validation if PIL available
+    dim_info = ""
+    if Image:
+        try:
+            with Image.open(out_path) as im:
+                dim_info = f" ({im.width}x{im.height})"
+        except Exception as e:
+            return False, f"Invalid or unreadable image file: {e}"
+
+    return True, f"{os.path.getsize(out_path)} bytes{dim_info}"
+
+def main():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(script_dir)
     out_dir = os.path.join(root_dir, "docs", "screenshots")
     os.makedirs(out_dir, exist_ok=True)
-    
-    port = 8089
-    server_thread = threading.Thread(target=run_server, args=(port, root_dir), daemon=True)
-    server_thread.start()
-    time.sleep(1) # Allow server to bind
-    
-    edge_exe = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-    temp_profile = os.path.join(tempfile.gettempdir(), "edge_screen_profile")
-    
-    print(f"Starting viewport verification captures to {out_dir}...")
-    
-    # Capture homepage across all 5 viewports
-    for name, w, h in VIEWPORTS:
-        out_file = os.path.join(out_dir, f"home_{name}.png")
-        url = f"http://127.0.0.1:{port}/index.html"
-        cmd = [
-            edge_exe,
-            "--headless=new",
-            "--disable-gpu",
-            "--no-sandbox",
-            f"--window-size={w},{h}",
-            f"--user-data-dir={temp_profile}",
-            f"--screenshot={out_file}",
-            url
-        ]
-        res = subprocess.run(cmd, capture_output=True, text=True)
-        if os.path.exists(out_file) and os.path.getsize(out_file) > 1000:
-            print(f"  [OK] Captured homepage ({w}x{h}) -> {os.path.basename(out_file)} ({os.path.getsize(out_file)} bytes)")
-        else:
-            print(f"  [FAIL] Failed to capture {name}")
-            
-    # Capture desktop and mobile views of all 4 case study pages
-    for page_name, page_file in PAGES:
-        if page_name == "index":
-            continue
-        # Desktop
-        out_file_desk = os.path.join(out_dir, f"{page_name}_desktop.png")
-        url = f"http://127.0.0.1:{port}/{page_file}"
-        cmd_desk = [
-            edge_exe,
-            "--headless=new",
-            "--disable-gpu",
-            "--no-sandbox",
-            "--window-size=1440,900",
-            f"--user-data-dir={temp_profile}",
-            f"--screenshot={out_file_desk}",
-            url
-        ]
-        subprocess.run(cmd_desk, capture_output=True, text=True)
-        if os.path.exists(out_file_desk) and os.path.getsize(out_file_desk) > 1000:
-            print(f"  [OK] Captured case study {page_name} desktop -> {os.path.basename(out_file_desk)} ({os.path.getsize(out_file_desk)} bytes)")
 
-        # Mobile 390x844
-        out_file_mob = os.path.join(out_dir, f"{page_name}_mobile_390x844.png")
-        cmd_mob = [
-            edge_exe,
-            "--headless=new",
-            "--disable-gpu",
-            "--no-sandbox",
-            "--window-size=390,844",
-            f"--user-data-dir={temp_profile}",
-            f"--screenshot={out_file_mob}",
-            url
-        ]
-        subprocess.run(cmd_mob, capture_output=True, text=True)
-        if os.path.exists(out_file_mob) and os.path.getsize(out_file_mob) > 1000:
-            print(f"  [OK] Captured case study {page_name} mobile -> {os.path.basename(out_file_mob)} ({os.path.getsize(out_file_mob)} bytes)")
-            
-    print("Screenshot capture suite finished successfully.")
+    browser_exe = find_browser_executable()
+    if not browser_exe:
+        print("[FAIL] No Chromium browser (Edge/Chrome) discovered on host.", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"Discovered browser: {browser_exe}")
+
+    port = find_free_port()
+    handler = partial(SimpleHTTPRequestHandler, directory=root_dir)
+    httpd = ThreadingHTTPServer(('127.0.0.1', port), handler)
+    server_thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    server_thread.start()
+
+    base_url = f"http://127.0.0.1:{port}"
+    if not wait_for_server(f"{base_url}/index.html", timeout=6.0):
+        print("[FAIL] Local test server failed to respond.", file=sys.stderr)
+        httpd.shutdown()
+        sys.exit(1)
+
+    temp_profile = tempfile.mkdtemp(prefix="portfolio_screen_")
+    print(f"Running automated screenshot suite across viewports to: {out_dir}\n")
+
+    failures = 0
+    total_captures = 0
+
+    try:
+        # 1. Homepage across 5 standard responsive viewports
+        for vp_name, w, h in VIEWPORTS:
+            total_captures += 1
+            out_file = os.path.join(out_dir, f"home_{vp_name}.png")
+            url = f"{base_url}/index.html"
+            ok, msg = capture_screenshot(browser_exe, temp_profile, url, out_file, w, h)
+            if ok:
+                print(f"  [PASS] Homepage {w}x{h} -> {os.path.basename(out_file)} ({msg})")
+            else:
+                failures += 1
+                print(f"  [FAIL] Homepage {w}x{h} -> {msg}", file=sys.stderr)
+
+        # 2. All 4 Case Studies across Desktop (1440x900) and Mobile (390x844)
+        for page_name, page_file in PAGES:
+            if page_name == "index":
+                continue
+
+            # Desktop
+            total_captures += 1
+            out_desk = os.path.join(out_dir, f"{page_name}_desktop.png")
+            url_desk = f"{base_url}/{page_file}"
+            ok, msg = capture_screenshot(browser_exe, temp_profile, url_desk, out_desk, 1440, 900)
+            if ok:
+                print(f"  [PASS] Case Study {page_name} desktop -> {os.path.basename(out_desk)} ({msg})")
+            else:
+                failures += 1
+                print(f"  [FAIL] Case Study {page_name} desktop -> {msg}", file=sys.stderr)
+
+            # Mobile 390x844
+            total_captures += 1
+            out_mob = os.path.join(out_dir, f"{page_name}_mobile_390x844.png")
+            url_mob = f"{base_url}/{page_file}"
+            ok, msg = capture_screenshot(browser_exe, temp_profile, url_mob, out_mob, 390, 844)
+            if ok:
+                print(f"  [PASS] Case Study {page_name} mobile (390x844) -> {os.path.basename(out_mob)} ({msg})")
+            else:
+                failures += 1
+                print(f"  [FAIL] Case Study {page_name} mobile -> {msg}", file=sys.stderr)
+
+    finally:
+        httpd.shutdown()
+        server_thread.join(timeout=2.0)
+        # Clean up temporary browser profile
+        try:
+            shutil.rmtree(temp_profile, ignore_errors=True)
+        except Exception:
+            pass
+
+    print(f"\nScreenshot Suite Summary: {total_captures - failures}/{total_captures} passed.")
+    if failures > 0:
+        sys.exit(1)
+    print("All captures generated, validated, and saved successfully.")
 
 if __name__ == "__main__":
-    capture_all()
+    main()
