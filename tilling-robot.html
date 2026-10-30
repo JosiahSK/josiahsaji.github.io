@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Autonomous Tilling Robot — Case Study | Josiah Saji</title>
-  <meta name="description" content="Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, challenges, test results, and demo video." />
+  <meta name="description" content="Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, challenges, test results, and agricultural field trials." />
   <link rel="canonical" href="https://josiahsk.github.io/josiahsaji.github.io/tilling-robot.html" />
 
   <!-- Open Graph -->
@@ -20,6 +20,24 @@
   <meta name="twitter:description" content="Deep-dive into the design, build, and results of an autonomous agricultural robot by Josiah Saji." />
   <meta name="twitter:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
   <link rel="icon" href="assets/favicon.ico" />
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Autonomous Tilling Robot",
+    "description": "Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, challenges, test results, and agricultural field trials.",
+    "author": {
+      "@type": "Person",
+      "name": "Josiah Saji",
+      "url": "https://josiahsk.github.io/josiahsaji.github.io/"
+    },
+    "url": "https://josiahsk.github.io/josiahsaji.github.io/tilling-robot.html",
+    "mainEntityOfPage": "https://josiahsk.github.io/josiahsaji.github.io/tilling-robot.html",
+    "image": "https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png"
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -141,6 +159,10 @@
       .cs-subtitle { font-size: 0.92rem; }
       .cs-section { padding: 36px 0; }
       .bom-table { font-size: 0.78rem; }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .metric-card { padding: 14px 8px; }
+      .metric-val { font-size: clamp(1.1rem, 4.5vw, 1.5rem); word-break: break-word; }
+      .metric-label { font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -652,9 +674,31 @@
         if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'svg') {
           var clone = targetEl.cloneNode(true);
           clone.removeAttribute('style');
+          clone.removeAttribute('tabindex');
+          clone.removeAttribute('role');
+          clone.removeAttribute('aria-haspopup');
           clone.style.width = '100%';
           clone.style.maxHeight = '75vh';
           clone.style.borderRadius = '8px';
+
+          // Namespace internal IDs within the cloned SVG to prevent DOM ID collision and ensure clean rendering
+          var idNodes = clone.querySelectorAll('[id]');
+          if (idNodes.length > 0) {
+            var idMap = {};
+            for (var k = 0; k < idNodes.length; k++) {
+              var oldId = idNodes[k].getAttribute('id');
+              var newId = 'modal-clone-' + oldId;
+              idMap[oldId] = newId;
+              idNodes[k].setAttribute('id', newId);
+            }
+            var s = clone.innerHTML;
+            for (var oldKey in idMap) {
+              var escKey = oldKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              s = s.replace(new RegExp('url\\(#' + escKey + '\\)', 'g'), 'url(#' + idMap[oldKey] + ')');
+              s = s.replace(new RegExp('href="#' + escKey + '"', 'g'), 'href="#' + idMap[oldKey] + '"');
+            }
+            clone.innerHTML = s;
+          }
           modalBody.appendChild(clone);
         } else if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'img') {
           var img = document.createElement('img');
@@ -728,16 +772,19 @@
         el.setAttribute('tabindex', '0');
         el.setAttribute('role', 'button');
         el.setAttribute('aria-haspopup', 'dialog');
-        el.addEventListener('click', function() {
+
+        function triggerZoom() {
           var container = el.closest('.tech-figure-wrap') || el.closest('div');
           var captionEl = container ? container.querySelector('.tech-figure-caption, p') : null;
           var captionText = captionEl ? captionEl.textContent : (el.getAttribute('alt') || el.getAttribute('aria-label'));
           openModal(el, captionText);
-        });
+        }
+
+        el.addEventListener('click', triggerZoom);
         el.addEventListener('keydown', function(e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            el.click();
+            triggerZoom();
           }
         });
       });

@@ -23,6 +23,24 @@
   <!-- Favicon -->
   <link rel="icon" href="assets/favicon.ico" />
 
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "ROS 2 Quadruped Locomotion Framework",
+    "description": "Technical case study: 12-DOF Quadruped Robot Locomotion Framework in ROS 2 Humble — analytical inverse kinematics, 3D cycloid trajectory generation, and Gazebo dynamic simulation.",
+    "author": {
+      "@type": "Person",
+      "name": "Josiah Saji",
+      "url": "https://josiahsk.github.io/josiahsaji.github.io/"
+    },
+    "url": "https://josiahsk.github.io/josiahsaji.github.io/quadruped-locomotion.html",
+    "mainEntityOfPage": "https://josiahsk.github.io/josiahsaji.github.io/quadruped-locomotion.html",
+    "image": "https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png"
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -165,6 +183,10 @@
       .cs-subtitle { font-size: 0.92rem; }
       .cs-section { padding: 36px 0; }
       .decision-grid { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .metric-card { padding: 14px 8px; }
+      .metric-val { font-size: clamp(1.1rem, 4.5vw, 1.5rem); word-break: break-word; }
+      .metric-label { font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -326,14 +348,15 @@
           <text x="345" y="262" fill="#64748b" font-size="9">• LegIK: Analytical 3-DOF Solver</text>
           <text x="345" y="278" fill="#64748b" font-size="9">• BalanceController: Roll/Pitch IMU trim</text>
           <text x="345" y="294" fill="#64748b" font-size="9">• SupportPolygon: Static stability check</text>
-          <text x="345" y="318" fill="#22c55e" font-size="10">Loop frequency: 100 Hz</text>
+          <text x="345" y="318" fill="#22c55e" font-size="10">Locomotion Controller Loop: 100 Hz</text>
 
           <!-- Node 4: joint_trajectory_controller -->
-          <rect x="710" y="60" width="240" height="100" rx="10" fill="url(#nodeGrad)" stroke="#06b6d4" stroke-width="1.5"/>
+          <rect x="710" y="60" width="240" height="110" rx="10" fill="url(#nodeGrad)" stroke="#06b6d4" stroke-width="1.5"/>
           <text x="725" y="88" fill="#38bdf8" font-size="13" font-weight="bold">ros2_control Manager</text>
           <text x="725" y="108" fill="#94a3b8" font-size="10">joint_trajectory_controller</text>
-          <text x="725" y="126" fill="#64748b" font-size="9">• 12 Synchronized Position Interfaces</text>
-          <text x="725" y="144" fill="#64748b" font-size="9">• Interpolation &amp; hardware safety limits</text>
+          <text x="725" y="126" fill="#64748b" font-size="9">• 200 Hz manager / 100 Hz state pub</text>
+          <text x="725" y="142" fill="#64748b" font-size="9">• 12 Synchronized Position Interfaces</text>
+          <text x="725" y="158" fill="#64748b" font-size="9">• Interpolation &amp; hardware safety limits</text>
 
           <!-- Node 5: Gazebo / Hardware Plugin -->
           <rect x="710" y="200" width="240" height="145" rx="10" fill="url(#nodeGrad)" stroke="#7c3aed" stroke-width="1.5"/>
@@ -510,7 +533,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
             <tr>
               <td><strong>Actuator Control</strong></td>
               <td><code>ros2_control</code> / <code>JointTrajectoryController</code></td>
-              <td>Synchronized 100 Hz position trajectory execution</td>
+              <td>200 Hz Controller Manager update rate; 100 Hz state publication; receives 100 Hz trajectory command stream</td>
             </tr>
             <tr>
               <td><strong>Robot Kinematics</strong></td>
@@ -736,9 +759,31 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
         if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'svg') {
           var clone = targetEl.cloneNode(true);
           clone.removeAttribute('style');
+          clone.removeAttribute('tabindex');
+          clone.removeAttribute('role');
+          clone.removeAttribute('aria-haspopup');
           clone.style.width = '100%';
           clone.style.maxHeight = '75vh';
           clone.style.borderRadius = '8px';
+
+          // Namespace internal IDs within the cloned SVG to prevent DOM ID collision and ensure clean rendering
+          var idNodes = clone.querySelectorAll('[id]');
+          if (idNodes.length > 0) {
+            var idMap = {};
+            for (var k = 0; k < idNodes.length; k++) {
+              var oldId = idNodes[k].getAttribute('id');
+              var newId = 'modal-clone-' + oldId;
+              idMap[oldId] = newId;
+              idNodes[k].setAttribute('id', newId);
+            }
+            var s = clone.innerHTML;
+            for (var oldKey in idMap) {
+              var escKey = oldKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              s = s.replace(new RegExp('url\\(#' + escKey + '\\)', 'g'), 'url(#' + idMap[oldKey] + ')');
+              s = s.replace(new RegExp('href="#' + escKey + '"', 'g'), 'href="#' + idMap[oldKey] + '"');
+            }
+            clone.innerHTML = s;
+          }
           modalBody.appendChild(clone);
         } else if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'img') {
           var img = document.createElement('img');
@@ -812,16 +857,19 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
         el.setAttribute('tabindex', '0');
         el.setAttribute('role', 'button');
         el.setAttribute('aria-haspopup', 'dialog');
-        el.addEventListener('click', function() {
+
+        function triggerZoom() {
           var container = el.closest('.tech-figure-wrap') || el.closest('div');
           var captionEl = container ? container.querySelector('.tech-figure-caption, p') : null;
           var captionText = captionEl ? captionEl.textContent : (el.getAttribute('alt') || el.getAttribute('aria-label'));
           openModal(el, captionText);
-        });
+        }
+
+        el.addEventListener('click', triggerZoom);
         el.addEventListener('keydown', function(e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            el.click();
+            triggerZoom();
           }
         });
       });

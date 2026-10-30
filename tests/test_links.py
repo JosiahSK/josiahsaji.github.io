@@ -94,7 +94,7 @@ class ComprehensiveDOMParser(HTMLParser):
 
 def run_suite(check_live=False):
     print("=" * 75)
-    print("PORTFOLIO V5.2.1 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
+    print("PORTFOLIO V5.3 — MAX-DEPTH DOM, ACCESSIBILITY, FACTUAL & RESUME VERIFICATION")
     print("=" * 75)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -282,6 +282,7 @@ def run_suite(check_live=False):
         ("360deg @ 10 hz", "Unqualified LiDAR operational rate implying real running telemetry"),
         ("map → odom (100 hz)", "Discrepant SLAM transform rate contradicting configured 50 Hz transform_publish_period"),
         ("map -> odom (100 hz)", "Discrepant SLAM transform rate contradicting configured 50 Hz transform_publish_period"),
+        ("synchronized 100 hz ros2_control", "Imprecise quadruped controller statement; must distinguish 100 Hz timer loop and 200 Hz controller manager"),
     ]
 
     claims_clean = True
@@ -306,6 +307,9 @@ def run_suite(check_live=False):
         ("ros2-mobile-robot.html", "A1M8-R5 specifies 0.15–12.0 m on white targets", "Datasheet range for A1M8-R5 must quote 0.15–12.0 m on white targets"),
         ("ros2-mobile-robot.html", "max_laser_range: 8.0 m", "8.0 m must be explicitly identified as configured max_laser_range software parameter"),
         ("index.html", 'aria-controls="mobileMenu"', "Hamburger button in index.html must have aria-controls='mobileMenu'"),
+        ("index.html", "streaming trajectories to a 200 Hz <code>ros2_control</code> controller manager", "Index description must distinguish 100 Hz loop from 200 Hz controller manager"),
+        ("quadruped-locomotion.html", "200 Hz Controller Manager update rate; 100 Hz state publication", "Quadruped specs table must explicitly list 200 Hz manager and 100 Hz state publication"),
+        ("quadruped-locomotion.html", "200 Hz manager / 100 Hz state pub", "Quadruped SVG architecture diagram must specify 200 Hz manager"),
         ("quadruped-locomotion.html", 'id="quad-tab-kinematics"', "Quadruped tab must have id='quad-tab-kinematics'"),
         ("quadruped-locomotion.html", 'aria-controls="quad-panel-kinematics"', "Quadruped tab must have aria-controls='quad-panel-kinematics'"),
         ("quadruped-locomotion.html", 'aria-labelledby="quad-tab-kinematics"', "Quadruped panel must have aria-labelledby='quad-tab-kinematics'"),

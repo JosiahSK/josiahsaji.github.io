@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://josiahsk.github.io/josiahsaji.github.io/sitemap.xml

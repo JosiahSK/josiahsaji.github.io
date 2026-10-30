@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page Not Found | Josiah Saji</title>
+  <meta name="description" content="The requested robotics engineering page or document was not found." />
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .error-wrapper {
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .error-code {
+      font-family: var(--font-mono);
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -2px;
+    }
+    .error-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent3);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .error-desc {
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar" role="navigation" aria-label="Main Navigation">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo" aria-label="Josiah Saji Portfolio Home">
+        <span class="logo-bracket">[</span>JS<span class="logo-bracket">]</span>
+        <span class="logo-dot"></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#hero">Home</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#skills">Skills</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content" class="error-wrapper">
+    <div class="error-code">404</div>
+    <div class="error-tag">// STATUS: COORDINATE_UNRESOLVED</div>
+    <h1 class="h2" style="margin-bottom:12px;">Subsystem Route Not Found</h1>
+    <p class="error-desc">
+      The requested URL does not match an active trajectory, case study, or resource in this robotics engineering portfolio.
+    </p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+      <a href="index.html" class="btn btn-primary">&larr; Return to Portfolio</a>
+      <a href="index.html#projects" class="btn btn-outline">Explore Projects</a>
+    </div>
+  </main>
+
+  <footer id="footer">
+    <div class="container">
+      <p class="footer-text">Built by <span class="accent">Josiah Saji</span> &nbsp;&middot;&nbsp; Robotics &amp; ROS 2 Engineer</p>
+      <p class="footer-sub"><a href="index.html" style="color:var(--accent2);">Back to Home</a> &nbsp;&middot;&nbsp; Kerala, India &nbsp;&middot;&nbsp; 2026</p>
+    </div>
+  </footer>
+</body>
+</html>

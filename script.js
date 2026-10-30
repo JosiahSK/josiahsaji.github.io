@@ -322,6 +322,17 @@ try {
       }
     });
 
+    hamburger.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (mobileMenu.classList.contains('open')) {
+          closeMobileMenu(true);
+        } else {
+          openMobileMenu();
+        }
+      }
+    });
+
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
         e.preventDefault();
@@ -333,7 +344,22 @@ try {
     var mobileLinks = mobileMenu.querySelectorAll('.mobile-link');
     for (var i = 0; i < mobileLinks.length; i++) {
       mobileLinks[i].addEventListener('click', function() {
+        var href = this.getAttribute('href') || '';
         closeMobileMenu(false);
+        if (href.startsWith('#') && href.length > 1) {
+          var targetId = href.substring(1);
+          var targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            if (!targetEl.hasAttribute('tabindex')) {
+              targetEl.setAttribute('tabindex', '-1');
+            }
+            setTimeout(function() {
+              if (typeof targetEl.focus === 'function') {
+                targetEl.focus({ preventScroll: true });
+              }
+            }, 60);
+          }
+        }
       });
     }
 
@@ -421,21 +447,28 @@ try {
       // Show a graceful setup state — form is visible but submitting directs to email
       if (btn) {
         btn.textContent = 'Send via Email →';
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          var name    = (document.getElementById('formName')    || {}).value || '';
-          var subject = (document.getElementById('formSubject') || {}).value || 'Portfolio contact';
-          var message = (document.getElementById('formMessage') || {}).value || '';
-          var mailto  = 'mailto:josiahsaji2k03@gmail.com'
-            + '?subject=' + encodeURIComponent(subject || 'Portfolio contact from ' + name)
-            + '&body='    + encodeURIComponent(message);
-          window.location.href = mailto;
-        });
       }
       if (note) {
         note.textContent = 'Or email me directly: josiahsaji2k03@gmail.com';
         note.style.color = 'var(--text-dim)';
       }
+
+      function handleMailtoFallback(e) {
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        var name    = (document.getElementById('formName')    || {}).value || '';
+        var subject = (document.getElementById('formSubject') || {}).value || 'Portfolio contact';
+        var message = (document.getElementById('formMessage') || {}).value || '';
+        var cleanSubject = subject.trim() || ('Portfolio contact from ' + name.trim());
+        var mailto  = 'mailto:josiahsaji2k03@gmail.com'
+          + '?subject=' + encodeURIComponent(cleanSubject)
+          + '&body='    + encodeURIComponent(message.trim());
+        window.location.href = mailto;
+      }
+
+      if (btn) {
+        btn.addEventListener('click', handleMailtoFallback);
+      }
+      form.addEventListener('submit', handleMailtoFallback);
       return;
     }
 
