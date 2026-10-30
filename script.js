@@ -611,6 +611,76 @@ try {
 } catch(e) {}
 
 
+// ---- HERO STAGE INTERACTIVE TELEMETRY -----------------------------------
+try {
+  (function initHeroStage() {
+    var stage = document.getElementById('heroStage');
+    if (!stage) return;
+
+    var chips = stage.querySelectorAll('.telem-chip');
+    var sweepBeam = document.getElementById('radarSweepBeam');
+    var pointCloud = document.getElementById('pointCloudGroup');
+    var robotChassis = document.getElementById('robotChassis');
+
+    chips.forEach(function(chip) {
+      chip.setAttribute('tabindex', '0');
+      chip.setAttribute('role', 'button');
+      chip.setAttribute('aria-pressed', chip.classList.contains('active') ? 'true' : 'false');
+
+      function activate() {
+        chips.forEach(function(c) {
+          c.classList.remove('active');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        chip.classList.add('active');
+        chip.setAttribute('aria-pressed', 'true');
+
+        if (chip.id === 'telemLidar') {
+          if (sweepBeam) sweepBeam.style.filter = 'drop-shadow(0 0 8px #00d4ff)';
+          if (pointCloud) pointCloud.style.opacity = '1';
+        } else if (chip.id === 'telemOdom') {
+          if (robotChassis) robotChassis.style.filter = 'drop-shadow(0 0 10px #8b5cf6)';
+        } else if (chip.id === 'telemSlam') {
+          if (pointCloud) pointCloud.style.opacity = '1';
+        } else if (chip.id === 'telemNav') {
+          if (robotChassis) robotChassis.style.filter = 'drop-shadow(0 0 10px #00d4ff)';
+        }
+      }
+
+      chip.addEventListener('click', activate);
+      chip.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate();
+        }
+      });
+    });
+  })();
+} catch(e) {}
+
+
+// ---- MAGNETIC BUTTONS --------------------------------------------------
+try {
+  (function initMagneticButtons() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.innerWidth < 768) return; // desktop only
+
+    var btns = document.querySelectorAll('.btn-primary, .btn-resume');
+    btns.forEach(function(btn) {
+      btn.addEventListener('mousemove', function(e) {
+        var rect = btn.getBoundingClientRect();
+        var x = e.clientX - rect.left - rect.width / 2;
+        var y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = 'translate(' + (x * 0.18) + 'px, ' + (y * 0.18) + 'px)';
+      });
+      btn.addEventListener('mouseleave', function() {
+        btn.style.transform = '';
+      });
+    });
+  })();
+} catch(e) {}
+
+
 // ---- REDUCED MOTION SUPPORT --------------------------------------------
 // Disable non-essential animations for users who prefer reduced motion.
 try {
@@ -622,8 +692,10 @@ try {
       '.avatar-ring { animation: none !important; }',
       '.badge-dot { animation: none !important; }',
       '.scroll-line { animation: none !important; }',
+      '.lidar-sweep-group { animation: none !important; }',
       '#heroCanvas { display: none !important; }',
     ].join('');
     document.head.appendChild(rm);
   }
 } catch(e) {}
+

@@ -48,7 +48,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -89,27 +89,186 @@
   <!-- HERO -->
   <section id="hero">
     <canvas id="heroCanvas"></canvas>
-    <div class="hero-content reveal">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        Robotics &amp; Autonomous Systems
-      </div>
-      <h1 class="hero-name">Josiah <span class="accent-text">Saji</span></h1>
-      <p class="hero-title">Robotics Engineer &nbsp;|&nbsp; ROS 2 &nbsp;|&nbsp; Embedded Systems &nbsp;|&nbsp; Autonomous Robots</p>
-      <p class="hero-tagline">"Building autonomous systems that interact reliably with the real world."</p>
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary" id="heroViewProjects">View Projects</a>
-        <a href="#contact" class="btn btn-outline" id="heroContact">Contact Me</a>
-        <a href="assets/resume/resume.pdf" class="btn btn-resume" id="heroResume" download>&#x2193; Resume</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-num">ROS 2</span><span class="stat-label">Jazzy &amp; Humble</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat"><span class="stat-num">4+</span><span class="stat-label">Major Projects</span></div>
-        <div class="stat-divider"></div>
-        <div class="stat"><span class="stat-num">Evolve</span><span class="stat-label">Robotics</span></div>
+    <div class="container">
+      <div class="hero-split-grid">
+        
+        <!-- Hero Left: Identity, Role & CTAs -->
+        <div class="hero-info reveal">
+          <div class="hero-badge-v5">
+            <span class="badge-dot"></span>
+            SYS_ONLINE // ROS 2 JAZZY &amp; AUTONOMOUS ROBOTICS
+          </div>
+          <h1 class="hero-name">Josiah <span class="accent-text">Saji</span></h1>
+          <p class="hero-title">Robotics &amp; Autonomous Systems Engineer</p>
+          <p class="hero-tagline">Architecting deterministic motion controllers, embedded micro-ROS topologies, and autonomous SLAM pipelines.</p>
+          
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary" id="heroViewProjects">Explore Projects &rarr;</a>
+            <a href="#contact" class="btn btn-outline" id="heroContact">Contact Engineer</a>
+            <a href="assets/resume/resume.pdf" class="btn btn-resume" id="heroResume" download>&#x2193; R&eacute;sum&eacute; [PDF]</a>
+          </div>
+
+          <div class="hero-stats-v5">
+            <div class="stat-box">
+              <span class="stat-val">100 Hz</span>
+              <span class="stat-desc">ros2_control Loop</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-val">ROS 2</span>
+              <span class="stat-desc">Jazzy &amp; Humble</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-val">4+</span>
+              <span class="stat-desc">Robotics Projects</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-val">Evolve</span>
+              <span class="stat-desc">Robotics Engineer</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right: Interactive Robotics Engineering Stage -->
+        <div class="hero-interactive-stage reveal" id="heroStage">
+          <div class="stage-header">
+            <span class="stage-live-tag"><span class="badge-dot"></span> LIVE SENSOR RADAR</span>
+            <span class="stage-coords">[ORIGIN // 0.00, 0.00]</span>
+          </div>
+
+          <div class="stage-svg-wrap">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive Autonomous Robot Schematic and LiDAR Radar Sweep">
+              <defs>
+                <radialGradient id="radarSweepGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.32" />
+                  <stop offset="85%" stop-color="#00d4ff" stop-opacity="0.08" />
+                  <stop offset="100%" stop-color="#00d4ff" stop-opacity="0" />
+                </radialGradient>
+                <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+
+              <!-- Blueprint Grid Lines -->
+              <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+                <line x1="50" y1="0" x2="50" y2="500" />
+                <line x1="100" y1="0" x2="100" y2="500" />
+                <line x1="150" y1="0" x2="150" y2="500" />
+                <line x1="200" y1="0" x2="200" y2="500" />
+                <line x1="250" y1="0" x2="250" y2="500" stroke="rgba(0,212,255,0.18)" />
+                <line x1="300" y1="0" x2="300" y2="500" />
+                <line x1="350" y1="0" x2="350" y2="500" />
+                <line x1="400" y1="0" x2="400" y2="500" />
+                <line x1="450" y1="0" x2="450" y2="500" />
+                
+                <line x1="0" y1="50" x2="500" y2="50" />
+                <line x1="0" y1="100" x2="500" y2="100" />
+                <line x1="0" y1="150" x2="500" y2="150" />
+                <line x1="0" y1="200" x2="500" y2="200" />
+                <line x1="0" y1="250" x2="500" y2="250" stroke="rgba(0,212,255,0.18)" />
+                <line x1="0" y1="300" x2="500" y2="300" />
+                <line x1="0" y1="350" x2="500" y2="350" />
+                <line x1="0" y1="400" x2="500" y2="400" />
+                <line x1="0" y1="450" x2="500" y2="450" />
+              </g>
+
+              <!-- Concentric LiDAR Range Rings -->
+              <circle cx="250" cy="250" r="60" fill="none" stroke="rgba(0,212,255,0.14)" stroke-width="1" stroke-dasharray="2,3" />
+              <circle cx="250" cy="250" r="120" fill="none" stroke="rgba(0,212,255,0.18)" stroke-width="1" />
+              <circle cx="250" cy="250" r="180" fill="none" stroke="rgba(0,212,255,0.14)" stroke-width="1" stroke-dasharray="3,3" />
+              <circle cx="250" cy="250" r="230" fill="none" stroke="rgba(0,212,255,0.28)" stroke-width="1.2" />
+
+              <!-- Range Ring Text Labels -->
+              <text x="254" y="195" fill="#64748b" font-family="'JetBrains Mono',monospace" font-size="8">2.0m</text>
+              <text x="254" y="135" fill="#64748b" font-family="'JetBrains Mono',monospace" font-size="8">4.0m</text>
+              <text x="254" y="75" fill="#64748b" font-family="'JetBrains Mono',monospace" font-size="8">6.0m</text>
+              <text x="254" y="26" fill="#00d4ff" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="600">8.0m [SLAM LIMIT]</text>
+
+              <!-- Coordinate Axes Vector Arrows -->
+              <line x1="250" y1="250" x2="250" y2="15" stroke="#00d4ff" stroke-width="1.5" />
+              <polygon points="250,8 246,18 254,18" fill="#00d4ff" />
+              <text x="260" y="14" fill="#00d4ff" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700">+X [FWD]</text>
+
+              <line x1="250" y1="250" x2="485" y2="250" stroke="#8b5cf6" stroke-width="1.5" />
+              <polygon points="492,250 482,246 482,254" fill="#8b5cf6" />
+              <text x="440" y="244" fill="#8b5cf6" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700">+Y [LAT]</text>
+
+              <!-- Detected Point Cloud Obstacle Returns -->
+              <g id="pointCloudGroup">
+                <circle cx="160" cy="140" r="3" fill="#00d4ff" filter="url(#cyanGlow)" />
+                <circle cx="168" cy="136" r="2.5" fill="#00d4ff" />
+                <circle cx="176" cy="142" r="2" fill="#00d4ff" />
+
+                <circle cx="340" cy="120" r="3" fill="#00d4ff" filter="url(#cyanGlow)" />
+                <circle cx="350" cy="126" r="2.5" fill="#00d4ff" />
+                <circle cx="358" cy="132" r="2" fill="#00d4ff" />
+
+                <circle cx="380" cy="290" r="3" fill="#f5a623" filter="url(#cyanGlow)" />
+                <circle cx="386" cy="300" r="2.5" fill="#f5a623" />
+
+                <circle cx="130" cy="320" r="3" fill="#00d4ff" />
+                <circle cx="122" cy="330" r="2.5" fill="#00d4ff" />
+              </g>
+
+              <!-- Rotating LiDAR Sweep Beam -->
+              <g class="lidar-sweep-group" id="radarSweepBeam">
+                <path d="M 250 250 L 250 20 A 230 230 0 0 1 390 68 Z" fill="url(#radarSweepGrad)" />
+                <line x1="250" y1="250" x2="250" y2="20" stroke="#00d4ff" stroke-width="2" filter="url(#cyanGlow)" />
+              </g>
+
+              <!-- Robot Physical Footprint (Center Differential Drive Base) -->
+              <g id="robotChassis" transform="translate(250, 250)">
+                <!-- Main Body Chassis -->
+                <rect x="-32" y="-42" width="64" height="84" rx="8" fill="#111827" stroke="#00d4ff" stroke-width="1.8" />
+                
+                <!-- Internal Circuit Components -->
+                <rect x="-24" y="-34" width="48" height="24" rx="4" fill="#182235" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                <text x="0" y="-18" fill="#94a3b8" font-family="'JetBrains Mono',monospace" font-size="6.5" text-anchor="middle">SBC / ROS 2</text>
+
+                <rect x="-24" y="6" width="48" height="24" rx="4" fill="#182235" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+                <text x="0" y="22" fill="#94a3b8" font-family="'JetBrains Mono',monospace" font-size="6.5" text-anchor="middle">LiFePO4 24V</text>
+
+                <!-- Left Drive Wheel -->
+                <rect x="-42" y="-18" width="8" height="36" rx="2" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5" />
+                <!-- Right Drive Wheel -->
+                <rect x="34" y="-18" width="8" height="36" rx="2" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5" />
+
+                <!-- Front Caster -->
+                <circle cx="0" cy="-35" r="5" fill="#334155" stroke="#00d4ff" stroke-width="1" />
+                <!-- Rear Caster -->
+                <circle cx="0" cy="35" r="5" fill="#334155" stroke="#00d4ff" stroke-width="1" />
+
+                <!-- RPLIDAR A1 Sensor Turret at Robot Center -->
+                <circle cx="0" cy="-6" r="16" fill="#090d14" stroke="#00d4ff" stroke-width="2" />
+                <circle cx="0" cy="-6" r="8" fill="#162032" stroke="#8b5cf6" stroke-width="1.2" />
+                <circle cx="0" cy="-6" r="3" fill="#00d4ff" />
+              </g>
+            </svg>
+          </div>
+
+          <div class="telemetry-overlay">
+            <div class="telem-chip active" id="telemLidar">
+              <span class="telem-label">LiDAR SCAN</span>
+              <span class="telem-val">360&deg; @ 10 Hz</span>
+            </div>
+            <div class="telem-chip" id="telemOdom">
+              <span class="telem-label">EKF ODOM</span>
+              <span class="telem-val">100 Hz FUSED</span>
+            </div>
+            <div class="telem-chip" id="telemSlam">
+              <span class="telem-label">SLAM RANGE</span>
+              <span class="telem-val">8.0 m LIMIT</span>
+            </div>
+            <div class="telem-chip" id="telemNav">
+              <span class="telem-label">NAV2 PLANNER</span>
+              <span class="telem-val">DWB ACTIVE</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
+
     <div class="hero-scroll-hint">
       <span>Scroll</span>
       <div class="scroll-line"></div>
@@ -120,7 +279,7 @@
   <section id="about" class="section">
     <div class="container">
       <div class="section-header reveal">
-        <span class="section-tag">// who I am</span>
+        <span class="section-tag">// who I am &middot; [9.5916&deg; N, 76.5222&deg; E]</span>
         <h2 class="section-title">About Me</h2>
       </div>
       <div class="about-grid">
@@ -136,38 +295,38 @@
                 <path d="M14 68c0-14.359 11.64-26 26-26h0c14.359 0 26 11.641 26 26" stroke="url(#grad1)" stroke-width="2.5" stroke-linecap="round"/>
                 <defs>
                   <linearGradient id="grad1" x1="14" y1="14" x2="66" y2="68" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#7c3aed"/>
-                    <stop offset="1" stop-color="#06b6d4"/>
+                    <stop stop-color="#00d4ff"/>
+                    <stop offset="1" stop-color="#8b5cf6"/>
                   </linearGradient>
                 </defs>
               </svg>
             </div>
           </div>
           <div class="about-tags">
-            <span class="tag">🤖 Robotics</span>
-            <span class="tag">⚡ Embedded</span>
-            <span class="tag">🛰 ROS2</span>
-            <span class="tag">🌾 AgriTech</span>
-            <span class="tag">🦾 Quadruped</span>
+            <span class="tag">&#x1F916; Robotics</span>
+            <span class="tag">&#x26A1; Embedded</span>
+            <span class="tag">&#x1F6F0; ROS 2</span>
+            <span class="tag">&#x1F33E; AgriTech</span>
+            <span class="tag">&#x1F9BE; Quadruped</span>
           </div>
         </div>
         <div class="about-text reveal">
           <p class="about-lead">Robotics Engineer at <strong>Evolve Robotics</strong>, graduated B.Tech in Robotics &amp; Automation from <strong>Saintgits College of Engineering</strong>, Kerala (2025).</p>
-          <p>I specialize in <strong>ROS 2</strong>, <strong>embedded systems</strong>, and <strong>autonomous robotics</strong> — turning ideas into machines that operate in real environments. My work spans hardware-software integration, multi-sensor telemetry, mobile robot navigation, kinematics, and embedded control.</p>
-          <p>I have built and deployed robots ranging from ESP32-powered differential-drive cars with micro-ROS to full SLAM-capable mobile robots and a 12-DOF quadruped locomotion framework in simulation. I care about the engineering rigor behind systems that have to work in the real world.</p>
-          <p>Beyond engineering, I have led technical workshops in ROS 2 and embedded systems, served as Secretary of the college Robotics Society, and coordinated with industry professionals to deliver hands-on training.</p>
+          <p>I specialize in <strong>ROS 2</strong>, <strong>embedded systems</strong>, and <strong>autonomous robotics</strong> &mdash; turning ideas into deterministic machines that operate reliably in real environments. My work spans hardware-software integration, multi-sensor telemetry, mobile robot navigation, kinematics, and embedded control.</p>
+          <p>I have built and deployed systems ranging from ESP32-powered differential-drive robots with micro-ROS to full SLAM-capable mobile robots and a 12-DOF quadruped locomotion framework in simulation. I care deeply about the engineering rigor behind systems that have to perform without failure in the real world.</p>
+          <p>Beyond engineering, I have led technical workshops in ROS 2 and embedded systems, served as Secretary of the college Robotics Society, and coordinated with industry professionals to deliver hands-on robotics training.</p>
           <div class="about-highlights">
             <div class="highlight-item">
-              <span class="highlight-icon">📍</span>
-              <span>Kerala, India</span>
+              <span class="highlight-icon">&#x1F4CD;</span>
+              <span>Kerala, India &middot; 9.5916&deg; N, 76.5222&deg; E</span>
             </div>
             <div class="highlight-item">
-              <span class="highlight-icon">🎓</span>
-              <span>Saintgits College of Engineering — B.Tech Robotics &amp; Automation, 2025</span>
+              <span class="highlight-icon">&#x1F393;</span>
+              <span>Saintgits College of Engineering &mdash; B.Tech Robotics &amp; Automation, 2025</span>
             </div>
             <div class="highlight-item">
-              <span class="highlight-icon">🏢</span>
-              <span>Robotics Engineer · Evolve Robotics (Jan 2026–present)</span>
+              <span class="highlight-icon">&#x1F3E2;</span>
+              <span>Robotics Engineer &middot; Evolve Robotics (Jan 2026&ndash;present)</span>
             </div>
           </div>
         </div>
