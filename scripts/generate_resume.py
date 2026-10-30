@@ -180,7 +180,7 @@ def generate_resume_pdf():
       <span class="item-date">ROS 2 Humble · C++ / Python · Gazebo</span>
     </div>
     <ul>
-      <li>Formulated closed-form analytical 3-DOF leg inverse kinematics (~25–26 µs CPython 3.12 microbenchmark per leg solve) providing direct trigonometric solutions without iterative Jacobian inversion.</li>
+      <li>Formulated closed-form analytical 3-DOF leg inverse kinematics providing direct trigonometric solutions without iterative Jacobian inversion.</li>
       <li>Implemented parametric 3D cycloid foot trajectory generator guaranteeing <strong>C¹ velocity continuity</strong> and zero horizontal/vertical velocity boundary conditions at touchdown.</li>
       <li>Validated multi-gait sequencing (Trot, Walk, Crawl, Bound) and IMU active roll/pitch balance loop at 100 Hz in Gazebo.</li>
     </ul>
@@ -188,13 +188,13 @@ def generate_resume_pdf():
 
   <div class="item">
     <div class="item-header">
-      <span class="item-title">Autonomous Tilling Robot (AgriTech)</span>
-      <span class="item-date">ROS 2 Humble · Raspberry Pi 4B · ESP32 · LiFePO4</span>
+      <span class="item-title">Agricultural Tilling Robot Prototype (AgriTech)</span>
+      <span class="item-date">ROS 2 Humble · Raspberry Pi 4B · ESP32 · 24V LiFePO4</span>
     </div>
     <ul>
-      <li>Architected hybrid 24V agricultural rover with front 2-stroke engine and rear high-torque drive; developed and submitted for <strong>YIP 7.0</strong>.</li>
-      <li>Integrated GPS waypoint navigation (NEO-6M), multi-sensor power telemetry, and wireless emergency RF teleoperation.</li>
-      <li>Engineered custom chassis and LiFePO4 battery distribution architecture for high-vibration agricultural environments.</li>
+      <li>Architected hybrid 24V agricultural rover with front 2-stroke engine and rear geared DC drivetrain; developed and submitted for <strong>YIP 7.0</strong>.</li>
+      <li>Integrated GPS data acquisition node (NEO-6M), multi-sensor telemetry, and 2.4 GHz wireless manual remote override.</li>
+      <li>Engineered custom mild-steel chassis and 24V LiFePO4 battery power architecture for high-vibration agricultural environments.</li>
     </ul>
   </div>
 

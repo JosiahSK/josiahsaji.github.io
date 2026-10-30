@@ -51,7 +51,7 @@ REQUIRED_KEYWORDS = [
     ("Quadruped Locomotion", "Project: Quadruped"),
     ("micro-ROS", "Project: micro-ROS 2WD Car"),
     ("Autonomous Mobile Robot", "Project: ROS 2 AMR"),
-    ("Autonomous Tilling Robot", "Project: Tilling Robot"),
+    ("Tilling Robot", "Project: Tilling Robot"),
     ("RPLidar A1", "Hardware: RPLidar A1"),
     ("8m", "Laser mapping range"),
     ("LiFePO4", "Hardware: Battery Chemistry"),
@@ -75,6 +75,12 @@ DISALLOWED_PATTERNS = [
     ("sub-10 us", "Unverified compiled IK execution metric"),
     ("< 10 µs", "Unverified compiled IK execution metric"),
     ("< 10 us", "Unverified compiled IK execution metric"),
+    ("25–26 µs", "Unevidenced analytical IK benchmark timing"),
+    ("25-26 µs", "Unevidenced analytical IK benchmark timing"),
+    ("~25 µs", "Unevidenced analytical IK benchmark timing"),
+    ("sub-30 µs", "Unevidenced analytical IK timing metric"),
+    ("<30 µs", "Unevidenced analytical IK timing metric"),
+    ("< 30 µs", "Unevidenced analytical IK timing metric"),
 ]
 
 def verify_resume(pdf_path=RESUME_PATH):

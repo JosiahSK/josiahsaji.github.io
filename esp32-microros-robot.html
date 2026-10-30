@@ -9,7 +9,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="ESP32 micro-ROS 2WD Differential Drive Robot — Case Study | Josiah Saji" />
-  <meta property="og:description" content="Embedded robotics with ESP32 and micro-ROS over Wi-Fi UDP — hardware PWM, differential mixing, and deterministic failsafes." />
+  <meta property="og:description" content="Embedded robotics with ESP32 and micro-ROS over Wi-Fi UDP — hardware PWM, differential mixing, and software command-timeout failsafes." />
   <meta property="og:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
   <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/esp32-microros-robot.html" />
   <meta property="og:type" content="article" />
@@ -17,7 +17,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ESP32 micro-ROS 2WD Differential Drive Robot — Case Study | Josiah Saji" />
-  <meta name="twitter:description" content="Embedded robotics with ESP32 and micro-ROS over Wi-Fi UDP — hardware PWM, differential mixing, and deterministic failsafes." />
+  <meta name="twitter:description" content="Embedded robotics with ESP32 and micro-ROS over Wi-Fi UDP — hardware PWM, differential mixing, and software command-timeout failsafes." />
   <meta name="twitter:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
 
   <!-- Favicon -->
@@ -218,7 +218,7 @@
             <span class="cs-badge">Wi-Fi UDP Transport</span>
             <span class="cs-badge badge-purple">geometry_msgs/Twist</span>
             <span class="cs-badge">LEDC Hardware PWM</span>
-            <span class="cs-badge badge-purple">Command Timeout Failsafe (500ms)</span>
+            <span class="cs-badge badge-purple">Software Command Timeout (500ms)</span>
           </div>
           <div class="cs-hero-actions">
             <a href="#cs-overview" class="btn btn-primary btn-sm">Read Technical Analysis &darr;</a>
@@ -294,7 +294,7 @@
               <!-- Failsafe Subsystem -->
               <rect x="215" y="188" width="130" height="28" rx="4" fill="#061a14" stroke="#10b981" stroke-width="1" />
               <text x="222" y="201" fill="#10b981" font-size="7.5" font-weight="700">Software Failsafe</text>
-              <text x="222" y="211" fill="#94a3b8" font-size="6.8">500 ms Timeout &rarr; E-Brake</text>
+              <text x="222" y="211" fill="#94a3b8" font-size="6.8">500 ms Timeout &rarr; Zero PWM</text>
 
               <!-- Pin Outputs -->
               <text x="215" y="235" fill="#f5a623" font-size="7.5" font-weight="600">GPIO: 25, 26, 27, 14</text>
@@ -334,7 +334,7 @@
               <line x1="30" y1="310" x2="55" y2="310" stroke="#f5a623" stroke-width="2" />
               <text x="62" y="313" fill="#94a3b8" font-size="7.5">Motor Supply: 7.4V 2S Li-ion Battery</text>
             </svg>
-            <p class="tech-figure-caption">Figure H-1: Illustrative Schematic &middot; ESP32 micro-ROS embedded topology, dual-core task allocation, and isolated dual H-bridge motor control.</p>
+            <p class="tech-figure-caption">Figure H-1: Illustrative Schematic &middot; ESP32 micro-ROS embedded topology, executor spin model, and dual H-bridge motor control with shared ground.</p>
             <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
           </div>
         </div>
@@ -494,7 +494,7 @@
 
         <div class="decision-card">
           <span class="decision-badge">software failsafe</span>
-          <div class="decision-title">Deterministic Failsafe Cutoff</div>
+          <div class="decision-title">Application-Level Command-Timeout Cutoff</div>
           <p class="decision-text">
             Mobile robots running over wireless links face network drops and Wi-Fi disconnects. The main execution loop continuously monitors <code style="color:var(--accent2);">millis() - lastCmdTime</code>: if no valid <code style="color:var(--accent2);">/cmd_vel</code> packet arrives within 500 ms, the hardware PWM immediately resets to 0 on all pins, preventing runaway robots.
           </p>

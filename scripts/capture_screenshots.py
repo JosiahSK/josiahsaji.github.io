@@ -2,7 +2,7 @@
 """
 scripts/capture_screenshots.py
 Automated Multi-Viewport & Case Study Screenshot Verification Suite
-for Josiah Saji's Robotics Portfolio (Portfolio V5.3.1 Release).
+for Josiah Saji's Robotics Portfolio (Portfolio V5.3.2 Release).
 
 Features:
 - Dynamically finds repository root from script location.
@@ -14,7 +14,7 @@ Features:
 - Comprehensive Viewport Matrix:
   * Homepage: 1440x900, 1366x768, 1280x800, 1024x768, 768x1024, 390x844, 375x812, 360x800, 320x700, 844x390
   * 4 Case Studies: 1440x900, 1024x768, 390x844, 360x800 each
-- Outputs to docs/screenshots/v5.3.1/ by default (configurable via --outdir or --v53 / --v531).
+- Outputs to docs/screenshots/v5.3.2/ by default (configurable via --outdir or --v53 / --v531 / --v532).
 - Generates verified docs/screenshots/<version>/README.md report table.
 - Returns non-zero exit code on failure.
 """
@@ -198,7 +198,7 @@ def write_readme_catalog(out_dir, version_label, capture_records):
         "   Technical SVG architecture and schematic diagrams scale with high fidelity from 1440px desktop displays down to 320px compact screens via responsive SVG viewBox attributes.",
         "",
         "3. **Claim Integrity Verification:**  ",
-        "   Visual inspection confirms updated badges (`Closed-Form Analytical IK`), modified schematics (`200 Hz manager / 100 Hz JTC state pub`, `Command Cutoff`), and adjusted status headers (`Engineering Validation Status & Field Trial Plan`) render cleanly without layout collisions.",
+        "   Visual inspection confirms updated badges (`Agricultural Tilling Robot Prototype`, `24V LiFePO4`, `Design Target: ~15cm Depth`, `Software Command Timeout`, `Zero PWM Cutoff`) and modified schematics render cleanly without layout collisions.",
         "",
         "4. **Typography & Readability:**  ",
         "   Headings use Space Grotesk with fluid clamping; technical tables and telemetry labels use JetBrains Mono; body copy uses Inter with line-height >= 1.6.",
@@ -217,8 +217,8 @@ def main():
     root_dir = os.path.dirname(script_dir)
 
     # Output directory selection
-    version_label = "V5.3.1"
-    out_rel = os.path.join("docs", "screenshots", "v5.3.1")
+    version_label = "V5.3.2"
+    out_rel = os.path.join("docs", "screenshots", "v5.3.2")
 
     if "--v53" in sys.argv:
         version_label = "V5.3"
@@ -251,7 +251,7 @@ def main():
         httpd.server_close()
         sys.exit(1)
 
-    temp_profile = tempfile.mkdtemp(prefix="portfolio_screen_v531_")
+    temp_profile = tempfile.mkdtemp(prefix="portfolio_screen_v532_")
     print(f"Running automated screenshot suite across viewports to: {out_dir}\n")
 
     failures = 0

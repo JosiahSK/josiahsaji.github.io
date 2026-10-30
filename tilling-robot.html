@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Autonomous Tilling Robot — Case Study | Josiah Saji</title>
-  <meta name="description" content="Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, mechanical packaging, and validation status." />
+  <title>Agricultural Tilling Robot Prototype — Case Study | Josiah Saji</title>
+  <meta name="description" content="Full case study: Agricultural Tilling Robot Prototype by Josiah Saji — system architecture, BOM, mechanical packaging, and validation status." />
   <link rel="canonical" href="https://josiahsk.github.io/josiahsaji.github.io/tilling-robot.html" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Autonomous Tilling Robot — Case Study | Josiah Saji" />
-  <meta property="og:description" content="Deep-dive into the design, build, and results of an autonomous agricultural robot by Josiah Saji." />
+  <meta property="og:title" content="Agricultural Tilling Robot Prototype — Case Study | Josiah Saji" />
+  <meta property="og:description" content="Deep-dive into the design, build, and validation status of an agricultural tilling robot prototype by Josiah Saji." />
   <meta property="og:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
   <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/tilling-robot.html" />
   <meta property="og:type" content="article" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Autonomous Tilling Robot — Case Study | Josiah Saji" />
-  <meta name="twitter:description" content="Deep-dive into the design, build, and results of an autonomous agricultural robot by Josiah Saji." />
+  <meta name="twitter:title" content="Agricultural Tilling Robot Prototype — Case Study | Josiah Saji" />
+  <meta name="twitter:description" content="Deep-dive into the design, build, and validation status of an agricultural tilling robot prototype by Josiah Saji." />
   <meta name="twitter:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
   <link rel="icon" href="assets/favicon.ico" />
   <!-- Structured Data (JSON-LD) -->
@@ -25,8 +25,8 @@
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Autonomous Tilling Robot",
-    "description": "Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, mechanical packaging, and validation status.",
+    "headline": "Agricultural Tilling Robot Prototype",
+    "description": "Full case study: Agricultural Tilling Robot Prototype by Josiah Saji — system architecture, BOM, mechanical packaging, and validation status.",
     "author": {
       "@type": "Person",
       "name": "Josiah Saji",
@@ -186,15 +186,15 @@
         <div class="cs-hero-content">
           <a href="index.html#projects" class="cs-back">&larr; Back to Projects</a>
           <span class="cs-tag">// case study &middot; 01</span>
-          <h1 class="cs-title">Autonomous Tilling<br><span style="background:linear-gradient(135deg,#f59e0b,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Agricultural Robot</span></h1>
-          <p class="cs-subtitle">A high-torque rear-wheel-drive agricultural machine combining a two-stroke rototiller implement, isolated LiFePO4 power bus, and GPS waypoint guidance, developed and submitted to YIP 7.0.</p>
+          <h1 class="cs-title">Agricultural Tilling<br><span style="background:linear-gradient(135deg,#f59e0b,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Robot Prototype</span></h1>
+          <p class="cs-subtitle">A developing agricultural robotics prototype integrating a mechanical tilling subsystem, embedded motor control, GPS sensor acquisition and a planned autonomous navigation stack, submitted to YIP 7.0.</p>
           <div class="cs-badges">
             <span class="cs-badge" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.35);color:#f59e0b;">YIP 7.0 Submission</span>
             <span class="cs-badge" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.35);color:#10b981;">Agricultural Robotics</span>
-            <span class="cs-badge">LiFePO4 Power System</span>
-            <span class="cs-badge">High-Torque Rear Drive</span>
-            <span class="cs-badge">GPS Waypoint Tracking</span>
-            <span class="cs-badge">2.4 GHz RF Failsafe</span>
+            <span class="cs-badge">24V LiFePO4 Power System</span>
+            <span class="cs-badge">Geared DC Motor Drive</span>
+            <span class="cs-badge">GPS Data Acquisition</span>
+            <span class="cs-badge">2.4 GHz Manual Remote Override</span>
           </div>
           <div class="cs-hero-actions">
             <a href="#cs-overview" class="btn btn-primary btn-sm">Read Architecture &darr;</a>
@@ -245,30 +245,30 @@
                 <circle cx="0" cy="0" r="4" fill="#f59e0b" />
               </g>
               <text x="65" y="270" fill="#f59e0b" font-size="7.5" text-anchor="middle" font-weight="600">Rotating Tines</text>
-              <text x="65" y="282" fill="#94a3b8" font-size="6.5" text-anchor="middle">Target Furrow Depth ~15cm</text>
+              <text x="65" y="282" fill="#94a3b8" font-size="6.5" text-anchor="middle">Design Target: ~15cm Furrow Depth</text>
 
               <!-- Isolated Power Module: LiFePO4 Battery Subsystem (Center) -->
               <rect x="120" y="122" width="130" height="48" rx="5" fill="#162032" stroke="#10b981" stroke-width="1.5" />
-              <text x="185" y="140" fill="#10b981" font-size="8.5" text-anchor="middle" font-weight="700">LiFePO4 BATTERY</text>
-              <text x="185" y="152" fill="#94a3b8" font-size="7" text-anchor="middle">Dedicated Isolated Pack</text>
-              <text x="185" y="163" fill="#64748b" font-size="6.5" text-anchor="middle">Inductive Back-EMF Isolation</text>
+              <text x="185" y="140" fill="#10b981" font-size="8.5" text-anchor="middle" font-weight="700">24V LiFePO4 BATTERY</text>
+              <text x="185" y="152" fill="#94a3b8" font-size="7" text-anchor="middle">High-Discharge Power System</text>
+              <text x="185" y="163" fill="#64748b" font-size="6.5" text-anchor="middle">Tested at 23.8V Under Load</text>
 
               <!-- Electronics & Navigation Enclosure (Top Center) -->
               <rect x="265" y="122" width="140" height="48" rx="5" fill="#162032" stroke="#00d4ff" stroke-width="1.5" />
               <text x="335" y="138" fill="#00d4ff" font-size="8.5" text-anchor="middle" font-weight="700">AVIONICS &amp; MCU</text>
               <text x="335" y="150" fill="#94a3b8" font-size="7" text-anchor="middle">32-Bit Microcontroller</text>
-              <text x="335" y="161" fill="#a78bfa" font-size="6.5" text-anchor="middle">GPS NMEA + 2.4GHz RF</text>
+              <text x="335" y="161" fill="#a78bfa" font-size="6.5" text-anchor="middle">GPS NMEA + Manual Override</text>
 
               <!-- Ceramic Patch GPS Antenna Mast -->
               <line x1="335" y1="122" x2="335" y2="48" stroke="#00d4ff" stroke-width="2" />
               <rect x="320" y="32" width="30" height="16" rx="2" fill="#111827" stroke="#00d4ff" stroke-width="1.2" />
               <text x="335" y="44" fill="#00d4ff" font-size="7" text-anchor="middle" font-weight="700">GPS</text>
-              <text x="375" y="44" fill="#64748b" font-size="7">Patch Antenna</text>
+              <text x="375" y="44" fill="#64748b" font-size="7">Data Acquisition</text>
 
-              <!-- High-Torque Rear Differential Drive Subsystem (Right) -->
+              <!-- Rear-Wheel-Drive Drivetrain (Right) -->
               <rect x="370" y="175" width="85" height="45" rx="4" fill="#1f2937" stroke="#e2e8f0" stroke-width="1.2" />
-              <text x="412" y="194" fill="#fff" font-size="7.5" text-anchor="middle" font-weight="700">GEARED MOTOR</text>
-              <text x="412" y="206" fill="#94a3b8" font-size="6.8" text-anchor="middle">Planetary Reducer</text>
+              <text x="412" y="194" fill="#fff" font-size="7.5" text-anchor="middle" font-weight="700">24V DC MOTOR</text>
+              <text x="412" y="206" fill="#94a3b8" font-size="6.8" text-anchor="middle">Chain Drive</text>
 
               <!-- Rear Heavy-Duty Agricultural Lug Tire -->
               <g transform="translate(415, 235)">
@@ -294,9 +294,9 @@
 
               <!-- Architecture Badging -->
               <rect x="150" y="305" width="220" height="24" rx="4" fill="#111827" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
-              <text x="260" y="320" fill="#94a3b8" font-size="7.2" text-anchor="middle">Rear Traction Drive &middot; Front Rototiller Counter-Torque</text>
+              <text x="260" y="320" fill="#94a3b8" font-size="7.2" text-anchor="middle">Rear Chain Drive &middot; Front Rototiller Counter-Torque</text>
             </svg>
-            <p class="tech-figure-caption">Figure H-1: Illustrative Schematic &middot; Agricultural tilling robot mechanical layout: front two-stroke cultivator, isolated central LiFePO4 battery, and rear planetary differential drivetrain.</p>
+            <p class="tech-figure-caption">Figure H-1: Illustrative Schematic &middot; Agricultural tilling robot mechanical layout: front two-stroke cultivator, central 24V LiFePO4 battery, and rear chain-driven geared drivetrain.</p>
             <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
           </div>
         </div>
@@ -310,11 +310,11 @@
     <section class="cs-section reveal" id="cs-overview">
       <span class="cs-section-tag">// 01 — system overview</span>
       <h2 class="cs-section-title">System Architecture</h2>
-      <p style="color:var(--text-muted);margin-bottom:28px;">The autonomous tilling robot integrates a high-torque rear differential electric drivetrain with a front-mounted two-stroke rototiller implement. The electronics stack combines an embedded microcontroller for low-level motor drive PWM and failsafe sequencing, a ceramic patch antenna GPS module for agricultural waypoint tracking, a dedicated LiFePO4 battery subsystem to isolate digital logic from inductive motor noise, and a 2.4 GHz RF/Bluetooth teleoperation receiver for manual safety override.</p>
+      <p style="color:var(--text-muted);margin-bottom:28px;">The agricultural tilling robot prototype integrates a rear-wheel-drive electric drivetrain with a front-mounted two-stroke rototiller implement. The system combines an embedded microcontroller for low-level motor drive PWM and remote override sequencing, a ceramic patch antenna GPS module for field data acquisition, a dedicated 24V LiFePO4 battery subsystem for powertrain delivery with regulated logic rails, and a 2.4 GHz RF/Bluetooth teleoperation receiver for manual override.</p>
 
       <div class="verification-status-box" style="margin-bottom:28px;background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.25);border-radius:12px;padding:20px;">
         <h3 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.95rem;margin-bottom:8px;">Verification Status: Hardware Prototype &amp; Validation Plan</h3>
-        <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.65;margin:0;">Custom mild-steel chassis, high-torque rear drivetrain, and LiFePO4 battery power system fabricated and bench-tested; submitted to Kerala Startup Mission YIP 7.0 with experimental field trials planned for furrow depth calibration in soft soil.</p>
+        <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.65;margin:0;">Custom mild-steel chassis, 24V rear drivetrain, and LiFePO4 battery power system fabricated and bench-tested; submitted to Kerala Startup Mission YIP 7.0 with experimental field trials planned for furrow depth calibration in soft soil.</p>
       </div>
 
       <!-- Accurate SVG System Architecture Diagram -->
@@ -343,10 +343,10 @@
 
           <!-- Block 1: GPS Receiver -->
           <rect x="30" y="60" width="260" height="110" rx="10" fill="url(#nodeGradTill)" stroke="#06b6d4" stroke-width="1.5"/>
-          <text x="45" y="88" fill="#38bdf8" font-size="13" font-weight="bold">GPS Navigation Unit</text>
-          <text x="45" y="108" fill="#94a3b8" font-size="10">High-Gain Patch Antenna</text>
+          <text x="45" y="88" fill="#38bdf8" font-size="13" font-weight="bold">GPS Data Acquisition</text>
+          <text x="45" y="108" fill="#94a3b8" font-size="10">NEO-6M Patch Antenna</text>
           <text x="45" y="128" fill="#64748b" font-size="9">• Serial NMEA (RMC/GGA streams)</text>
-          <text x="45" y="144" fill="#64748b" font-size="9">• Waypoint coordinates &amp; fix status</text>
+          <text x="45" y="144" fill="#64748b" font-size="9">• Coordinates published to ROS 2</text>
           <text x="45" y="158" fill="#06b6d4" font-size="9">Baud: 9600 bps UART</text>
 
           <!-- Block 2: RF / Bluetooth Teleop -->
@@ -354,8 +354,8 @@
           <text x="45" y="228" fill="#4ade80" font-size="13" font-weight="bold">2.4 GHz Remote Override</text>
           <text x="45" y="248" fill="#94a3b8" font-size="10">Wireless Operator Link</text>
           <text x="45" y="268" fill="#64748b" font-size="9">• Real-time manual steering &amp; throttle</text>
-          <text x="45" y="284" fill="#64748b" font-size="9">• Hard emergency stop flag</text>
-          <text x="45" y="298" fill="#22c55e" font-size="9">Auto-failsafe on signal loss</text>
+          <text x="45" y="284" fill="#64748b" font-size="9">• Manual override lever &amp; teleop cutoff</text>
+          <text x="45" y="298" fill="#22c55e" font-size="9">Signal-loss motor stop cutoff</text>
 
           <!-- Block 3: Embedded Controller -->
           <rect x="360" y="60" width="270" height="250" rx="10" fill="url(#nodeGradTill)" stroke="#7c3aed" stroke-width="1.5"/>
@@ -363,32 +363,32 @@
           <text x="380" y="110" fill="#94a3b8" font-size="10">32-Bit Real-Time Firmware</text>
 
           <rect x="380" y="125" width="230" height="40" rx="6" fill="#0c101c" stroke="#334155" stroke-width="1"/>
-          <text x="390" y="142" fill="#cbd5e1" font-size="10">Waypoint Guidance Algorithm</text>
-          <text x="390" y="156" fill="#64748b" font-size="8.5">Target azimuth &amp; cross-track error</text>
+          <text x="390" y="142" fill="#cbd5e1" font-size="10">Navigation Stack (In Development)</text>
+          <text x="390" y="156" fill="#64748b" font-size="8.5">Target azimuth &amp; planned Nav2 integration</text>
 
           <rect x="380" y="175" width="230" height="40" rx="6" fill="#0c101c" stroke="#334155" stroke-width="1"/>
-          <text x="390" y="192" fill="#cbd5e1" font-size="10">Differential Drive Mixer</text>
-          <text x="390" y="206" fill="#64748b" font-size="8.5">Calculates Left &amp; Right wheel PWM</text>
+          <text x="390" y="192" fill="#cbd5e1" font-size="10">Drive &amp; Steering Mixer</text>
+          <text x="390" y="206" fill="#64748b" font-size="8.5">Calculates drive motor PWM &amp; steering</text>
 
           <rect x="380" y="225" width="230" height="40" rx="6" fill="#0c101c" stroke="#334155" stroke-width="1"/>
-          <text x="390" y="242" fill="#cbd5e1" font-size="10">Safety &amp; RF Failsafe Monitor</text>
-          <text x="390" y="256" fill="#64748b" font-size="8.5">E-stop priority &amp; brownout protection</text>
+          <text x="390" y="242" fill="#cbd5e1" font-size="10">Safety &amp; Remote Override Monitor</text>
+          <text x="390" y="256" fill="#64748b" font-size="8.5">Manual override priority &amp; signal cutoff</text>
           <text x="380" y="295" fill="#a78bfa" font-size="9">Dual Timers &amp; Hardware PWM channels</text>
 
           <!-- Block 4: Motor Driver & DC Motors -->
           <rect x="690" y="60" width="260" height="120" rx="10" fill="url(#nodeGradTill)" stroke="#f59e0b" stroke-width="1.5"/>
           <text x="705" y="88" fill="#fbbf24" font-size="13" font-weight="bold">Dual H-Bridge Driver</text>
           <text x="705" y="108" fill="#94a3b8" font-size="10">High-Current Motor Stage</text>
-          <text x="705" y="128" fill="#64748b" font-size="9">• 2x High-Torque Geared DC Motors</text>
+          <text x="705" y="128" fill="#64748b" font-size="9">• 24V DC Geared Motors &amp; Chain Drive</text>
           <text x="705" y="144" fill="#64748b" font-size="9">• Rear cleated agricultural drive wheels</text>
-          <text x="705" y="160" fill="#f59e0b" font-size="9">12V Power bus with flyback suppression</text>
+          <text x="705" y="160" fill="#f59e0b" font-size="9">24V Power bus with flyback suppression</text>
 
           <!-- Block 5: Power & Tiller Engine -->
           <rect x="690" y="200" width="260" height="110" rx="10" fill="url(#nodeGradTill)" stroke="#ef4444" stroke-width="1.5"/>
-          <text x="705" y="228" fill="#f87171" font-size="13" font-weight="bold">LiFePO4 + 2-Stroke Tiller</text>
+          <text x="705" y="228" fill="#f87171" font-size="13" font-weight="bold">24V LiFePO4 + 2-Stroke Tiller</text>
           <text x="705" y="248" fill="#94a3b8" font-size="10">Power &amp; Soil Cultivation</text>
-          <text x="705" y="268" fill="#64748b" font-size="9">• 12V LiFePO4 battery pack with BMS</text>
-          <text x="705" y="284" fill="#64748b" font-size="9">• Isolated DC-DC step-down to 5V/3.3V</text>
+          <text x="705" y="268" fill="#64748b" font-size="9">• 24V LiFePO4 battery pack with BMS</text>
+          <text x="705" y="284" fill="#64748b" font-size="9">• Dedicated DC-DC step-down to 5V/3.3V</text>
           <text x="705" y="298" fill="#f87171" font-size="9">Front-mounted engine rotary tines</text>
 
           <!-- Signal Paths -->
@@ -410,8 +410,8 @@
 
           <!-- Legend Bottom -->
           <rect x="30" y="340" width="920" height="50" rx="8" fill="#0c101c" stroke="#1e293b" stroke-width="1"/>
-          <text x="45" y="362" fill="#94a3b8" font-size="9.5">Safety Architecture: Operator RF transmitter retains absolute manual override authority. If wireless carrier is lost for &gt;500ms, RF failsafe triggers soft dynamic braking.</text>
-          <text x="45" y="378" fill="#64748b" font-size="8.5">Electrical Isolation: Optoisolated motor gates + dedicated LiFePO4 battery pack shield the MCU from inductive motor transients and engine magneto ignition noise.</text>
+          <text x="45" y="362" fill="#94a3b8" font-size="9.5">Safety Architecture: Operator RF transmitter retains manual override authority. If wireless carrier is lost, teleop failsafe cutoff disables motor outputs.</text>
+          <text x="45" y="378" fill="#64748b" font-size="8.5">Electrical Architecture: Dedicated DC-DC logic regulators + separate 24V LiFePO4 battery bus shield the MCU from inductive motor transients and engine ignition noise with a common system ground.</text>
         </svg>
       </div>
 
@@ -424,12 +424,12 @@
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">🔌</div>
           <div style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;margin-bottom:6px;">Electronics</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);">LiFePO4 battery pack · High-current motor drivers · Microcontroller board · GPS receiver · 2.4 GHz RF manual override module</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">24V LiFePO4 battery pack · High-current motor drivers · Microcontroller board · NEO-6M GPS receiver · 2.4 GHz RF manual override module</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">💾</div>
           <div style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;margin-bottom:6px;">Software</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);">Embedded PID drive loop · NMEA GPS waypoint tracking · Fail-safe RF remote teleoperation protocol · Bare-metal C/C++ firmware</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">Embedded motor drive loop · NMEA GPS coordinate acquisition · Fail-safe RF remote teleoperation protocol · ROS 2 node architecture</div>
         </div>
       </div>
     </section>
@@ -454,16 +454,16 @@
             <tr>
               <td>1</td>
               <td>Battery Pack</td>
-              <td>LiFePO4 · High-Discharge Pack · 12V Nominal</td>
+              <td>LiFePO4 · High-Discharge Pack · 24V System</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">Integrated BMS protection for heavy inductive load isolation</td>
+              <td class="bom-note">Tested stable at 23.8V under load; integrated BMS protection with dedicated power rail</td>
             </tr>
             <tr>
               <td>2</td>
               <td>Drive Motors</td>
-              <td>High-Torque DC Geared Motors (12V)</td>
+              <td>24V DC Geared Motors &amp; Chain Drive</td>
               <td class="bom-qty">2</td>
-              <td class="bom-note">High reduction planetary gearbox for low-speed high-traction torque</td>
+              <td class="bom-note">Chain transmission to rear drive axle for agricultural low-speed crawl</td>
             </tr>
             <tr>
               <td>3</td>
@@ -489,23 +489,23 @@
             <tr>
               <td>6</td>
               <td>GPS Module</td>
-              <td>Ceramic Patch Antenna GPS Receiver</td>
+              <td>NEO-6M GPS Receiver (Ceramic Patch Antenna)</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">Outputs serial NMEA sentences for field waypoint calculation</td>
+              <td class="bom-note">Outputs serial NMEA sentences at 9600 baud for ROS 2 coordinate acquisition</td>
             </tr>
             <tr>
               <td>7</td>
               <td>Remote Module</td>
               <td>2.4 GHz RF / Bluetooth Wireless Transceiver</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">Real-time teleoperation link with automatic signal-loss brake</td>
+              <td class="bom-note">Real-time teleoperation link with manual override authority</td>
             </tr>
             <tr>
               <td>8</td>
               <td>Buck Converter</td>
               <td>High-Efficiency DC-DC Step-Down Regulator</td>
               <td class="bom-qty">2</td>
-              <td class="bom-note">Steps 12V LiFePO4 down to isolated 5V logic and 3.3V sensor rails</td>
+              <td class="bom-note">Steps 24V LiFePO4 down to 5V logic and 3.3V sensor rails with common ground</td>
             </tr>
             <tr>
               <td>9</td>
@@ -535,9 +535,9 @@
         <div class="challenge-card">
           <div class="challenge-num">Challenge 01</div>
           <div class="challenge-title">Power Delivery &amp; Inductive Noise Isolation</div>
-          <p class="challenge-problem">High in-rush currents and back-EMF from the high-torque drive motors coupled with two-stroke engine vibrations caused voltage dips and resets on the 5V logic bus.</p>
+          <p class="challenge-problem">High in-rush currents and back-EMF from the 24V drive motors coupled with two-stroke engine vibrations caused voltage dips and resets on the 5V logic bus.</p>
           <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">Migrated the power architecture to a dedicated high-discharge LiFePO4 battery pack, separated the motor power bus from the logic bus using isolated DC-DC buck regulators, and added TVS diodes and filter capacitors across motor leads.</p>
+          <p class="challenge-solution">Migrated the power architecture to a dedicated high-discharge 24V LiFePO4 battery pack, separated the motor power bus from the logic bus using dedicated DC-DC buck regulators with common ground, and added TVS diodes and filter capacitors across motor leads.</p>
         </div>
 
         <div class="challenge-card">
@@ -545,7 +545,7 @@
           <div class="challenge-title">GPS Heading Drift at Low Crawl Speeds</div>
           <p class="challenge-problem">Standard consumer GPS modules produce noisy heading estimates when traversing agricultural plots at slow tilling speeds (0.3–0.6 m/s), leading to erratic steering corrections.</p>
           <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">Implemented dead-reckoning fusion integrating a digital compass orientation sensor with GPS coordinate averaging and moving-window filtering to maintain stable field furrow headings.</p>
+          <p class="challenge-solution">GPS coordinates logged with ~3 m observed drift at 0.3 m/s crawl speeds; planned EKF sensor fusion with digital compass and IMU to filter heading.</p>
         </div>
 
         <div class="challenge-card">
@@ -573,11 +573,11 @@
           <span class="metric-label">Soil Tilling Field Trials</span>
         </div>
         <div class="metric-card">
-          <span class="metric-val">Autonomous</span>
-          <span class="metric-label">GPS Waypoint Guidance</span>
+          <span class="metric-val">In Development</span>
+          <span class="metric-label">Navigation &amp; Path Planning</span>
         </div>
         <div class="metric-card">
-          <span class="metric-val">LiFePO4</span>
+          <span class="metric-val">24V LiFePO4</span>
           <span class="metric-label">High-Discharge Power System</span>
         </div>
         <div class="metric-card">
@@ -591,6 +591,10 @@
         <div class="metric-card">
           <span class="metric-val">YIP 7.0</span>
           <span class="metric-label">State Level Innovation Entry</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">Design Target</span>
+          <span class="metric-label">~15 cm Furrow Depth</span>
         </div>
       </div>
       <p style="color:var(--text-muted);font-size:0.875rem;">Prototype architecture designed and fabricated for experimental agricultural evaluation in Kerala. Validation objectives include soft-soil traction analysis with rear-wheel drive, engine vibration isolation on sensitive GPS/sensor mounts, and continuous runtime evaluation under active tilling load.</p>
@@ -610,7 +614,7 @@
 
       <div style="text-align:center;padding:24px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);margin-top:32px;">
         <h3 style="font-family:var(--font-head);font-size:1.15rem;color:#fff;margin-bottom:8px;">Inspect Hardware Prototype &amp; Project Repository</h3>
-        <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">Repository containing autonomous agricultural rover documentation, GPS waypoint code, and YIP 7.0 project details.</p>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px;">Repository containing agricultural tilling prototype documentation, GPS data acquisition node, and YIP 7.0 project details.</p>
         <a href="https://github.com/JosiahSK/autonomous-tilling-robot" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-flex;">View Repository on GitHub ↗</a>
       </div>
     </section>

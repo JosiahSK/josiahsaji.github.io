@@ -48,6 +48,10 @@ jobs:
           node --check script.js
           node --check tests/test_interactive.js
 
-      - name: 3. Static DOM, Links, Heading & Claims Integrity Audit
+      - name: 3. Claim Normalization & Fixture Regression Suite
+        run: |
+          python tests/test_claim_normalization.py
+
+      - name: 4. Static DOM, Links, Heading & Claims Integrity Audit
         run: |
           python tests/test_links.py

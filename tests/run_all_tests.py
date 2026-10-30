@@ -64,7 +64,7 @@ def run_step(step_record):
 
 def print_summary_table(step_records, total_time):
     print("\n" + "#" * 80)
-    print("UNIFIED TEST EXECUTION SUMMARY (PORTFOLIO V5.3.1)")
+    print("UNIFIED TEST EXECUTION SUMMARY (PORTFOLIO V5.3.2)")
     print("#" * 80)
     print(f"{'#':<3} | {'Step Name':<44} | {'Status':<6} | {'Time':<7} | {'Code':<5}")
     print("-" * 80)
@@ -97,7 +97,7 @@ def main():
     skip_screens = "--skip-screenshots" in sys.argv
 
     print("*" * 80)
-    print("PORTFOLIO V5.3.1 — UNIFIED FORENSIC QUALITY, ACCESSIBILITY & PRODUCTION TEST RUNNER")
+    print("PORTFOLIO V5.3.2 — UNIFIED FORENSIC QUALITY, ACCESSIBILITY & PRODUCTION TEST RUNNER")
     print(f"Target Repository Root: {repo_root}")
     print("*" * 80)
 
@@ -105,6 +105,7 @@ def main():
         ("Python Bytecode Compilation", [sys.executable, "-m", "compileall", "scripts", "tests"]),
         ("JavaScript Syntax Validation", ["node", "--check", "script.js"]),
         ("Test Harness Syntax Validation", ["node", "--check", "tests/test_interactive.js"]),
+        ("Claim Normalization & Fixture Regression Suite", [sys.executable, "tests/test_claim_normalization.py"]),
         ("Static DOM, Links, Alt & Claim Integrity", [sys.executable, "tests/test_links.py"]),
         ("Real Browser Accessibility & Interactive CDP", ["node", "tests/test_interactive.js"]),
     ]
