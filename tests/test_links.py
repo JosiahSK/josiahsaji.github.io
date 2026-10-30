@@ -94,7 +94,7 @@ class ComprehensiveDOMParser(HTMLParser):
 
 def run_suite(check_live=False):
     print("=" * 75)
-    print("PORTFOLIO V5.2 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
+    print("PORTFOLIO V5.2.1 — AUTOMATED QUALITY, DOM, FACTUAL & RESUME VERIFICATION")
     print("=" * 75)
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -239,8 +239,8 @@ def run_suite(check_live=False):
     print("  [ ] Decorative Verification: If alt='' is used on any element, is it genuinely decorative with zero lost context?")
     print("  [ ] Keyboard Traversal: Do interactive carousels and buttons support sequential Tab navigation with visible focus rings?")
 
-    # 3. Factual Claim Audit Across HTML
-    print(f"\n[Category 3: Factual Claim Audit Across Website HTML]")
+    # 3. Factual Claim Audit Across HTML (Purge Verification)
+    print(f"\n[Category 3: Factual Purge Audit Across Website HTML]")
     disallowed_web_patterns = [
         ("sub-8ms", "Unsubstantiated ESP32 latency claim"),
         ("sub-8 ms", "Unsubstantiated ESP32 latency claim"),
@@ -251,6 +251,23 @@ def run_suite(check_live=False):
         ("numerical divergence", "Unsubstantiated numerical divergence phrasing"),
         ("sub-10 µs compiled", "Unverified compiled IK execution metric"),
         ("sub-10 us compiled", "Unverified compiled IK execution metric"),
+        ("sub-30 µs", "Unevidenced analytical IK timing metric"),
+        ("sub-30 us", "Unevidenced analytical IK timing metric"),
+        ("25–26 µs", "Unevidenced analytical IK benchmark timing"),
+        ("25-26 µs", "Unevidenced analytical IK benchmark timing"),
+        ("25–26 us", "Unevidenced analytical IK benchmark timing"),
+        ("25-26 us", "Unevidenced analytical IK benchmark timing"),
+        ("< 30 µs", "Unevidenced analytical IK timing metric"),
+        ("< 30 us", "Unevidenced analytical IK timing metric"),
+        ("&lt; 30 µs", "Unevidenced analytical IK timing metric"),
+        ("&lt; 30 us", "Unevidenced analytical IK timing metric"),
+        ("100,000 cartesian", "Unevidenced benchmark iteration count"),
+        ("100000 cartesian", "Unevidenced benchmark iteration count"),
+        ("~25 µs", "Unevidenced analytical IK timing metric"),
+        ("~25 us", "Unevidenced analytical IK timing metric"),
+        ("~25-26", "Unevidenced analytical IK benchmark timing"),
+        ("~25–26", "Unevidenced analytical IK benchmark timing"),
+        ("quadruped ros2_control sim", "Ambiguous quadruped rate label; use 'Locomotion Controller Loop'"),
         ("6–8 m", "Unevidenced in-situ usable range metric"),
         ("6-8 m", "Unevidenced in-situ usable range metric"),
         ("usable indoor range", "Unevidenced in-situ usable range claim"),
@@ -278,8 +295,39 @@ def run_suite(check_live=False):
     if claims_clean:
         print("  [PASS] All 5 HTML documents clean of unevidenced latency, selection, divergence, 6-8m usable-range, and R5+ generalization claims.")
 
-    # 4. Integrated Résumé Verification
-    print(f"\n[Category 4: Integrated Résumé Machine-Readability & Factual Audit]")
+    # 4. Positive Technical Grounding & Architecture Assertions
+    print(f"\n[Category 4: Positive Technical Grounding & Architecture Assertions]")
+    pos_checks = [
+        ("index.html", "Locomotion Controller Loop", "Quadruped 100 Hz stat must be precisely labeled 'Locomotion Controller Loop'"),
+        ("quadruped-locomotion.html", "Locomotion Controller Loop", "Quadruped case study 100 Hz metric must be labeled 'Locomotion Controller Loop'"),
+        ("ros2-mobile-robot.html", "map → odom (SLAM / 50 Hz Config)", "TF tree Figure 2.1 must specify 'map → odom (SLAM / 50 Hz Config)'"),
+        ("ros2-mobile-robot.html", "physical revision unverified", "RPLIDAR hardware revision must be explicitly qualified as unverified"),
+        ("ros2-mobile-robot.html", "A1M8-R4", "Datasheet range must reference A1M8-R4"),
+        ("ros2-mobile-robot.html", "A1M8-R5 specifies 0.15–12.0 m on white targets", "Datasheet range for A1M8-R5 must quote 0.15–12.0 m on white targets"),
+        ("ros2-mobile-robot.html", "max_laser_range: 8.0 m", "8.0 m must be explicitly identified as configured max_laser_range software parameter"),
+        ("index.html", 'aria-controls="mobileMenu"', "Hamburger button in index.html must have aria-controls='mobileMenu'"),
+        ("quadruped-locomotion.html", 'id="quad-tab-kinematics"', "Quadruped tab must have id='quad-tab-kinematics'"),
+        ("quadruped-locomotion.html", 'aria-controls="quad-panel-kinematics"', "Quadruped tab must have aria-controls='quad-panel-kinematics'"),
+        ("quadruped-locomotion.html", 'aria-labelledby="quad-tab-kinematics"', "Quadruped panel must have aria-labelledby='quad-tab-kinematics'"),
+    ]
+
+    # Verify lightbox overflow preservation in all 4 case study pages
+    for cs_file in ["quadruped-locomotion.html", "esp32-microros-robot.html", "tilling-robot.html", "ros2-mobile-robot.html"]:
+        pos_checks.append((cs_file, "previousOverflow = document.body.style.overflow", f"[{cs_file}] Lightbox must store previous body overflow"))
+        pos_checks.append((cs_file, "document.body.style.overflow = previousOverflow", f"[{cs_file}] Lightbox must restore exact previous body overflow"))
+
+    pos_clean = True
+    for doc_name, required_str, desc in pos_checks:
+        _, raw_content = parsed_docs[doc_name]
+        if required_str not in raw_content:
+            errors.append(f"[{doc_name}] Required positive architectural ground missing: '{required_str}' ({desc})")
+            pos_clean = False
+
+    if pos_clean:
+        print(f"  [PASS] All {len(pos_checks)} positive technical grounding and architectural assertions confirmed.")
+
+    # 5. Integrated Résumé Verification
+    print(f"\n[Category 5: Integrated Résumé Machine-Readability & Factual Audit]")
     if verify_resume:
         pdf_path = os.path.join(base_dir, 'assets', 'resume', 'resume.pdf')
         resume_ok = verify_resume(pdf_path)

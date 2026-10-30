@@ -725,6 +725,7 @@ omega_right = (v_x + (omega_z * L / 2.0)) / r
       var closeBtn = document.getElementById('diagramModalClose');
       var previouslyFocusedEl = null;
       var previousScrollY = 0;
+      var previousOverflow = '';
       if (!modal || !modalBody) return;
 
       function getFocusableElements() {
@@ -738,6 +739,7 @@ omega_right = (v_x + (omega_z * L / 2.0)) / r
         if (!targetEl) return;
         previouslyFocusedEl = document.activeElement;
         previousScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+        previousOverflow = document.body.style.overflow;
 
         modalBody.innerHTML = '';
         if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'svg') {
@@ -776,7 +778,7 @@ omega_right = (v_x + (omega_z * L / 2.0)) / r
         if (!modal.classList.contains('active')) return;
         modal.classList.remove('active');
         modalBody.innerHTML = '';
-        document.body.style.overflow = '';
+        document.body.style.overflow = previousOverflow;
         window.scrollTo(0, previousScrollY);
 
         // Restore focus to original triggering element

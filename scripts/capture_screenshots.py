@@ -76,12 +76,6 @@ def find_browser_executable():
             return found
     return None
 
-def find_free_port():
-    """Bind to port 0 to let OS assign an ephemeral free port."""
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(('127.0.0.1', 0))
-        return s.getsockname()[1]
-
 def wait_for_server(url, timeout=5.0):
     """Wait until local HTTP server responds."""
     start = time.time()
@@ -94,8 +88,8 @@ def wait_for_server(url, timeout=5.0):
             time.sleep(0.1)
     return False
 
-def capture_screenshot(browser_exe, temp_profile, url, out_path, width, height):
-    """Capture single viewport screenshot with headless browser."""
+def capture_screenshot(browser_exe, temp_profile, url, out_path, width, height, strict=True):
+    """Capture single viewport screenshot with headless browser and verify dimensions."""
     cmd = [
         browser_exe,
         "--headless=new",
@@ -114,14 +108,26 @@ def capture_screenshot(browser_exe, temp_profile, url, out_path, width, height):
     if not os.path.isfile(out_path) or os.path.getsize(out_path) < 1000:
         return False, f"File not created or abnormally small (<1000 bytes)"
     
-    # Optional image dimension validation if PIL available
-    dim_info = ""
-    if Image:
+    # Explicit Image integrity and exact dimension validation
+    if Image is None:
+        if strict:
+            return False, "Pillow is not installed: strict image dimension/integrity verification failed"
+        dim_info = " (dimension check skipped: Pillow unavailable)"
+    else:
         try:
+            # 1. Structural header and block integrity verification
+            with Image.open(out_path) as im_check:
+                im_check.verify()
+
+            # 2. Full raster decode and dimension matching
             with Image.open(out_path) as im:
-                dim_info = f" ({im.width}x{im.height})"
+                im.load()  # Fully decode raster image data into memory
+                actual_w, actual_h = im.size
+                if actual_w != width or actual_h != height:
+                    return False, f"Dimension mismatch: expected {width}x{height}, got {actual_w}x{actual_h}"
+                dim_info = f" ({actual_w}x{actual_h} exact match)"
         except Exception as e:
-            return False, f"Invalid or unreadable image file: {e}"
+            return False, f"Invalid or corrupted image file: {e}"
 
     return True, f"{os.path.getsize(out_path)} bytes{dim_info}"
 
@@ -138,9 +144,10 @@ def main():
 
     print(f"Discovered browser: {browser_exe}")
 
-    port = find_free_port()
+    # Bind directly to port 0 on the actual listening socket to eliminate port race conditions
     handler = partial(SimpleHTTPRequestHandler, directory=root_dir)
-    httpd = ThreadingHTTPServer(('127.0.0.1', port), handler)
+    httpd = ThreadingHTTPServer(('127.0.0.1', 0), handler)
+    port = httpd.server_address[1]
     server_thread = threading.Thread(target=httpd.serve_forever, daemon=True)
     server_thread.start()
 
@@ -148,6 +155,7 @@ def main():
     if not wait_for_server(f"{base_url}/index.html", timeout=6.0):
         print("[FAIL] Local test server failed to respond.", file=sys.stderr)
         httpd.shutdown()
+        httpd.server_close()
         sys.exit(1)
 
     temp_profile = tempfile.mkdtemp(prefix="portfolio_screen_")
@@ -198,6 +206,7 @@ def main():
 
     finally:
         httpd.shutdown()
+        httpd.server_close()
         server_thread.join(timeout=2.0)
         # Clean up temporary browser profile
         try:

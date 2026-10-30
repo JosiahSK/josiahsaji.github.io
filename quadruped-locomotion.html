@@ -9,7 +9,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
-  <meta property="og:description" content="Analytical Inverse Kinematics (sub-30 µs in Python), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
+  <meta property="og:description" content="Analytical Inverse Kinematics, 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
   <meta property="og:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
   <meta property="og:url" content="https://josiahsk.github.io/josiahsaji.github.io/quadruped-locomotion.html" />
   <meta property="og:type" content="article" />
@@ -17,7 +17,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ROS 2 Quadruped Locomotion Framework — Case Study | Josiah Saji" />
-  <meta name="twitter:description" content="Analytical Inverse Kinematics (sub-30 µs in Python), 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
+  <meta name="twitter:description" content="Analytical Inverse Kinematics, 3D Cycloid Foot Trajectories, and multi-gait simulation in ROS 2 Humble." />
   <meta name="twitter:image" content="https://josiahsk.github.io/josiahsaji.github.io/assets/og-image.png" />
 
   <!-- Favicon -->
@@ -213,22 +213,22 @@
           </div>
 
           <div class="quad-preview-tabs" role="tablist" aria-label="Locomotion Diagram Selector">
-            <button class="quad-tab-btn active" role="tab" aria-selected="true" data-target="quad-panel-kinematics">Analytical IK</button>
-            <button class="quad-tab-btn" role="tab" aria-selected="false" data-target="quad-panel-gait">Cycloid Gait</button>
-            <button class="quad-tab-btn" role="tab" aria-selected="false" data-target="quad-panel-polygon">Support Polygon</button>
+            <button class="quad-tab-btn active" id="quad-tab-kinematics" role="tab" aria-selected="true" aria-controls="quad-panel-kinematics" data-target="quad-panel-kinematics" tabindex="0">Analytical IK</button>
+            <button class="quad-tab-btn" id="quad-tab-gait" role="tab" aria-selected="false" aria-controls="quad-panel-gait" data-target="quad-panel-gait" tabindex="-1">Cycloid Gait</button>
+            <button class="quad-tab-btn" id="quad-tab-polygon" role="tab" aria-selected="false" aria-controls="quad-panel-polygon" data-target="quad-panel-polygon" tabindex="-1">Support Polygon</button>
           </div>
 
-          <div class="quad-tab-panel active" id="quad-panel-kinematics" role="tabpanel">
+          <div class="quad-tab-panel active" id="quad-panel-kinematics" role="tabpanel" aria-labelledby="quad-tab-kinematics" tabindex="0">
             <img src="assets/projects/quadruped-robot/images/quadruped_kinematics_diagram.png" alt="Analytical 3-DOF Leg Kinematics Diagram" class="zoomable-figure" loading="lazy">
-            <p class="tech-figure-caption">Figure H-1: 3-DOF closed-form analytical inverse kinematics solving joint angles &theta;1, &theta;2, &theta;3 in ~25 &mu;s.</p>
+            <p class="tech-figure-caption">Figure H-1: 3-DOF closed-form analytical inverse kinematics solving joint angles &theta;1, &theta;2, &theta;3 directly from geometric equations.</p>
           </div>
 
-          <div class="quad-tab-panel" id="quad-panel-gait" role="tabpanel">
+          <div class="quad-tab-panel" id="quad-panel-gait" role="tabpanel" aria-labelledby="quad-tab-gait" tabindex="-1" hidden>
             <img src="assets/projects/quadruped-robot/images/gait_phase_diagram.png" alt="Multi-Gait Phase Progression Timing Chart" class="zoomable-figure" loading="lazy">
             <p class="tech-figure-caption">Figure H-2: Synchronized multi-gait phase progression (Trot &beta;=0.5, Crawl &beta;=0.75, Walk, Bound).</p>
           </div>
 
-          <div class="quad-tab-panel" id="quad-panel-polygon" role="tabpanel">
+          <div class="quad-tab-panel" id="quad-panel-polygon" role="tabpanel" aria-labelledby="quad-tab-polygon" tabindex="-1" hidden>
             <img src="assets/projects/quadruped-robot/images/support_polygon_diagram.png" alt="Support Polygon Stability Margin Diagram" class="zoomable-figure" loading="lazy">
             <p class="tech-figure-caption">Figure H-3: Center-of-mass projection inside dynamic tripod and diagonal support polygons.</p>
           </div>
@@ -256,12 +256,12 @@
           <span class="metric-label">3 Revolute Joints / Leg</span>
         </div>
         <div class="metric-card">
-          <span class="metric-val">&lt; 30 µs</span>
-          <span class="metric-label">IK Latency (CPython 3.12)</span>
+          <span class="metric-val">Closed-Form</span>
+          <span class="metric-label">Analytical 3-DOF Leg IK</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">100 Hz</span>
-          <span class="metric-label">Joint Trajectory Control</span>
+          <span class="metric-label">Locomotion Controller Loop</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">4 Gaits</span>
@@ -391,7 +391,7 @@
           <span class="decision-badge">quadruped_kinematics</span>
           <div class="decision-title">Closed-Form Analytical IK Solver</div>
           <p class="decision-text">
-            Developed a deterministic, closed-form trigonometric inverse kinematics solver for the 3-DOF leg mechanism (Hip Roll, Thigh Pitch, Knee Pitch). Eliminates the divergence and matrix inversion costs of Jacobian pseudo-inverse algorithms, calculating exact joint positions in <strong>sub-30 µs in Python (~25–26 µs CPython 3.12 benchmark over 100,000 Cartesian targets)</strong> with analytical reachability workspace clamping.
+            Developed a deterministic, closed-form trigonometric inverse kinematics solver for the 3-DOF leg mechanism (Hip Roll, Thigh Pitch, Knee Pitch). Eliminates the divergence and matrix inversion costs of Jacobian pseudo-inverse algorithms, calculating exact joint positions directly in closed form without iterative convergence loops or Jacobian inversion, incorporating analytical reachability workspace clamping.
           </p>
         </div>
 
@@ -515,7 +515,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
             <tr>
               <td><strong>Robot Kinematics</strong></td>
               <td>Custom analytical solver (Python / NumPy)</td>
-              <td>Sub-30 µs Cartesian-to-Joint angle transformation (~25–26 µs CPython 3.12 benchmark)</td>
+              <td>Deterministic closed-form Cartesian-to-Joint angle transformation</td>
             </tr>
             <tr>
               <td><strong>Leg Geometry</strong></td>
@@ -546,7 +546,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
           <div class="decision-title">Analytical IK vs. Numerical Jacobian</div>
           <p class="decision-text">
             <strong>Decision:</strong> Closed-form analytical trigonometry.<br>
-            <strong>Rationale:</strong> Numerical solvers (DLS, Levenberg-Marquardt) require iterative loops that consume CPU cycles and risk divergence near workspace boundaries. The closed-form analytical approach guarantees sub-30 µs compute time in Python (~25–26 µs CPython 3.12 benchmark over 100,000 Cartesian targets) by solving direct trigonometric geometry without iterative Jacobian matrix inversion.
+            <strong>Rationale:</strong> Numerical solvers (Damped Least Squares, Levenberg-Marquardt) require iterative loops that consume unbounded CPU cycles and risk algorithmic divergence or singularities near workspace boundaries. The closed-form analytical approach guarantees deterministic, constant execution time by solving direct trigonometric geometry without iterative Jacobian matrix inversion.
           </p>
         </div>
 
@@ -659,16 +659,26 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
           t.setAttribute('aria-selected', 'false');
           t.setAttribute('tabindex', '-1');
         });
-        panels.forEach(function(p) { p.classList.remove('active'); });
+        panels.forEach(function(p) {
+          p.classList.remove('active');
+          p.setAttribute('hidden', '');
+          p.setAttribute('tabindex', '-1');
+        });
 
         tab.classList.add('active');
         tab.setAttribute('aria-selected', 'true');
         tab.setAttribute('tabindex', '0');
         if (setFocus) tab.focus();
 
-        var targetId = tab.getAttribute('data-target');
-        var targetPanel = document.getElementById(targetId);
-        if (targetPanel) targetPanel.classList.add('active');
+        var targetId = tab.getAttribute('data-target') || tab.getAttribute('aria-controls');
+        if (targetId) {
+          var targetPanel = document.getElementById(targetId);
+          if (targetPanel) {
+            targetPanel.classList.add('active');
+            targetPanel.removeAttribute('hidden');
+            targetPanel.setAttribute('tabindex', '0');
+          }
+        }
       }
 
       tabs.forEach(function(tab, index) {
@@ -706,6 +716,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
       var closeBtn = document.getElementById('diagramModalClose');
       var previouslyFocusedEl = null;
       var previousScrollY = 0;
+      var previousOverflow = '';
       if (!modal || !modalBody) return;
 
       function getFocusableElements() {
@@ -719,6 +730,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
         if (!targetEl) return;
         previouslyFocusedEl = document.activeElement;
         previousScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+        previousOverflow = document.body.style.overflow;
 
         modalBody.innerHTML = '';
         if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'svg') {
@@ -757,7 +769,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
         if (!modal.classList.contains('active')) return;
         modal.classList.remove('active');
         modalBody.innerHTML = '';
-        document.body.style.overflow = '';
+        document.body.style.overflow = previousOverflow;
         window.scrollTo(0, previousScrollY);
 
         // Restore focus to original triggering element

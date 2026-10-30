@@ -2,5 +2,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 edge_pdf_profile/
+.tmp_*
+portfolio_screen_*
 .DS_Store
 Thumbs.db

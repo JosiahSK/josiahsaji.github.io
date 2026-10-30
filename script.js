@@ -299,7 +299,9 @@ try {
       hamburger.setAttribute('aria-expanded', 'true');
       hamburger.setAttribute('aria-label', 'Close menu');
       var firstLink = mobileMenu.querySelector('.mobile-link');
-      if (firstLink) firstLink.focus();
+      if (firstLink && typeof firstLink.focus === 'function') {
+        firstLink.focus();
+      }
     }
 
     function closeMobileMenu(returnFocus) {
@@ -327,29 +329,8 @@ try {
       }
     });
 
-    // Trap focus inside mobile navigation when open
-    mobileMenu.addEventListener('keydown', function(e) {
-      if (e.key === 'Tab') {
-        var focusable = mobileMenu.querySelectorAll('.mobile-link');
-        if (!focusable.length) return;
-        var firstEl = focusable[0];
-        var lastEl = focusable[focusable.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === firstEl) {
-            e.preventDefault();
-            hamburger.focus();
-          }
-        } else {
-          if (document.activeElement === lastEl) {
-            e.preventDefault();
-            hamburger.focus();
-          }
-        }
-      }
-    });
-
-    var mobileLinks = document.querySelectorAll('.mobile-link');
+    // Navigation disclosure: clicking any navigation link closes the menu
+    var mobileLinks = mobileMenu.querySelectorAll('.mobile-link');
     for (var i = 0; i < mobileLinks.length; i++) {
       mobileLinks[i].addEventListener('click', function() {
         closeMobileMenu(false);
