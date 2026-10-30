@@ -19,6 +19,9 @@ or full subjective WCAG 2.2 AA conformance certification.
 import os
 import sys
 import glob
+import re
+import html
+import unicodedata
 from collections import Counter
 from html.parser import HTMLParser
 
@@ -35,6 +38,14 @@ try:
     from scripts.verify_resume import verify_resume
 except ImportError:
     verify_resume = None
+
+def normalize_content(content):
+    """Normalize HTML source by unescaping entities, canonicalizing Unicode, and standardizing whitespace."""
+    unescaped = html.unescape(content)
+    norm = unicodedata.normalize('NFKC', unescaped)
+    norm = norm.replace('\u03BC', 'µ').replace('\u00B5', 'µ')
+    return norm
+
 
 class ComprehensiveDOMParser(HTMLParser):
     def __init__(self, filename):
@@ -239,7 +250,7 @@ def run_suite(check_live=False):
     print("  [ ] Decorative Verification: If alt='' is used on any element, is it genuinely decorative with zero lost context?")
     print("  [ ] Keyboard Traversal: Do interactive carousels and buttons support sequential Tab navigation with visible focus rings?")
 
-    # 3. Factual Claim Audit Across HTML (Purge Verification)
+    # 3. Factual Claim Audit Across HTML (Purge Verification with Entity Normalization)
     print(f"\n[Category 3: Factual Purge Audit Across Website HTML]")
     disallowed_web_patterns = [
         ("sub-8ms", "Unsubstantiated ESP32 latency claim"),
@@ -247,10 +258,13 @@ def run_suite(check_live=False):
         ("<8ms", "Unsubstantiated ESP32 latency claim"),
         ("< 8ms", "Unsubstantiated ESP32 latency claim"),
         ("selected for yip 7.0", "Unverified YIP selection claim (use 'developed and submitted')"),
+        ("selected for yip", "Unverified YIP selection claim"),
         ("zero iterative numerical divergence", "Unsubstantiated numerical divergence phrasing"),
         ("numerical divergence", "Unsubstantiated numerical divergence phrasing"),
         ("sub-10 µs compiled", "Unverified compiled IK execution metric"),
         ("sub-10 us compiled", "Unverified compiled IK execution metric"),
+        ("sub-10 µs", "Unverified compiled IK execution metric"),
+        ("sub-10 us", "Unverified compiled IK execution metric"),
         ("sub-30 µs", "Unevidenced analytical IK timing metric"),
         ("sub-30 us", "Unevidenced analytical IK timing metric"),
         ("25–26 µs", "Unevidenced analytical IK benchmark timing"),
@@ -263,8 +277,12 @@ def run_suite(check_live=False):
         ("&lt; 30 us", "Unevidenced analytical IK timing metric"),
         ("100,000 cartesian", "Unevidenced benchmark iteration count"),
         ("100000 cartesian", "Unevidenced benchmark iteration count"),
+        ("100,000 targets", "Unevidenced benchmark iteration count"),
+        ("100000 targets", "Unevidenced benchmark iteration count"),
         ("~25 µs", "Unevidenced analytical IK timing metric"),
         ("~25 us", "Unevidenced analytical IK timing metric"),
+        ("25 µs python", "Unevidenced analytical IK timing metric"),
+        ("25 us python", "Unevidenced analytical IK timing metric"),
         ("~25-26", "Unevidenced analytical IK benchmark timing"),
         ("~25–26", "Unevidenced analytical IK benchmark timing"),
         ("quadruped ros2_control sim", "Ambiguous quadruped rate label; use 'Locomotion Controller Loop'"),
@@ -283,18 +301,47 @@ def run_suite(check_live=False):
         ("map → odom (100 hz)", "Discrepant SLAM transform rate contradicting configured 50 Hz transform_publish_period"),
         ("map -> odom (100 hz)", "Discrepant SLAM transform rate contradicting configured 50 Hz transform_publish_period"),
         ("synchronized 100 hz ros2_control", "Imprecise quadruped controller statement; must distinguish 100 Hz timer loop and 200 Hz controller manager"),
+        ("100 hz joint state publication", "Discrepant parameter attribution; state_publish_rate belongs to JointTrajectoryController, not joint_state_broadcaster"),
+        ("100 hz state publication;", "Ambiguous state publication parameter; must specify JointTrajectoryController"),
+        ("200 hz manager / 100 hz state pub", "Ambiguous state publication parameter; must specify JTC state pub"),
+        ("undergoing agricultural field trials", "Unverified completed/in-progress field trial claim; must be classified as planned validation"),
+        ("prototype evaluated on experimental agricultural plots", "Unverified field trial evaluation claim; must be classified as planned validation"),
+        ("test results, and agricultural field trials", "Unverified agricultural trial metadata claim"),
+        ("failsafe watchdog", "Software command timeout mislabeled as hardware watchdog"),
+        ("watchdog failsafe", "Software command timeout mislabeled as hardware watchdog"),
+        ("command timeout watchdog", "Software command timeout mislabeled as hardware watchdog"),
+        ("safety watchdog", "Software command timeout mislabeled as hardware watchdog"),
+        ("hardware failsafe loop", "Software command timeout mislabeled as hardware failsafe loop"),
+        ("hardware safety timer", "Software command timeout mislabeled as hardware safety timer"),
+        ("client-side watchdog", "Software command timeout mislabeled as hardware watchdog"),
     ]
 
     claims_clean = True
     for hf, (_, raw_content) in parsed_docs.items():
-        lower_content = raw_content.lower()
+        norm_content = normalize_content(raw_content).lower()
+        ascii_content = norm_content.replace('µ', 'u')
+        lower_raw = raw_content.lower()
+
         for pat, reason in disallowed_web_patterns:
-            if pat in lower_content:
+            pat_norm = normalize_content(pat).lower()
+            pat_ascii = pat_norm.replace('µ', 'u')
+            if pat_norm in norm_content or pat_ascii in ascii_content or pat in lower_raw:
                 errors.append(f"[{hf}] Disallowed claim detected: '{pat}' ({reason})")
                 claims_clean = False
 
+        # Additional Context-Sensitive Regex Checks on Normalized Content
+        ik_timing_match = re.search(r"(?:analytical\s+ik|leg_ik|inverse\s+kinematics|solve_ik)[^<>]*?\b\d+\s*(?:µs|μs|us)\b", norm_content)
+        if ik_timing_match:
+            errors.append(f"[{hf}] Contextual IK timing claim detected: '{ik_timing_match.group(0)}'")
+            claims_clean = False
+
+        ik_timing_match2 = re.search(r'\d+\s*(?:µs|μs|us)\s*python', norm_content)
+        if ik_timing_match2:
+            errors.append(f"[{hf}] Contextual IK timing claim detected: '{ik_timing_match2.group(0)}'")
+            claims_clean = False
+
     if claims_clean:
-        print("  [PASS] All 5 HTML documents clean of unevidenced latency, selection, divergence, 6-8m usable-range, and R5+ generalization claims.")
+        print("  [PASS] All 5 HTML documents clean of unevidenced latency, selection, divergence, 6-8m usable-range, watchdog mislabeling, and R5+ generalization claims.")
 
     # 4. Positive Technical Grounding & Architecture Assertions
     print(f"\n[Category 4: Positive Technical Grounding & Architecture Assertions]")
@@ -308,8 +355,13 @@ def run_suite(check_live=False):
         ("ros2-mobile-robot.html", "max_laser_range: 8.0 m", "8.0 m must be explicitly identified as configured max_laser_range software parameter"),
         ("index.html", 'aria-controls="mobileMenu"', "Hamburger button in index.html must have aria-controls='mobileMenu'"),
         ("index.html", "streaming trajectories to a 200 Hz <code>ros2_control</code> controller manager", "Index description must distinguish 100 Hz loop from 200 Hz controller manager"),
-        ("quadruped-locomotion.html", "200 Hz Controller Manager update rate; 100 Hz state publication", "Quadruped specs table must explicitly list 200 Hz manager and 100 Hz state publication"),
-        ("quadruped-locomotion.html", "200 Hz manager / 100 Hz state pub", "Quadruped SVG architecture diagram must specify 200 Hz manager"),
+        ("quadruped-locomotion.html", "200 Hz Controller Manager update rate; 100 Hz JointTrajectoryController state publication; receives 100 Hz trajectory command stream", "Quadruped specs table must explicitly list 200 Hz manager and 100 Hz JointTrajectoryController state publication"),
+        ("quadruped-locomotion.html", "200 Hz manager / 100 Hz JTC state pub", "Quadruped SVG architecture diagram must specify 200 Hz manager and 100 Hz JTC state pub"),
+        ("quadruped-locomotion.html", "Closed-Form Analytical IK", "Quadruped hero badge must feature 'Closed-Form Analytical IK'"),
+        ("esp32-microros-robot.html", "Software Command Timeout", "ESP32 case study metric must feature 'Software Command Timeout'"),
+        ("esp32-microros-robot.html", "Command Timeout Failsafe (500ms)", "ESP32 hero badge must feature 'Command Timeout Failsafe (500ms)'"),
+        ("tilling-robot.html", "Engineering Validation Status & Field Trial Plan", "Tilling section title must feature 'Engineering Validation Status & Field Trial Plan'"),
+        ("tilling-robot.html", "Verification Status: Hardware Prototype & Validation Plan", "Tilling verification box must feature 'Verification Status: Hardware Prototype & Validation Plan'"),
         ("quadruped-locomotion.html", 'id="quad-tab-kinematics"', "Quadruped tab must have id='quad-tab-kinematics'"),
         ("quadruped-locomotion.html", 'aria-controls="quad-panel-kinematics"', "Quadruped tab must have aria-controls='quad-panel-kinematics'"),
         ("quadruped-locomotion.html", 'aria-labelledby="quad-tab-kinematics"', "Quadruped panel must have aria-labelledby='quad-tab-kinematics'"),
@@ -323,7 +375,8 @@ def run_suite(check_live=False):
     pos_clean = True
     for doc_name, required_str, desc in pos_checks:
         _, raw_content = parsed_docs[doc_name]
-        if required_str not in raw_content:
+        norm_content = normalize_content(raw_content)
+        if required_str not in raw_content and required_str not in norm_content:
             errors.append(f"[{doc_name}] Required positive architectural ground missing: '{required_str}' ({desc})")
             pos_clean = False
 
@@ -341,6 +394,60 @@ def run_suite(check_live=False):
             print("  [PASS] Résumé passed single-page budgeting, ATS machine readability, and claim audit.")
     else:
         errors.append("scripts.verify_resume could not be imported.")
+
+    # 6. Technical Claims Register Consistency Audit
+    print(f"\n[Category 6: Technical Claims Register Consistency Audit]")
+    reg_path = os.path.join(base_dir, 'docs', 'PORTFOLIO_CLAIMS_REGISTER.md')
+    if not os.path.isfile(reg_path):
+        errors.append("docs/PORTFOLIO_CLAIMS_REGISTER.md not found.")
+    else:
+        with open(reg_path, 'r', encoding='utf-8') as f:
+            reg_text = f.read()
+
+        valid_statuses = {
+            "VERIFIED_FROM_SOURCE_CODE",
+            "VERIFIED_FROM_CONFIGURATION",
+            "DATASHEET_SPECIFICATION",
+            "VERIFIED_FROM_PROJECT_DOCUMENT",
+            "MEASURED_WITH_TEST_EVIDENCE",
+            "USER_CONFIRMED_NOT_INDEPENDENTLY_VERIFIED",
+            "ILLUSTRATIVE",
+            "UNVERIFIED",
+            "REMOVED"
+        }
+
+        reg_rows = [line.strip() for line in reg_text.splitlines() if line.strip().startswith('| **CLM-')]
+        print(f"  Auditing {len(reg_rows)} entries from docs/PORTFOLIO_CLAIMS_REGISTER.md...")
+        reg_errors = 0
+        for row in reg_rows:
+            cols = [c.strip() for c in row.split('|')[1:-1]]
+            if len(cols) < 11:
+                errors.append(f"Invalid register row format: {row[:50]}")
+                reg_errors += 1
+                continue
+            claim_id = cols[0].replace('*', '').strip()
+            status = cols[10].replace('*', '').strip()
+            if status not in valid_statuses:
+                errors.append(f"Claim {claim_id} has invalid status '{status}'. Must be one of {valid_statuses}")
+                reg_errors += 1
+
+            # If claim is REMOVED, verify that no public page contains the removed statement
+            if status == "REMOVED":
+                stmt = cols[1].replace('`', '').strip()
+                for hf, (_, raw_c) in parsed_docs.items():
+                    norm_c = normalize_content(raw_c).lower()
+                    if "sub-30" in stmt.lower() and "sub-30" in norm_c:
+                        errors.append(f"Public page [{hf}] contains removed claim '{stmt}' from {claim_id}!")
+                        reg_errors += 1
+                    elif "sub-8ms" in stmt.lower() and "sub-8ms" in norm_c:
+                        errors.append(f"Public page [{hf}] contains removed claim '{stmt}' from {claim_id}!")
+                        reg_errors += 1
+                    elif "6–8" in stmt and "6–8 m" in norm_c:
+                        errors.append(f"Public page [{hf}] contains removed claim '{stmt}' from {claim_id}!")
+                        reg_errors += 1
+
+        if reg_errors == 0:
+            print(f"  [PASS] All {len(reg_rows)} claims in register verified against controlled taxonomy and public DOM.")
 
     # 5. Optional Live Deployment Checks
     if check_live:

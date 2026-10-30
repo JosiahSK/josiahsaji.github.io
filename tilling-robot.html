@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Autonomous Tilling Robot — Case Study | Josiah Saji</title>
-  <meta name="description" content="Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, challenges, test results, and agricultural field trials." />
+  <meta name="description" content="Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, mechanical packaging, and validation status." />
   <link rel="canonical" href="https://josiahsk.github.io/josiahsaji.github.io/tilling-robot.html" />
 
   <!-- Open Graph -->
@@ -26,7 +26,7 @@
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "Autonomous Tilling Robot",
-    "description": "Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, challenges, test results, and agricultural field trials.",
+    "description": "Full case study: Autonomous Tilling Robot by Josiah Saji — system architecture, BOM, mechanical packaging, and validation status.",
     "author": {
       "@type": "Person",
       "name": "Josiah Saji",
@@ -234,7 +234,7 @@
               <rect x="35" y="120" width="60" height="95" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
               <text x="65" y="140" fill="#f59e0b" font-size="8" text-anchor="middle" font-weight="700">TILLER</text>
               <text x="65" y="152" fill="#cbd5e1" font-size="7" text-anchor="middle">2-Stroke IC</text>
-              
+
               <!-- Curved Cultivator Tine Assembly -->
               <g transform="translate(65, 235)" stroke="#f59e0b" stroke-width="2" fill="none">
                 <circle cx="0" cy="0" r="16" fill="#111827" stroke-width="1.5" />
@@ -245,7 +245,7 @@
                 <circle cx="0" cy="0" r="4" fill="#f59e0b" />
               </g>
               <text x="65" y="270" fill="#f59e0b" font-size="7.5" text-anchor="middle" font-weight="600">Rotating Tines</text>
-              <text x="65" y="282" fill="#94a3b8" font-size="6.5" text-anchor="middle">Furrow Depth ~15cm</text>
+              <text x="65" y="282" fill="#94a3b8" font-size="6.5" text-anchor="middle">Target Furrow Depth ~15cm</text>
 
               <!-- Isolated Power Module: LiFePO4 Battery Subsystem (Center) -->
               <rect x="120" y="122" width="130" height="48" rx="5" fill="#162032" stroke="#10b981" stroke-width="1.5" />
@@ -313,8 +313,8 @@
       <p style="color:var(--text-muted);margin-bottom:28px;">The autonomous tilling robot integrates a high-torque rear differential electric drivetrain with a front-mounted two-stroke rototiller implement. The electronics stack combines an embedded microcontroller for low-level motor drive PWM and failsafe sequencing, a ceramic patch antenna GPS module for agricultural waypoint tracking, a dedicated LiFePO4 battery subsystem to isolate digital logic from inductive motor noise, and a 2.4 GHz RF/Bluetooth teleoperation receiver for manual safety override.</p>
 
       <div class="verification-status-box" style="margin-bottom:28px;background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.25);border-radius:12px;padding:20px;">
-        <h3 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.95rem;margin-bottom:8px;">Verification Status: Hardware Prototype / Field Calibration</h3>
-        <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.65;margin:0;">Custom mild-steel chassis, high-torque rear drivetrain, and LiFePO4 battery power system fabricated and bench-tested; submitted to Kerala Startup Mission YIP 7.0 and currently undergoing agricultural field trials for furrow depth calibration in soft soil.</p>
+        <h3 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.95rem;margin-bottom:8px;">Verification Status: Hardware Prototype &amp; Validation Plan</h3>
+        <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.65;margin:0;">Custom mild-steel chassis, high-torque rear drivetrain, and LiFePO4 battery power system fabricated and bench-tested; submitted to Kerala Startup Mission YIP 7.0 with experimental field trials planned for furrow depth calibration in soft soil.</p>
       </div>
 
       <!-- Accurate SVG System Architecture Diagram -->
@@ -371,7 +371,7 @@
           <text x="390" y="206" fill="#64748b" font-size="8.5">Calculates Left &amp; Right wheel PWM</text>
 
           <rect x="380" y="225" width="230" height="40" rx="6" fill="#0c101c" stroke="#334155" stroke-width="1"/>
-          <text x="390" y="242" fill="#cbd5e1" font-size="10">Safety &amp; Watchdog Monitor</text>
+          <text x="390" y="242" fill="#cbd5e1" font-size="10">Safety &amp; RF Failsafe Monitor</text>
           <text x="390" y="256" fill="#64748b" font-size="8.5">E-stop priority &amp; brownout protection</text>
           <text x="380" y="295" fill="#a78bfa" font-size="9">Dual Timers &amp; Hardware PWM channels</text>
 
@@ -410,7 +410,7 @@
 
           <!-- Legend Bottom -->
           <rect x="30" y="340" width="920" height="50" rx="8" fill="#0c101c" stroke="#1e293b" stroke-width="1"/>
-          <text x="45" y="362" fill="#94a3b8" font-size="9.5">Safety Architecture: Operator RF transmitter retains absolute manual override authority. If wireless carrier is lost for &gt;500ms, watchdog triggers soft dynamic braking.</text>
+          <text x="45" y="362" fill="#94a3b8" font-size="9.5">Safety Architecture: Operator RF transmitter retains absolute manual override authority. If wireless carrier is lost for &gt;500ms, RF failsafe triggers soft dynamic braking.</text>
           <text x="45" y="378" fill="#64748b" font-size="8.5">Electrical Isolation: Optoisolated motor gates + dedicated LiFePO4 battery pack shield the MCU from inductive motor transients and engine magneto ignition noise.</text>
         </svg>
       </div>
@@ -484,7 +484,7 @@
               <td>Embedded Controller</td>
               <td>Microcontroller Development Board (32-bit MCU)</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">Executes motor PWM, sensor polling, and teleop failsafe watchdog</td>
+              <td class="bom-note">Executes motor PWM, sensor polling, and teleop failsafe cutoff</td>
             </tr>
             <tr>
               <td>6</td>
@@ -561,12 +561,16 @@
 
     <!-- § 4 — TEST RESULTS -->
     <section class="cs-section reveal" id="cs-results">
-      <span class="cs-section-tag">// 04 — test results</span>
-      <h2 class="cs-section-title">Field Performance &amp; Validation Status</h2>
+      <span class="cs-section-tag">// 04 — validation status</span>
+      <h2 class="cs-section-title">Engineering Validation Status &amp; Field Trial Plan</h2>
       <div class="metrics-grid">
         <div class="metric-card">
-          <span class="metric-val">Field Trial</span>
-          <span class="metric-label">Tilling Depth Calibration</span>
+          <span class="metric-val">Fabricated</span>
+          <span class="metric-label">Mild-Steel Chassis Prototype</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val">Planned</span>
+          <span class="metric-label">Soil Tilling Field Trials</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">Autonomous</span>
@@ -589,18 +593,18 @@
           <span class="metric-label">State Level Innovation Entry</span>
         </div>
       </div>
-      <p style="color:var(--text-muted);font-size:0.875rem;">Prototype evaluated on experimental agricultural plots in Kerala. Focus areas include soft-soil traction with rear-wheel drive, engine vibration dampening on sensitive GPS/sensor mounts, and continuous runtime under tilling load.</p>
+      <p style="color:var(--text-muted);font-size:0.875rem;">Prototype architecture designed and fabricated for experimental agricultural evaluation in Kerala. Validation objectives include soft-soil traction analysis with rear-wheel drive, engine vibration isolation on sensitive GPS/sensor mounts, and continuous runtime evaluation under active tilling load.</p>
     </section>
 
     <!-- § 5 — DEMO VIDEO -->
     <section class="cs-section reveal" id="cs-video">
-      <span class="cs-section-tag">// 05 — demo</span>
+      <span class="cs-section-tag">// 05 — field documentation</span>
       <h2 class="cs-section-title">Field Documentation Video</h2>
       <div class="cs-video-wrap">
         <div class="cs-video-placeholder">
           <span>🎬</span>
           <p style="font-weight:600;color:#fff;margin-bottom:4px;">Field Demonstration Video</p>
-          <p style="font-size:0.85rem;color:var(--text-muted);max-width:480px;margin:0 auto;">Video documentation of agricultural field trials and furrow depth calibration is currently being edited for release.</p>
+          <p style="font-size:0.85rem;color:var(--text-muted);max-width:480px;margin:0 auto;">Video documentation and field trial footage are scheduled for release following experimental agricultural evaluation.</p>
         </div>
       </div>
 

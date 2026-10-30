@@ -215,7 +215,7 @@
           <div class="cs-badges">
             <span class="cs-badge badge-cyan">ROS 2 Humble</span>
             <span class="cs-badge">12-DOF URDF / Xacro</span>
-            <span class="cs-badge badge-cyan">Analytical IK (~25 &mu;s Python)</span>
+            <span class="cs-badge badge-cyan">Closed-Form Analytical IK</span>
             <span class="cs-badge">3D Cycloid Gait</span>
             <span class="cs-badge badge-cyan">ros2_control</span>
             <span class="cs-badge">Gazebo Classic 11</span>
@@ -354,7 +354,7 @@
           <rect x="710" y="60" width="240" height="110" rx="10" fill="url(#nodeGrad)" stroke="#06b6d4" stroke-width="1.5"/>
           <text x="725" y="88" fill="#38bdf8" font-size="13" font-weight="bold">ros2_control Manager</text>
           <text x="725" y="108" fill="#94a3b8" font-size="10">joint_trajectory_controller</text>
-          <text x="725" y="126" fill="#64748b" font-size="9">• 200 Hz manager / 100 Hz state pub</text>
+          <text x="725" y="126" fill="#64748b" font-size="9">• 200 Hz manager / 100 Hz JTC state pub</text>
           <text x="725" y="142" fill="#64748b" font-size="9">• 12 Synchronized Position Interfaces</text>
           <text x="725" y="158" fill="#64748b" font-size="9">• Interpolation &amp; hardware safety limits</text>
 
@@ -533,7 +533,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
             <tr>
               <td><strong>Actuator Control</strong></td>
               <td><code>ros2_control</code> / <code>JointTrajectoryController</code></td>
-              <td>200 Hz Controller Manager update rate; 100 Hz state publication; receives 100 Hz trajectory command stream</td>
+              <td>200 Hz Controller Manager update rate; 100 Hz JointTrajectoryController state publication; receives 100 Hz trajectory command stream</td>
             </tr>
             <tr>
               <td><strong>Robot Kinematics</strong></td>

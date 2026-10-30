@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ESP32 micro-ROS 2WD Differential Drive Robot — Case Study | Josiah Saji</title>
-  <meta name="description" content="Technical case study: ESP32 micro-ROS Differential Drive Robot — real-time Wi-Fi UDP transport, 4-pin hardware PWM generation, differential mixing, and failsafe watchdog." />
+  <meta name="description" content="Technical case study: ESP32 micro-ROS Differential Drive Robot — micro-ROS over Wi-Fi UDP transport, 4-pin hardware PWM generation, differential mixing, and software command-timeout failsafe." />
   <link rel="canonical" href="https://josiahsk.github.io/josiahsaji.github.io/esp32-microros-robot.html" />
 
   <!-- Open Graph -->
@@ -29,7 +29,7 @@
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "ESP32 micro-ROS 2WD Differential Drive Robot",
-    "description": "Technical case study: ESP32 micro-ROS Differential Drive Robot — real-time Wi-Fi UDP transport, 4-pin hardware PWM generation, differential mixing, and failsafe watchdog.",
+    "description": "Technical case study: ESP32 micro-ROS Differential Drive Robot — micro-ROS over Wi-Fi UDP transport, 4-pin hardware PWM generation, differential mixing, and software command-timeout failsafe.",
     "author": {
       "@type": "Person",
       "name": "Josiah Saji",
@@ -211,14 +211,14 @@
           <a href="index.html#projects" class="cs-back">&larr; Back to Projects</a>
           <span class="cs-tag">// case study &middot; 04</span>
           <h1 class="cs-title">ESP32 micro-ROS 2WD<br><span style="background:linear-gradient(135deg,#06b6d4,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Differential Drive Robot</span></h1>
-          <p class="cs-subtitle">Bridging the standard ROS 2 navigation stack directly to embedded microcontroller hardware over wireless UDP transports, with 4-pin hardware PWM motor control and deterministic failsafe watchdogs.</p>
+          <p class="cs-subtitle">Bridging the standard ROS 2 navigation stack directly to embedded microcontroller hardware over wireless UDP transports, with 4-pin hardware PWM motor control and deterministic software command-timeout failsafes.</p>
           <div class="cs-badges">
             <span class="cs-badge">micro-ROS (XRCE-DDS)</span>
             <span class="cs-badge badge-purple">ESP32 DevKit V1</span>
             <span class="cs-badge">Wi-Fi UDP Transport</span>
             <span class="cs-badge badge-purple">geometry_msgs/Twist</span>
             <span class="cs-badge">LEDC Hardware PWM</span>
-            <span class="cs-badge badge-purple">Failsafe Watchdog (500ms)</span>
+            <span class="cs-badge badge-purple">Command Timeout Failsafe (500ms)</span>
           </div>
           <div class="cs-hero-actions">
             <a href="#cs-overview" class="btn btn-primary btn-sm">Read Technical Analysis &darr;</a>
@@ -276,7 +276,7 @@
               <text x="272" y="38" fill="#f5a623" font-size="7.5" font-weight="700">2.4 GHz RF</text>
 
               <text x="215" y="60" fill="#fff" font-size="10" font-weight="800">ESP32 DevKit V1</text>
-              <text x="215" y="72" fill="#94a3b8" font-size="7.5">Xtensa Dual-Core 240MHz</text>
+              <text x="215" y="72" fill="#94a3b8" font-size="7.5">Xtensa Dual-Core (up to 240 MHz)</text>
 
               <!-- Core 0 Block -->
               <rect x="215" y="82" width="130" height="42" rx="4" fill="#0d1424" stroke="#00d4ff" stroke-width="1" />
@@ -291,9 +291,9 @@
               <text x="222" y="166" fill="#64748b" font-size="6.8">Deadband Stiction Filter</text>
               <text x="222" y="176" fill="#00d4ff" font-size="6.8">LEDC 1 kHz · 8-bit PWM</text>
 
-              <!-- Watchdog Subsystem -->
+              <!-- Failsafe Subsystem -->
               <rect x="215" y="188" width="130" height="28" rx="4" fill="#061a14" stroke="#10b981" stroke-width="1" />
-              <text x="222" y="201" fill="#10b981" font-size="7.5" font-weight="700">Watchdog Failsafe</text>
+              <text x="222" y="201" fill="#10b981" font-size="7.5" font-weight="700">Software Failsafe</text>
               <text x="222" y="211" fill="#94a3b8" font-size="6.8">500 ms Timeout &rarr; E-Brake</text>
 
               <!-- Pin Outputs -->
@@ -352,7 +352,7 @@
         Integrating physical microcontrollers with ROS 2 traditionally required complex serial bridges, custom ASCII command parsers, or serial-to-socket converters (e.g. legacy rosserial). These ad-hoc solutions suffer from buffer overflows, lack of standardized message types, fragile reconnection logic, and tethered cables that hinder free mobile robot testing.
       </p>
       <p style="color:var(--text-muted);line-height:1.75;margin-bottom:24px;">
-        <strong>Project Objectives:</strong> Deploy a native, lightweight <strong>micro-ROS</strong> client on an ESP32 microcontroller to subscribe directly to standard <code style="color:var(--accent2);">geometry_msgs/msg/Twist</code> over Wi-Fi (UDP). The firmware transforms linear and angular velocity commands into 8-bit hardware PWM signals across a 4-pin dual H-bridge motor driver, incorporating deadband stiction compensation and safety watchdogs.
+        <strong>Project Objectives:</strong> Deploy a native, lightweight <strong>micro-ROS</strong> client on an ESP32 microcontroller to subscribe directly to standard <code style="color:var(--accent2);">geometry_msgs/msg/Twist</code> over Wi-Fi (UDP). The firmware transforms linear and angular velocity commands into 8-bit hardware PWM signals across a 4-pin dual H-bridge motor driver, incorporating deadband stiction compensation and software command-timeout failsafes.
       </p>
 
       <div class="metrics-grid">
@@ -362,7 +362,7 @@
         </div>
         <div class="metric-card">
           <span class="metric-val">500 ms</span>
-          <span class="metric-label">Command Timeout Watchdog</span>
+          <span class="metric-label">Software Command Timeout</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">8-Bit</span>
@@ -443,7 +443,7 @@
           <text x="610" y="128" fill="#64748b" font-size="9">1. /cmd_vel Callback: (linear.x, angular.z)</text>
           <text x="610" y="144" fill="#64748b" font-size="9">2. Differential Mixer: Left = lin - ang, Right = lin + ang</text>
           <text x="610" y="160" fill="#64748b" font-size="9">3. Deadband Stiction Mapping: MIN_PWM = 60</text>
-          <text x="610" y="176" fill="#64748b" font-size="9">4. Failsafe Watchdog: millis() - lastCmd &gt; 500ms -&gt; STOP</text>
+          <text x="610" y="176" fill="#64748b" font-size="9">4. Software Failsafe: millis() - lastCmd &gt; 500ms -&gt; STOP</text>
           <text x="610" y="196" fill="#06b6d4" font-size="9">LEDC PWM: 1 kHz · 8-bit (ch 0,1,2,3)</text>
           <text x="610" y="222" fill="#f59e0b" font-size="10">GPIO 25, 26 (M1) · GPIO 27, 14 (M2)</text>
 
@@ -493,7 +493,7 @@
         </div>
 
         <div class="decision-card">
-          <span class="decision-badge">safety watchdog</span>
+          <span class="decision-badge">software failsafe</span>
           <div class="decision-title">Deterministic Failsafe Cutoff</div>
           <p class="decision-text">
             Mobile robots running over wireless links face network drops and Wi-Fi disconnects. The main execution loop continuously monitors <code style="color:var(--accent2);">millis() - lastCmdTime</code>: if no valid <code style="color:var(--accent2);">/cmd_vel</code> packet arrives within 500 ms, the hardware PWM immediately resets to 0 on all pins, preventing runaway robots.
@@ -507,7 +507,7 @@
       <span class="cs-section-tag">// 04 — firmware implementation</span>
       <h2 class="cs-section-title">Core Firmware Logic &amp; Code References</h2>
       <p style="color:var(--text-muted);line-height:1.7;margin-bottom:16px;">
-        The firmware is written in C++ for the Arduino/ESP-IDF framework. Here are the core routines handling velocity reception, mixing, deadband thresholding, and the hardware safety timer:
+        The firmware is written in C++ for the Arduino/ESP-IDF framework. Here are the core routines handling velocity reception, mixing, deadband thresholding, and the software command timeout timer:
       </p>
 
       <div class="code-snippet">
@@ -534,7 +534,7 @@
   driveMotor(M1A, <span class="code-num">0</span>, M1B, <span class="code-num">1</span>, leftPwm);
   driveMotor(M2A, <span class="code-num">2</span>, M2B, <span class="code-num">3</span>, rightPwm);
 
-  lastCmdTime = millis();  <span class="code-comment">// Reset watchdog timer</span>
+  lastCmdTime = millis();  <span class="code-comment">// Reset command timer</span>
 }
 
 <span class="code-kw">int</span> <span class="code-fn">toPwm</span>(<span class="code-kw">float</span> v) {
@@ -545,7 +545,7 @@
       </div>
 
       <p style="color:var(--text-muted);line-height:1.7;margin-top:20px;">
-        <strong>Micro-ROS Executor &amp; Hardware Failsafe Loop:</strong> In the main execution loop, micro-ROS processes incoming messages with a 10 ms quantum, while an asynchronous timer constantly monitors packet freshness:
+        <strong>Micro-ROS Executor &amp; Software Failsafe Loop:</strong> In the main execution loop, micro-ROS processes incoming messages with a 10 ms quantum, while an asynchronous timer constantly monitors packet freshness:
       </p>
 
       <div class="code-snippet">
@@ -576,7 +576,7 @@
           <tbody>
             <tr>
               <td><strong>Microcontroller</strong></td>
-              <td>ESP32-WROOM-32 DevKit V1 (Xtensa dual-core @ 240 MHz)</td>
+              <td>ESP32-WROOM-32 DevKit V1 (Xtensa dual-core, up to 240 MHz max)</td>
               <td>Wi-Fi 802.11 b/g/n, 520 KB SRAM, 4 MB Flash</td>
             </tr>
             <tr>
@@ -639,10 +639,10 @@
         </div>
 
         <div class="decision-card">
-          <div class="decision-title">Client-Side Watchdog vs. Server Heartbeat</div>
+          <div class="decision-title">Client-Side Command Timeout vs. Server Heartbeat</div>
           <p class="decision-text">
             <strong>Decision:</strong> Local 500 ms deadline timer on ESP32.<br>
-            <strong>Rationale:</strong> If Wi-Fi drops completely, a remote heartbeat check cannot reach the robot. A local autonomous watchdog guarantees safety even in total network blackout scenarios.
+            <strong>Rationale:</strong> If Wi-Fi drops completely, a remote heartbeat check cannot reach the robot. A local autonomous command timeout timer guarantees motor shutdown even in total network blackout scenarios.
           </p>
         </div>
       </div>

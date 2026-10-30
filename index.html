@@ -605,7 +605,7 @@
               <text x="442" y="69" fill="#e2e8f0" font-size="9" text-anchor="middle">4-Pin Pure PWM</text>
               <text x="442" y="87" fill="#94a3b8" font-size="8" text-anchor="middle">1 kHz LEDC Timer</text>
               <text x="442" y="107" fill="#94a3b8" font-size="8" text-anchor="middle">MIN_PWM = 60 (Deadband)</text>
-              <text x="442" y="127" fill="#ef4444" font-size="8" text-anchor="middle">500ms Watchdog Cutoff</text>
+              <text x="442" y="127" fill="#ef4444" font-size="8" text-anchor="middle">500ms Command Cutoff</text>
 
               <!-- Connection Lines -->
               <line x1="170" y1="85" x2="195" y2="85" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3,2"/>
@@ -631,7 +631,7 @@
               </div>
               <div class="narrative-block">
                 <span class="narrative-label result">Result</span>
-                <p>Achieved deterministic Wi-Fi UDP command execution via micro-ROS agent, 1 kHz hardware PWM switching, and automated 500 ms failsafe motor cutoff on packet loss, benchtop tested on real hardware.</p>
+                <p>Achieved reliable Wi-Fi UDP command execution via micro-ROS agent, 1 kHz hardware PWM switching, and automated 500 ms command-timeout motor cutoff on packet loss, benchtop tested on real hardware.</p>
               </div>
             </div>
 
@@ -640,7 +640,7 @@
               <li>micro-ROS (UDP)</li>
               <li>4-Pin PWM Driver</li>
               <li>Kinematic Mixing</li>
-              <li>Failsafe Watchdog</li>
+              <li>Software Failsafe</li>
             </ul>
 
             <div class="project-footer">
