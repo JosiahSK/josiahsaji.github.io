@@ -211,7 +211,7 @@
           <a href="index.html#projects" class="cs-back">&larr; Back to Projects</a>
           <span class="cs-tag">// case study &middot; 04</span>
           <h1 class="cs-title">ESP32 micro-ROS 2WD<br><span style="background:linear-gradient(135deg,#06b6d4,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Differential Drive Robot</span></h1>
-          <p class="cs-subtitle">Bridging the standard ROS 2 navigation stack directly to embedded microcontroller hardware over wireless UDP transports, with 4-pin hardware PWM motor control and deterministic software command-timeout failsafes.</p>
+          <p class="cs-subtitle">Bridging the standard ROS 2 navigation stack directly to embedded microcontroller hardware over wireless UDP transports, with 4-pin hardware PWM motor control and software command-timeout motor cutoff.</p>
           <div class="cs-badges">
             <span class="cs-badge">micro-ROS (XRCE-DDS)</span>
             <span class="cs-badge badge-purple">ESP32 DevKit V1</span>
@@ -273,7 +273,7 @@
               <!-- Antenna Area -->
               <rect x="215" y="28" width="50" height="14" rx="2" fill="#1e293b" stroke="#f5a623" stroke-width="0.8" />
               <path d="M 220 35 L 230 35 L 230 31 L 240 31 L 240 35 L 250 35 L 250 31 L 260 31" stroke="#f5a623" stroke-width="1" fill="none" />
-              <text x="272" y="38" fill="#f5a623" font-size="7.5" font-weight="700">2.4 GHz RF</text>
+              <text x="272" y="38" fill="#f5a623" font-size="7.5" font-weight="700">2.4 GHz Wi-Fi</text>
 
               <text x="215" y="60" fill="#fff" font-size="10" font-weight="800">ESP32 DevKit V1</text>
               <text x="215" y="72" fill="#94a3b8" font-size="7.5">Xtensa Dual-Core (up to 240 MHz)</text>
@@ -496,7 +496,7 @@
           <span class="decision-badge">software failsafe</span>
           <div class="decision-title">Application-Level Command-Timeout Cutoff</div>
           <p class="decision-text">
-            Mobile robots running over wireless links face network drops and Wi-Fi disconnects. The main execution loop continuously monitors <code style="color:var(--accent2);">millis() - lastCmdTime</code>: if no valid <code style="color:var(--accent2);">/cmd_vel</code> packet arrives within 500 ms, the hardware PWM immediately resets to 0 on all pins, preventing runaway robots.
+            Mobile robots running over wireless links face network drops and Wi-Fi disconnects. The main execution loop checks <code style="color:var(--accent2);">millis() - lastCmdTime</code>: if elapsed time since the last valid <code style="color:var(--accent2);">/cmd_vel</code> command exceeds 500 ms, firmware calls <code style="color:var(--accent2);">stopMotors()</code> to set all four PWM channels to zero.
           </p>
         </div>
       </div>
@@ -507,7 +507,7 @@
       <span class="cs-section-tag">// 04 — firmware implementation</span>
       <h2 class="cs-section-title">Core Firmware Logic &amp; Code References</h2>
       <p style="color:var(--text-muted);line-height:1.7;margin-bottom:16px;">
-        The firmware is written in C++ for the Arduino/ESP-IDF framework. Here are the core routines handling velocity reception, mixing, deadband thresholding, and the software command timeout timer:
+        The firmware is written in C++ for the Arduino/ESP-IDF framework. Here are the core routines handling velocity reception, mixing, deadband thresholding, and the software command timeout check:
       </p>
 
       <div class="code-snippet">
@@ -545,14 +545,14 @@
       </div>
 
       <p style="color:var(--text-muted);line-height:1.7;margin-top:20px;">
-        <strong>Micro-ROS Executor &amp; Software Failsafe Loop:</strong> In the main execution loop, micro-ROS processes incoming messages with a 10 ms quantum, while an asynchronous timer constantly monitors packet freshness:
+        <strong>Micro-ROS Executor &amp; Software Failsafe Loop:</strong> In the main execution loop, micro-ROS processes incoming messages with a 10 ms quantum, followed by a main-loop command-age check:
       </p>
 
       <div class="code-snippet">
 <span class="code-kw">void</span> <span class="code-fn">loop</span>() {
   rclc_executor_spin_some(&amp;executor, RCL_MS_TO_NS(<span class="code-num">10</span>));
 
-  <span class="code-comment">// Safety Failsafe: stop DC motors immediately if Wi-Fi or command drops</span>
+  <span class="code-comment">// Software command-age check: set PWM outputs to zero if command age exceeds 500ms</span>
   <span class="code-kw">if</span> (millis() - lastCmdTime > CMD_TIMEOUT_MS) {
     stopMotors();
   }
@@ -626,7 +626,7 @@
           <div class="decision-title">4-Pin Pure PWM vs. 2-Pin DIR+PWM</div>
           <p class="decision-text">
             <strong>Decision:</strong> 4-pin pure PWM control (no separate ENA/ENB jumpers).<br>
-            <strong>Rationale:</strong> Many compact dual H-bridge modules (DRV8833, L9110S) omit dedicated enable pins. Applying complementary PWM directly to forward and reverse pins provides active regenerative braking on 0V and reduces wiring complexity.
+            <strong>Rationale:</strong> Many compact dual H-bridge modules (DRV8833, L9110S) omit dedicated enable pins. Applying PWM directly to forward and reverse pins controls direction and duty cycle while reducing wiring complexity; commanded stop sets both pin duty cycles to zero.
           </p>
         </div>
 
@@ -641,8 +641,8 @@
         <div class="decision-card">
           <div class="decision-title">Client-Side Command Timeout vs. Server Heartbeat</div>
           <p class="decision-text">
-            <strong>Decision:</strong> Local 500 ms deadline timer on ESP32.<br>
-            <strong>Rationale:</strong> If Wi-Fi drops completely, a remote heartbeat check cannot reach the robot. A local autonomous command timeout timer guarantees motor shutdown even in total network blackout scenarios.
+            <strong>Decision:</strong> Local 500 ms main-loop command-age check on ESP32.<br>
+            <strong>Rationale:</strong> If Wi-Fi drops completely, a remote heartbeat check cannot reach the robot. A local command-age check ensures the ESP32 commands zero PWM even in network blackout scenarios.
           </p>
         </div>
       </div>

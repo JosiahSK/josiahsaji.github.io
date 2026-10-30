@@ -64,7 +64,7 @@ def run_step(step_record):
 
 def print_summary_table(step_records, total_time):
     print("\n" + "#" * 80)
-    print("UNIFIED TEST EXECUTION SUMMARY (PORTFOLIO V5.3.2)")
+    print("UNIFIED TEST EXECUTION SUMMARY (PORTFOLIO V5.3.3)")
     print("#" * 80)
     print(f"{'#':<3} | {'Step Name':<44} | {'Status':<6} | {'Time':<7} | {'Code':<5}")
     print("-" * 80)
@@ -97,7 +97,7 @@ def main():
     skip_screens = "--skip-screenshots" in sys.argv
 
     print("*" * 80)
-    print("PORTFOLIO V5.3.2 — UNIFIED FORENSIC QUALITY, ACCESSIBILITY & PRODUCTION TEST RUNNER")
+    print("PORTFOLIO V5.3.3 — UNIFIED FORENSIC QUALITY, ACCESSIBILITY & PRODUCTION TEST RUNNER")
     print(f"Target Repository Root: {repo_root}")
     print("*" * 80)
 

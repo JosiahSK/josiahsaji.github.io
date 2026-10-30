@@ -391,23 +391,23 @@
             <div class="project-narrative">
               <div class="narrative-block">
                 <span class="narrative-label problem">Problem</span>
-                <p>Small-scale farmers in Kerala rely on manual or expensive tractor-based tilling, leaving a gap for an affordable, GPS-guided robotic solution capable of real-field deployment.</p>
+                <p>Small-scale farmers in Kerala rely on manual or expensive tractor-based tilling, leaving a gap for an affordable agricultural robotic solution capable of real-field deployment.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label approach">Approach</span>
-                <p>Built a rear-wheel-drive agricultural robot prototype with a front two-stroke engine tilling mechanism. Integrated a 24V LiFePO4 battery pack, GPS receiver for field coordinate acquisition, and a 2.4 GHz manual remote override.</p>
+                <p>Built a rear-wheel-drive agricultural robot prototype with a front two-stroke engine tilling mechanism. Integrated a 24V-class LiFePO4 battery system, GPS receiver for field coordinate acquisition, and a mechanical emergency throttle takeover lever.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label result">Result</span>
-                <p>Functional hardware prototype submitted to YIP 7.0 featuring a custom chassis, 24V chain drivetrain, LiFePO4 power distribution, and GPS data acquisition node. Navigation and autonomous path planning under active development.</p>
+                <p>Functional hardware prototype developed for YIP 7.0 featuring a custom chassis, 24V chain drivetrain, 24V-class LiFePO4 power distribution, and GPS NMEA coordinate acquisition. Autonomous navigation under active development.</p>
               </div>
             </div>
 
             <ul class="project-tech">
-              <li>24V LiFePO4 Battery</li>
+              <li>24V-Class LiFePO4</li>
               <li>GPS Data Acquisition</li>
               <li>Embedded Control</li>
-              <li>Manual Remote Override</li>
+              <li>Emergency Override Lever</li>
               <li>Two-Stroke Engine</li>
             </ul>
 
@@ -627,7 +627,7 @@
               </div>
               <div class="narrative-block">
                 <span class="narrative-label approach">Approach</span>
-                <p>Deployed native micro-ROS on an ESP32 over Wi-Fi UDP. Implemented 4-pin pure PWM motor control with differential mixing, deadband static friction compensation, and safety failsafes.</p>
+                <p>Deployed native micro-ROS on an ESP32 over Wi-Fi UDP. Implemented 4-pin pure PWM motor control with differential mixing, deadband static friction compensation, and software command-timeout motor cutoff.</p>
               </div>
               <div class="narrative-block">
                 <span class="narrative-label result">Result</span>

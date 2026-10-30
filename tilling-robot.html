@@ -191,10 +191,10 @@
           <div class="cs-badges">
             <span class="cs-badge" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.35);color:#f59e0b;">YIP 7.0 Submission</span>
             <span class="cs-badge" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.35);color:#10b981;">Agricultural Robotics</span>
-            <span class="cs-badge">24V LiFePO4 Power System</span>
-            <span class="cs-badge">Geared DC Motor Drive</span>
+            <span class="cs-badge">24V-Class LiFePO4</span>
+            <span class="cs-badge">Rear-Wheel Chain Drive</span>
             <span class="cs-badge">GPS Data Acquisition</span>
-            <span class="cs-badge">2.4 GHz Manual Remote Override</span>
+            <span class="cs-badge">Emergency Manual Override</span>
           </div>
           <div class="cs-hero-actions">
             <a href="#cs-overview" class="btn btn-primary btn-sm">Read Architecture &darr;</a>
@@ -245,11 +245,11 @@
                 <circle cx="0" cy="0" r="4" fill="#f59e0b" />
               </g>
               <text x="65" y="270" fill="#f59e0b" font-size="7.5" text-anchor="middle" font-weight="600">Rotating Tines</text>
-              <text x="65" y="282" fill="#94a3b8" font-size="6.5" text-anchor="middle">Design Target: ~15cm Furrow Depth</text>
+              <text x="65" y="282" fill="#94a3b8" font-size="6.5" text-anchor="middle">Mechanical Tilling Blades (Soft Soil Tested)</text>
 
               <!-- Isolated Power Module: LiFePO4 Battery Subsystem (Center) -->
               <rect x="120" y="122" width="130" height="48" rx="5" fill="#162032" stroke="#10b981" stroke-width="1.5" />
-              <text x="185" y="140" fill="#10b981" font-size="8.5" text-anchor="middle" font-weight="700">24V LiFePO4 BATTERY</text>
+              <text x="185" y="140" fill="#10b981" font-size="8.5" text-anchor="middle" font-weight="700">24V-CLASS LiFePO4 BATTERY</text>
               <text x="185" y="152" fill="#94a3b8" font-size="7" text-anchor="middle">High-Discharge Power System</text>
               <text x="185" y="163" fill="#64748b" font-size="6.5" text-anchor="middle">Tested at 23.8V Under Load</text>
 
@@ -257,7 +257,7 @@
               <rect x="265" y="122" width="140" height="48" rx="5" fill="#162032" stroke="#00d4ff" stroke-width="1.5" />
               <text x="335" y="138" fill="#00d4ff" font-size="8.5" text-anchor="middle" font-weight="700">AVIONICS &amp; MCU</text>
               <text x="335" y="150" fill="#94a3b8" font-size="7" text-anchor="middle">32-Bit Microcontroller</text>
-              <text x="335" y="161" fill="#a78bfa" font-size="6.5" text-anchor="middle">GPS NMEA + Manual Override</text>
+              <text x="335" y="161" fill="#a78bfa" font-size="6.5" text-anchor="middle">GPS NMEA + Mechanical Override</text>
 
               <!-- Ceramic Patch GPS Antenna Mast -->
               <line x1="335" y1="122" x2="335" y2="48" stroke="#00d4ff" stroke-width="2" />
@@ -296,7 +296,7 @@
               <rect x="150" y="305" width="220" height="24" rx="4" fill="#111827" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
               <text x="260" y="320" fill="#94a3b8" font-size="7.2" text-anchor="middle">Rear Chain Drive &middot; Front Rototiller Counter-Torque</text>
             </svg>
-            <p class="tech-figure-caption">Figure H-1: Illustrative Schematic &middot; Agricultural tilling robot mechanical layout: front two-stroke cultivator, central 24V LiFePO4 battery, and rear chain-driven geared drivetrain.</p>
+            <p class="tech-figure-caption">Figure H-1: Illustrative Schematic &middot; Agricultural tilling robot mechanical layout: front two-stroke cultivator, central 24V-class LiFePO4 battery, and rear chain-driven drivetrain.</p>
             <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
           </div>
         </div>
@@ -310,7 +310,7 @@
     <section class="cs-section reveal" id="cs-overview">
       <span class="cs-section-tag">// 01 — system overview</span>
       <h2 class="cs-section-title">System Architecture</h2>
-      <p style="color:var(--text-muted);margin-bottom:28px;">The agricultural tilling robot prototype integrates a rear-wheel-drive electric drivetrain with a front-mounted two-stroke rototiller implement. The system combines an embedded microcontroller for low-level motor drive PWM and remote override sequencing, a ceramic patch antenna GPS module for field data acquisition, a dedicated 24V LiFePO4 battery subsystem for powertrain delivery with regulated logic rails, and a 2.4 GHz RF/Bluetooth teleoperation receiver for manual override.</p>
+      <p style="color:var(--text-muted);margin-bottom:28px;">The agricultural tilling robot prototype integrates a rear-wheel-drive electric drivetrain with a front-mounted two-stroke rototiller implement. The system combines an embedded microcontroller for low-level motor drive PWM and emergency override sequencing, a ceramic patch antenna GPS module for field data acquisition, a dedicated 24V-class LiFePO4 battery subsystem for powertrain delivery with regulated logic rails, and a mechanical emergency throttle takeover lever.</p>
 
       <div class="verification-status-box" style="margin-bottom:28px;background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.25);border-radius:12px;padding:20px;">
         <h3 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.95rem;margin-bottom:8px;">Verification Status: Hardware Prototype &amp; Validation Plan</h3>
@@ -349,13 +349,13 @@
           <text x="45" y="144" fill="#64748b" font-size="9">• Coordinates published to ROS 2</text>
           <text x="45" y="158" fill="#06b6d4" font-size="9">Baud: 9600 bps UART</text>
 
-          <!-- Block 2: RF / Bluetooth Teleop -->
+          <!-- Block 2: Emergency Manual Override -->
           <rect x="30" y="200" width="260" height="110" rx="10" fill="url(#nodeGradTill)" stroke="#22c55e" stroke-width="1.5"/>
-          <text x="45" y="228" fill="#4ade80" font-size="13" font-weight="bold">2.4 GHz Remote Override</text>
-          <text x="45" y="248" fill="#94a3b8" font-size="10">Wireless Operator Link</text>
-          <text x="45" y="268" fill="#64748b" font-size="9">• Real-time manual steering &amp; throttle</text>
-          <text x="45" y="284" fill="#64748b" font-size="9">• Manual override lever &amp; teleop cutoff</text>
-          <text x="45" y="298" fill="#22c55e" font-size="9">Signal-loss motor stop cutoff</text>
+          <text x="45" y="228" fill="#4ade80" font-size="13" font-weight="bold">Manual Override Subsystem</text>
+          <text x="45" y="248" fill="#94a3b8" font-size="10">Emergency Takeover Link</text>
+          <text x="45" y="268" fill="#64748b" font-size="9">• Direct throttle takeover lever</text>
+          <text x="45" y="284" fill="#64748b" font-size="9">• Manual engine RPM intervention</text>
+          <text x="45" y="298" fill="#22c55e" font-size="9">Obstacle stop commands motor stop</text>
 
           <!-- Block 3: Embedded Controller -->
           <rect x="360" y="60" width="270" height="250" rx="10" fill="url(#nodeGradTill)" stroke="#7c3aed" stroke-width="1.5"/>
@@ -371,15 +371,15 @@
           <text x="390" y="206" fill="#64748b" font-size="8.5">Calculates drive motor PWM &amp; steering</text>
 
           <rect x="380" y="225" width="230" height="40" rx="6" fill="#0c101c" stroke="#334155" stroke-width="1"/>
-          <text x="390" y="242" fill="#cbd5e1" font-size="10">Safety &amp; Remote Override Monitor</text>
-          <text x="390" y="256" fill="#64748b" font-size="8.5">Manual override priority &amp; signal cutoff</text>
+          <text x="390" y="242" fill="#cbd5e1" font-size="10">Safety &amp; Manual Override Monitor</text>
+          <text x="390" y="256" fill="#64748b" font-size="8.5">Mechanical override priority &amp; throttle cutoff</text>
           <text x="380" y="295" fill="#a78bfa" font-size="9">Dual Timers &amp; Hardware PWM channels</text>
 
           <!-- Block 4: Motor Driver & DC Motors -->
           <rect x="690" y="60" width="260" height="120" rx="10" fill="url(#nodeGradTill)" stroke="#f59e0b" stroke-width="1.5"/>
           <text x="705" y="88" fill="#fbbf24" font-size="13" font-weight="bold">Dual H-Bridge Driver</text>
           <text x="705" y="108" fill="#94a3b8" font-size="10">High-Current Motor Stage</text>
-          <text x="705" y="128" fill="#64748b" font-size="9">• 24V DC Geared Motors &amp; Chain Drive</text>
+          <text x="705" y="128" fill="#64748b" font-size="9">• 24V DC Motor &amp; Chain Drive</text>
           <text x="705" y="144" fill="#64748b" font-size="9">• Rear cleated agricultural drive wheels</text>
           <text x="705" y="160" fill="#f59e0b" font-size="9">24V Power bus with flyback suppression</text>
 
@@ -387,7 +387,7 @@
           <rect x="690" y="200" width="260" height="110" rx="10" fill="url(#nodeGradTill)" stroke="#ef4444" stroke-width="1.5"/>
           <text x="705" y="228" fill="#f87171" font-size="13" font-weight="bold">24V LiFePO4 + 2-Stroke Tiller</text>
           <text x="705" y="248" fill="#94a3b8" font-size="10">Power &amp; Soil Cultivation</text>
-          <text x="705" y="268" fill="#64748b" font-size="9">• 24V LiFePO4 battery pack with BMS</text>
+          <text x="705" y="268" fill="#64748b" font-size="9">• 24V-class LiFePO4 battery system</text>
           <text x="705" y="284" fill="#64748b" font-size="9">• Dedicated DC-DC step-down to 5V/3.3V</text>
           <text x="705" y="298" fill="#f87171" font-size="9">Front-mounted engine rotary tines</text>
 
@@ -398,11 +398,11 @@
 
           <!-- RF to MCU -->
           <path d="M 290 255 L 360 255" fill="none" stroke="#22c55e" stroke-width="1.8" marker-end="url(#arrow-green)"/>
-          <text x="296" y="248" fill="#22c55e" font-size="8">Override PWM</text>
+          <text x="296" y="248" fill="#22c55e" font-size="8">Throttle Lever</text>
 
           <!-- MCU to Motor Driver -->
           <path d="M 630 115 L 690 115" fill="none" stroke="#f59e0b" stroke-width="1.8" marker-end="url(#arrow-amber)"/>
-          <text x="635" y="108" fill="#f59e0b" font-size="8">Dual PWM</text>
+          <text x="635" y="108" fill="#f59e0b" font-size="8">Motor PWM</text>
 
           <!-- Power supply bus -->
           <path d="M 690 240 L 630 240" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,4"/>
@@ -410,8 +410,8 @@
 
           <!-- Legend Bottom -->
           <rect x="30" y="340" width="920" height="50" rx="8" fill="#0c101c" stroke="#1e293b" stroke-width="1"/>
-          <text x="45" y="362" fill="#94a3b8" font-size="9.5">Safety Architecture: Operator RF transmitter retains manual override authority. If wireless carrier is lost, teleop failsafe cutoff disables motor outputs.</text>
-          <text x="45" y="378" fill="#64748b" font-size="8.5">Electrical Architecture: Dedicated DC-DC logic regulators + separate 24V LiFePO4 battery bus shield the MCU from inductive motor transients and engine ignition noise with a common system ground.</text>
+          <text x="45" y="362" fill="#94a3b8" font-size="9.5">Safety Architecture: Mechanical emergency takeover lever decouples throttle control; obstacle detection loop commands motor stop when front obstacles are detected within 50 cm.</text>
+          <text x="45" y="378" fill="#64748b" font-size="8.5">Electrical Architecture: Dedicated DC-DC logic regulators + separate 24V-class LiFePO4 battery bus shield the MCU from inductive motor transients and engine ignition noise with a common system ground.</text>
         </svg>
       </div>
 
@@ -424,7 +424,7 @@
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">🔌</div>
           <div style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;margin-bottom:6px;">Electronics</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);">24V LiFePO4 battery pack · High-current motor drivers · Microcontroller board · NEO-6M GPS receiver · 2.4 GHz RF manual override module</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">24V-class LiFePO4 battery system · High-current motor driver · Microcontroller board · NEO-6M GPS receiver · Emergency manual override lever</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">💾</div>
@@ -454,16 +454,16 @@
             <tr>
               <td>1</td>
               <td>Battery Pack</td>
-              <td>LiFePO4 · High-Discharge Pack · 24V System</td>
+              <td>24V-Class LiFePO4 Battery System</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">Tested stable at 23.8V under load; integrated BMS protection with dedicated power rail</td>
+              <td class="bom-note">Tested stable at 23.8V under load in project test logs; powers 24V DC drive motor and buck converters</td>
             </tr>
             <tr>
               <td>2</td>
-              <td>Drive Motors</td>
-              <td>24V DC Geared Motors &amp; Chain Drive</td>
-              <td class="bom-qty">2</td>
-              <td class="bom-note">Chain transmission to rear drive axle for agricultural low-speed crawl</td>
+              <td>Drive Motor</td>
+              <td>24V DC Motor &amp; Chain Drive</td>
+              <td class="bom-qty">1</td>
+              <td class="bom-note">Chain transmission to rear drive axle for forward propulsion with front steering axle</td>
             </tr>
             <tr>
               <td>3</td>
@@ -495,10 +495,10 @@
             </tr>
             <tr>
               <td>7</td>
-              <td>Remote Module</td>
-              <td>2.4 GHz RF / Bluetooth Wireless Transceiver</td>
+              <td>Override Mechanism</td>
+              <td>Emergency Manual Override Lever</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">Real-time teleoperation link with manual override authority</td>
+              <td class="bom-note">Mechanical throttle takeover lever providing immediate manual engine control</td>
             </tr>
             <tr>
               <td>8</td>
@@ -535,9 +535,9 @@
         <div class="challenge-card">
           <div class="challenge-num">Challenge 01</div>
           <div class="challenge-title">Power Delivery &amp; Inductive Noise Isolation</div>
-          <p class="challenge-problem">High in-rush currents and back-EMF from the 24V drive motors coupled with two-stroke engine vibrations caused voltage dips and resets on the 5V logic bus.</p>
+          <p class="challenge-problem">High in-rush currents and back-EMF from the 24V drive motor coupled with two-stroke engine vibrations caused voltage dips and resets on the 5V logic bus.</p>
           <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">Migrated the power architecture to a dedicated high-discharge 24V LiFePO4 battery pack, separated the motor power bus from the logic bus using dedicated DC-DC buck regulators with common ground, and added TVS diodes and filter capacitors across motor leads.</p>
+          <p class="challenge-solution">Migrated the power architecture to a dedicated 24V-class LiFePO4 battery system, separated the motor power bus from the logic bus using dedicated DC-DC buck regulators with common ground, and added TVS diodes and filter capacitors across motor leads.</p>
         </div>
 
         <div class="challenge-card">
@@ -545,7 +545,7 @@
           <div class="challenge-title">GPS Heading Drift at Low Crawl Speeds</div>
           <p class="challenge-problem">Standard consumer GPS modules produce noisy heading estimates when traversing agricultural plots at slow tilling speeds (0.3–0.6 m/s), leading to erratic steering corrections.</p>
           <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">GPS coordinates logged with ~3 m observed drift at 0.3 m/s crawl speeds; planned EKF sensor fusion with digital compass and IMU to filter heading.</p>
+          <p class="challenge-solution">Project field testing records stable forward driving at 0.3 m/s and separately logs ~3 m observed GPS coordinate drift; planned EKF sensor fusion (GPS + IMU + odometry) to filter position and heading.</p>
         </div>
 
         <div class="challenge-card">
@@ -553,7 +553,7 @@
           <div class="challenge-title">Traction Management on Damp Soft Soil</div>
           <p class="challenge-problem">When tilling damp Kerala soil, the active cultivator drum generates severe counter-torque, pushing the robot backward and causing drive wheels to dig in and lose grip.</p>
           <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">Shifted battery and chassis center of mass forward over the rear drive axle, fitted aggressive agricultural cleated tires, and tuned differential drive torque profiles to counteract tilling drag.</p>
+          <p class="challenge-solution">Shifted battery and chassis center of mass forward over the rear drive axle, fitted aggressive agricultural cleated tires, and adjusted drivetrain gear ratios to counteract tilling drag.</p>
         </div>
 
       </div>
@@ -577,27 +577,84 @@
           <span class="metric-label">Navigation &amp; Path Planning</span>
         </div>
         <div class="metric-card">
-          <span class="metric-val">24V LiFePO4</span>
-          <span class="metric-label">High-Discharge Power System</span>
+          <span class="metric-val">24V-Class</span>
+          <span class="metric-label">LiFePO4 Power (23.8V Tested)</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">2-Stroke</span>
           <span class="metric-label">Tiller Engine Integration</span>
         </div>
         <div class="metric-card">
-          <span class="metric-val">2.4 GHz</span>
-          <span class="metric-label">Manual Remote Override</span>
+          <span class="metric-val">Mechanical</span>
+          <span class="metric-label">Emergency Override Lever</span>
         </div>
         <div class="metric-card">
           <span class="metric-val">YIP 7.0</span>
           <span class="metric-label">State Level Innovation Entry</span>
         </div>
         <div class="metric-card">
-          <span class="metric-val">Design Target</span>
-          <span class="metric-label">~15 cm Furrow Depth</span>
+          <span class="metric-val">Soft Soil</span>
+          <span class="metric-label">Tilling Blade Tested</span>
         </div>
       </div>
       <p style="color:var(--text-muted);font-size:0.875rem;">Prototype architecture designed and fabricated for experimental agricultural evaluation in Kerala. Validation objectives include soft-soil traction analysis with rear-wheel drive, engine vibration isolation on sensitive GPS/sensor mounts, and continuous runtime evaluation under active tilling load.</p>
+
+      <!-- Documented Subsystem Testing Summary -->
+      <div style="margin-top:28px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;">
+        <h3 style="font-family:var(--font-head);font-size:1.05rem;color:#fff;margin-bottom:12px;">Documented Prototype Test Records (Repository docs/testing.md)</h3>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.6;margin-bottom:16px;">The following results are recorded directly in project testing documentation (<code>docs/testing.md</code>), distinguishing completed bench/field subsystem checks from active future work:</p>
+        <div class="table-responsive">
+          <table class="bom-table" style="font-size:0.85rem;">
+            <thead>
+              <tr>
+                <th>Subsystem Test</th>
+                <th>Category</th>
+                <th>Recorded Result</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LiFePO4 Under Load</td>
+                <td>Bench Test (Line 12)</td>
+                <td>Stable at 23.8V under operational load</td>
+                <td><span style="color:#22c55e;font-weight:600;">PASS</span></td>
+              </tr>
+              <tr>
+                <td>Forward Driving</td>
+                <td>Field Test (Line 20)</td>
+                <td>Stable at 0.3 m/s forward speed</td>
+                <td><span style="color:#22c55e;font-weight:600;">Done</span></td>
+              </tr>
+              <tr>
+                <td>Obstacle Stop</td>
+                <td>Field Test (Line 21)</td>
+                <td>Stops at 50 cm threshold on front obstacle</td>
+                <td><span style="color:#22c55e;font-weight:600;">Done</span></td>
+              </tr>
+              <tr>
+                <td>GPS Logging</td>
+                <td>Field Test (Line 22)</td>
+                <td>Approx 3 m coordinate drift observed</td>
+                <td><span style="color:#22c55e;font-weight:600;">Done</span></td>
+              </tr>
+              <tr>
+                <td>Tilling Blade</td>
+                <td>Field Test (Line 24)</td>
+                <td>Effective on soft soil</td>
+                <td><span style="color:#22c55e;font-weight:600;">Done</span></td>
+              </tr>
+              <tr>
+                <td>Autonomous Navigation</td>
+                <td>Field Integration (Line 25)</td>
+                <td>Nav2 integration ongoing</td>
+                <td><span style="color:#f59e0b;font-weight:600;">In Progress</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </section>
 
     <!-- § 5 — DEMO VIDEO -->

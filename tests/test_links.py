@@ -321,6 +321,20 @@ def run_suite(check_live=False):
         ("high-torque rear drive", "Must be classified as Geared DC Motor Drive or Rear-Wheel Drive"),
         ("e-brake", "Unsubstantiated dynamic braking claim; must be labeled Zero PWM"),
         ("deterministic failsafe", "Must be qualified as application-level software command timeout"),
+        ("2.4 ghz manual remote override", "Unevidenced 2.4 GHz RF wireless transceiver claim; must use Emergency Manual Override"),
+        ("2.4 ghz rf / bluetooth", "Unevidenced RF wireless transceiver claim"),
+        ("deterministic software command-timeout failsafes", "Misleading deterministic failsafe phrasing in ESP32"),
+        ("asynchronous timer constantly monitors", "Inaccurate asynchronous timer description; timeout check is in main loop"),
+        ("provides active regenerative braking", "Unsupported regenerative braking claim on H-bridge 0V state"),
+        ("active regenerative braking", "Unsupported regenerative braking claim"),
+        ("regenerative braking", "Unsupported regenerative braking claim"),
+        ("src/gps/gps_reader.py", "Nonexistent source code path; GPS node is documented in docs/gps_localization.md"),
+        ("~8s configuration", "Unsupported battery cell series configuration claim"),
+        ("~8s", "Unsupported battery cell configuration claim"),
+        ("~15cm furrow depth", "Unsupported numerical furrow depth claim"),
+        ("~15 cm furrow depth", "Unsupported numerical furrow depth claim"),
+        ("15 cm furrow depth", "Unsupported numerical furrow depth claim"),
+        ("target furrow depth ~15cm", "Unsupported numerical furrow depth claim"),
     ]
 
     claims_clean = True
@@ -369,14 +383,15 @@ def run_suite(check_live=False):
         ("esp32-microros-robot.html", "Software Command Timeout (500ms)", "ESP32 hero badge must feature 'Software Command Timeout (500ms)'"),
         ("esp32-microros-robot.html", "Zero PWM", "ESP32 timeout action must specify Zero PWM"),
         ("tilling-robot.html", "Agricultural Tilling Robot Prototype", "Tilling page must be titled 'Agricultural Tilling Robot Prototype'"),
-        ("tilling-robot.html", "24V LiFePO4", "Tilling page must specify 24V LiFePO4 battery subsystem"),
-        ("tilling-robot.html", "2.4 GHz Manual Remote Override", "Tilling page must specify 2.4 GHz Manual Remote Override"),
+        ("tilling-robot.html", "24V-Class LiFePO4", "Tilling page must specify 24V-Class LiFePO4 battery subsystem"),
+        ("tilling-robot.html", "Emergency Manual Override", "Tilling page must specify Emergency Manual Override"),
         ("tilling-robot.html", "GPS Data Acquisition", "Tilling page must specify GPS Data Acquisition"),
-        ("tilling-robot.html", "Design Target: ~15cm Furrow Depth", "Tilling schematic must explicitly designate 15 cm as a design target"),
+        ("tilling-robot.html", "Mechanical Tilling Blades (Soft Soil Tested)", "Tilling schematic must feature Soft Soil Tested tilling blades"),
         ("tilling-robot.html", "Engineering Validation Status & Field Trial Plan", "Tilling section title must feature 'Engineering Validation Status & Field Trial Plan'"),
         ("tilling-robot.html", "Verification Status: Hardware Prototype & Validation Plan", "Tilling verification box must feature 'Verification Status: Hardware Prototype & Validation Plan'"),
+        ("tilling-robot.html", "Documented Prototype Test Records (Repository docs/testing.md)", "Tilling page must feature documented subsystem test records"),
         ("index.html", "Agricultural Tilling Robot Prototype", "Index project 01 must be titled 'Agricultural Tilling Robot Prototype'"),
-        ("index.html", "24V LiFePO4 Battery", "Index project 01 must feature 24V LiFePO4 Battery"),
+        ("index.html", "24V-Class LiFePO4", "Index project 01 must feature 24V-Class LiFePO4"),
         ("quadruped-locomotion.html", 'id="quad-tab-kinematics"', "Quadruped tab must have id='quad-tab-kinematics'"),
         ("quadruped-locomotion.html", 'aria-controls="quad-panel-kinematics"', "Quadruped tab must have aria-controls='quad-panel-kinematics'"),
         ("quadruped-locomotion.html", 'aria-labelledby="quad-tab-kinematics"', "Quadruped panel must have aria-labelledby='quad-tab-kinematics'"),
@@ -435,20 +450,33 @@ def run_suite(check_live=False):
         print(f"  Auditing {len(reg_rows)} entries from docs/PORTFOLIO_CLAIMS_REGISTER.md...")
         reg_errors = 0
         for row in reg_rows:
-            cols = [c.strip() for c in row.split('|')[1:-1]]
+            cols = [c.strip().replace(r'\|', '|') for c in re.split(r'(?<!\\)\|', row)[1:-1]]
             if len(cols) < 11:
                 errors.append(f"Invalid register row format: {row[:50]}")
                 reg_errors += 1
                 continue
             claim_id = cols[0].replace('*', '').strip()
+            stmt = cols[1].replace('`', '').strip()
+            commit_sha = cols[4].replace('`', '').strip()
+            src_file = cols[5].strip()
+            src_loc = cols[6].strip()
             status = cols[10].replace('*', '').strip()
+
             if status not in valid_statuses:
                 errors.append(f"Claim {claim_id} has invalid status '{status}'. Must be one of {valid_statuses}")
                 reg_errors += 1
 
+            # Enforce 40-character commit hashes and valid paths for verified code/config claims
+            if status in ("VERIFIED_FROM_SOURCE_CODE", "VERIFIED_FROM_CONFIGURATION"):
+                if not re.match(r'^[0-9a-f]{40}$', commit_sha):
+                    errors.append(f"Claim {claim_id} must cite a full 40-char SHA, got '{commit_sha}'")
+                    reg_errors += 1
+                if "src/gps/gps_reader.py" in src_file:
+                    errors.append(f"Claim {claim_id} cites nonexistent path 'src/gps/gps_reader.py'!")
+                    reg_errors += 1
+
             # If claim is REMOVED, verify that no public page contains the removed statement
             if status == "REMOVED":
-                stmt = cols[1].replace('`', '').strip()
                 for hf, (_, raw_c) in parsed_docs.items():
                     norm_c = normalize_content(raw_c).lower()
                     if "sub-30" in stmt.lower() and "sub-30" in norm_c:
@@ -458,6 +486,9 @@ def run_suite(check_live=False):
                         errors.append(f"Public page [{hf}] contains removed claim '{stmt}' from {claim_id}!")
                         reg_errors += 1
                     elif "6–8" in stmt and "6–8 m" in norm_c:
+                        errors.append(f"Public page [{hf}] contains removed claim '{stmt}' from {claim_id}!")
+                        reg_errors += 1
+                    elif "regenerative" in stmt.lower() and "regenerative" in norm_c:
                         errors.append(f"Public page [{hf}] contains removed claim '{stmt}' from {claim_id}!")
                         reg_errors += 1
 

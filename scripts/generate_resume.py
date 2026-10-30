@@ -189,12 +189,12 @@ def generate_resume_pdf():
   <div class="item">
     <div class="item-header">
       <span class="item-title">Agricultural Tilling Robot Prototype (AgriTech)</span>
-      <span class="item-date">ROS 2 Humble · Raspberry Pi 4B · ESP32 · 24V LiFePO4</span>
+      <span class="item-date">ROS 2 Humble · Raspberry Pi 4B · ESP32 · 24V-Class LiFePO4</span>
     </div>
     <ul>
-      <li>Architected hybrid 24V agricultural rover with front 2-stroke engine and rear geared DC drivetrain; developed and submitted for <strong>YIP 7.0</strong>.</li>
-      <li>Integrated GPS data acquisition node (NEO-6M), multi-sensor telemetry, and 2.4 GHz wireless manual remote override.</li>
-      <li>Engineered custom mild-steel chassis and 24V LiFePO4 battery power architecture for high-vibration agricultural environments.</li>
+      <li>Architected hybrid 24V agricultural rover with front 2-stroke engine and rear chain drivetrain; developed for <strong>YIP 7.0</strong>.</li>
+      <li>Integrated GPS data acquisition node (NEO-6M), multi-sensor telemetry, and emergency manual throttle override mechanism.</li>
+      <li>Engineered custom mild-steel chassis and 24V-class LiFePO4 battery power architecture for high-vibration agricultural environments.</li>
     </ul>
   </div>
 
@@ -218,7 +218,7 @@ def generate_resume_pdf():
     <ul>
       <li>Built native micro-ROS node on ESP32 executing command subscriptions over Wi-Fi UDP with micro-ROS agent.</li>
       <li>Implemented 4-pin pure PWM motor driver with static friction deadband cutoff (MIN_PWM = 60) and 1 kHz LEDC switching.</li>
-      <li>Integrated 500 ms watchdog failsafe shutting off motors on Wi-Fi packet drop or agent disconnection; benchtop tested.</li>
+      <li>Integrated 500 ms software command-timeout cutoff setting motor PWM to zero on Wi-Fi packet drop or agent disconnection; benchtop tested.</li>
     </ul>
   </div>
 </div>

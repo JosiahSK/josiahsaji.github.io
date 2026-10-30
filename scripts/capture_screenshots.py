@@ -198,7 +198,7 @@ def write_readme_catalog(out_dir, version_label, capture_records):
         "   Technical SVG architecture and schematic diagrams scale with high fidelity from 1440px desktop displays down to 320px compact screens via responsive SVG viewBox attributes.",
         "",
         "3. **Claim Integrity Verification:**  ",
-        "   Visual inspection confirms updated badges (`Agricultural Tilling Robot Prototype`, `24V LiFePO4`, `Design Target: ~15cm Depth`, `Software Command Timeout`, `Zero PWM Cutoff`) and modified schematics render cleanly without layout collisions.",
+        "   Visual inspection confirms updated badges (`Agricultural Tilling Robot Prototype`, `24V-Class LiFePO4`, `Emergency Manual Override`, `Software Command Timeout`, `Zero PWM`) and modified schematics render cleanly without layout collisions.",
         "",
         "4. **Typography & Readability:**  ",
         "   Headings use Space Grotesk with fluid clamping; technical tables and telemetry labels use JetBrains Mono; body copy uses Inter with line-height >= 1.6.",
@@ -217,8 +217,8 @@ def main():
     root_dir = os.path.dirname(script_dir)
 
     # Output directory selection
-    version_label = "V5.3.2"
-    out_rel = os.path.join("docs", "screenshots", "v5.3.2")
+    version_label = "V5.3.3"
+    out_rel = os.path.join("docs", "screenshots", "v5.3.3")
 
     if "--v53" in sys.argv:
         version_label = "V5.3"
@@ -251,7 +251,7 @@ def main():
         httpd.server_close()
         sys.exit(1)
 
-    temp_profile = tempfile.mkdtemp(prefix="portfolio_screen_v532_")
+    temp_profile = tempfile.mkdtemp(prefix="portfolio_screen_v533_")
     print(f"Running automated screenshot suite across viewports to: {out_dir}\n")
 
     failures = 0

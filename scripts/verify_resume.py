@@ -81,6 +81,15 @@ DISALLOWED_PATTERNS = [
     ("sub-30 µs", "Unevidenced analytical IK timing metric"),
     ("<30 µs", "Unevidenced analytical IK timing metric"),
     ("< 30 µs", "Unevidenced analytical IK timing metric"),
+    ("watchdog", "Misclassified hardware watchdog timer (actual code is software command timeout)"),
+    ("regenerative", "Unsupported regenerative braking claim"),
+    ("e-brake", "Unsupported emergency brake claim"),
+    ("deterministic failsafe", "Misleading deterministic failsafe phrasing"),
+    ("2.4 ghz", "Unsupported wireless remote override claim"),
+    ("~8s", "Unsupported battery cell configuration claim"),
+    ("8s configuration", "Unsupported battery cell configuration claim"),
+    ("15cm", "Unsupported furrow depth claim"),
+    ("15 cm", "Unsupported furrow depth claim"),
 ]
 
 def verify_resume(pdf_path=RESUME_PATH):
