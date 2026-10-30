@@ -258,6 +258,11 @@ def run_suite(check_live=False):
         ("r5 and later", "Unsupported revision generalization beyond datasheet (use 'A1M8-R5')"),
         ("r5+", "Unsupported revision generalization beyond datasheet (use 'A1M8-R5')"),
         ("r5 and higher", "Unsupported revision generalization beyond datasheet (use 'A1M8-R5')"),
+        ("live sensor radar", "Misleading telemetry claim implying running sensor hardware on static portfolio"),
+        ("100 hz fused", "Unverified EKF odometry fusion rate claim borrowed from quadruped"),
+        ("dwb active", "Misleading active planner telemetry claim on static portfolio"),
+        ("360° @ 10 hz", "Unqualified LiDAR operational rate implying real running telemetry"),
+        ("360deg @ 10 hz", "Unqualified LiDAR operational rate implying real running telemetry"),
     ]
 
     claims_clean = True

@@ -31,25 +31,25 @@
     /* ── Case Study Styles ── */
     .cs-hero {
       padding: 120px 24px 64px;
-      text-align: center;
       background: radial-gradient(ellipse at 50% 0%, rgba(0, 212, 255, 0.16) 0%, rgba(139, 92, 246, 0.08) 40%, transparent 70%);
       border-bottom: 1px solid var(--border);
     }
     .cs-back {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: var(--font-mono); font-size: 0.8rem;
-      color: var(--accent2); margin-bottom: 28px;
+      color: var(--accent2); margin-bottom: 24px;
       transition: color var(--transition);
     }
     .cs-back:hover { color: var(--text); }
     .cs-tag { display: block; font-family: var(--font-mono); font-size: 0.78rem;
       color: var(--accent2); letter-spacing: 1px; margin-bottom: 12px; }
     .cs-title {
-      font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 900; letter-spacing: -2px; color: #fff; margin-bottom: 20px; line-height: 1.15;
+      font-family: var(--font-head); font-size: clamp(1.75rem, 5vw, 3.2rem);
+      font-weight: 900; letter-spacing: -1.5px; color: #fff; margin-bottom: 20px; line-height: 1.15;
+      word-wrap: break-word; overflow-wrap: break-word;
     }
-    .cs-subtitle { font-size: 1.08rem; color: var(--text-muted); max-width: 720px; margin: 0 auto 32px; line-height: 1.65; }
-    .cs-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .cs-subtitle { font-size: 1.05rem; color: var(--text-muted); max-width: 100%; margin: 0 0 28px; line-height: 1.65; }
+    .cs-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
     .cs-badge {
       background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3);
       padding: 5px 14px; border-radius: 99px;
@@ -160,8 +160,10 @@
     }
 
     @media(max-width: 600px) {
-      .cs-hero { padding: 90px 20px 40px; }
-      .cs-section { padding: 40px 0; }
+      .cs-hero { padding: 85px 16px 36px; }
+      .cs-title { font-size: 1.65rem; letter-spacing: -0.5px; }
+      .cs-subtitle { font-size: 0.92rem; }
+      .cs-section { padding: 36px 0; }
       .decision-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -181,17 +183,140 @@
 
   <!-- HERO -->
   <header class="cs-hero">
-    <a href="index.html#projects" class="cs-back">← Back to Projects</a>
-    <span class="cs-tag">// case study · 04</span>
-    <h1 class="cs-title">ESP32 micro-ROS 2WD<br><span style="background:linear-gradient(135deg,#06b6d4,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Differential Drive Robot</span></h1>
-    <p class="cs-subtitle">Bridging the standard ROS 2 navigation stack directly to embedded microcontroller hardware over wireless UDP transports, with 4-pin hardware PWM motor control and deterministic failsafe watchdogs.</p>
-    <div class="cs-badges">
-      <span class="cs-badge">micro-ROS (XRCE-DDS)</span>
-      <span class="cs-badge badge-purple">ESP32 DevKit V1</span>
-      <span class="cs-badge">Wi-Fi UDP Transport</span>
-      <span class="cs-badge badge-purple">geometry_msgs/Twist</span>
-      <span class="cs-badge">LEDC Hardware PWM</span>
-      <span class="cs-badge badge-purple">Failsafe Watchdog (500ms)</span>
+    <div class="container">
+      <div class="cs-hero-grid">
+        <div class="cs-hero-content">
+          <a href="index.html#projects" class="cs-back">&larr; Back to Projects</a>
+          <span class="cs-tag">// case study &middot; 04</span>
+          <h1 class="cs-title">ESP32 micro-ROS 2WD<br><span style="background:linear-gradient(135deg,#06b6d4,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Differential Drive Robot</span></h1>
+          <p class="cs-subtitle">Bridging the standard ROS 2 navigation stack directly to embedded microcontroller hardware over wireless UDP transports, with 4-pin hardware PWM motor control and deterministic failsafe watchdogs.</p>
+          <div class="cs-badges">
+            <span class="cs-badge">micro-ROS (XRCE-DDS)</span>
+            <span class="cs-badge badge-purple">ESP32 DevKit V1</span>
+            <span class="cs-badge">Wi-Fi UDP Transport</span>
+            <span class="cs-badge badge-purple">geometry_msgs/Twist</span>
+            <span class="cs-badge">LEDC Hardware PWM</span>
+            <span class="cs-badge badge-purple">Failsafe Watchdog (500ms)</span>
+          </div>
+          <div class="cs-hero-actions">
+            <a href="#cs-overview" class="btn btn-primary btn-sm">Read Technical Analysis &darr;</a>
+            <a href="https://github.com/JosiahSK/esp32-microros-2wd-car" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">GitHub Repository &nearr;</a>
+          </div>
+        </div>
+
+        <!-- Distinctive Hero Visual Card: Embedded Architecture Schematic -->
+        <div class="cs-hero-visual-card">
+          <div class="cs-hero-visual-header">
+            <span class="cs-hero-visual-tag"><span class="badge-dot"></span> EMBEDDED CONTROLLER ARCHITECTURE</span>
+            <span>[ESP32 // XTENSA LX6]</span>
+          </div>
+
+          <div class="tech-figure-wrap">
+            <svg viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" role="img" class="zoomable-figure" aria-label="ESP32 micro-ROS Embedded Hardware and Motor Control Architecture Schematic" style="width:100%;height:auto;background:#090d16;border-radius:8px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;">
+              <defs>
+                <linearGradient id="espChipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#162032" />
+                  <stop offset="100%" stop-color="#0f172a" />
+                </linearGradient>
+                <marker id="arrow-emb-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#00d4ff"/>
+                </marker>
+                <marker id="arrow-emb-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f5a623"/>
+                </marker>
+              </defs>
+
+              <!-- PCB Trace Ground Grid -->
+              <g stroke="rgba(255,255,255,0.03)" stroke-width="1">
+                <line x1="0" y1="40" x2="520" y2="40" /><line x1="0" y1="90" x2="520" y2="90" />
+                <line x1="0" y1="140" x2="520" y2="140" /><line x1="0" y1="190" x2="520" y2="190" />
+                <line x1="0" y1="240" x2="520" y2="240" /><line x1="0" y1="290" x2="520" y2="290" />
+                <line x1="60" y1="0" x2="60" y2="340" /><line x1="160" y1="0" x2="160" y2="340" />
+                <line x1="260" y1="0" x2="260" y2="340" /><line x1="360" y1="0" x2="360" y2="340" />
+                <line x1="460" y1="0" x2="460" y2="340" />
+              </g>
+
+              <!-- Wireless Incoming Telemetry Link -->
+              <rect x="20" y="24" width="140" height="60" rx="6" fill="#111827" stroke="#00d4ff" stroke-width="1.2" />
+              <text x="30" y="44" fill="#00d4ff" font-size="9" font-weight="700">HOST ROS 2 JAZZY</text>
+              <text x="30" y="60" fill="#94a3b8" font-size="8">UDP Socket : 8888</text>
+              <text x="30" y="74" fill="#a78bfa" font-size="7.5">/cmd_vel (Twist)</text>
+
+              <!-- Wireless Path Arrow -->
+              <path d="M 160 54 L 200 54" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrow-emb-cyan)" />
+              <text x="168" y="46" fill="#64748b" font-size="7">Wi-Fi</text>
+
+              <!-- ESP32 Main SoC Board -->
+              <rect x="205" y="20" width="150" height="235" rx="8" fill="url(#espChipGrad)" stroke="#f5a623" stroke-width="1.5" />
+              <!-- Antenna Area -->
+              <rect x="215" y="28" width="50" height="14" rx="2" fill="#1e293b" stroke="#f5a623" stroke-width="0.8" />
+              <path d="M 220 35 L 230 35 L 230 31 L 240 31 L 240 35 L 250 35 L 250 31 L 260 31" stroke="#f5a623" stroke-width="1" fill="none" />
+              <text x="272" y="38" fill="#f5a623" font-size="7.5" font-weight="700">2.4 GHz RF</text>
+
+              <text x="215" y="60" fill="#fff" font-size="10" font-weight="800">ESP32 DevKit V1</text>
+              <text x="215" y="72" fill="#94a3b8" font-size="7.5">Xtensa Dual-Core 240MHz</text>
+
+              <!-- Core 0 Block -->
+              <rect x="215" y="82" width="130" height="42" rx="4" fill="#0d1424" stroke="#00d4ff" stroke-width="1" />
+              <text x="222" y="96" fill="#00d4ff" font-size="8" font-weight="700">Core 0: micro-ROS</text>
+              <text x="222" y="108" fill="#94a3b8" font-size="7">FreeRTOS rclc_node</text>
+              <text x="222" y="118" fill="#64748b" font-size="6.8">XRCE-DDS Client</text>
+
+              <!-- Core 1 Block -->
+              <rect x="215" y="130" width="130" height="52" rx="4" fill="#0d1424" stroke="#8b5cf6" stroke-width="1" />
+              <text x="222" y="144" fill="#a78bfa" font-size="8" font-weight="700">Core 1: Control Loop</text>
+              <text x="222" y="156" fill="#94a3b8" font-size="7">Kinematic Deconstruction</text>
+              <text x="222" y="166" fill="#64748b" font-size="6.8">Deadband Stiction Filter</text>
+              <text x="222" y="176" fill="#00d4ff" font-size="6.8">LEDC 1 kHz · 8-bit PWM</text>
+
+              <!-- Watchdog Subsystem -->
+              <rect x="215" y="188" width="130" height="28" rx="4" fill="#061a14" stroke="#10b981" stroke-width="1" />
+              <text x="222" y="201" fill="#10b981" font-size="7.5" font-weight="700">Watchdog Failsafe</text>
+              <text x="222" y="211" fill="#94a3b8" font-size="6.8">500 ms Timeout &rarr; E-Brake</text>
+
+              <!-- Pin Outputs -->
+              <text x="215" y="235" fill="#f5a623" font-size="7.5" font-weight="600">GPIO: 25, 26, 27, 14</text>
+
+              <!-- GPIO Output Wires to Motor Driver -->
+              <path d="M 355 140 L 395 140" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow-emb-amber)" />
+              <path d="M 355 155 L 395 155" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow-emb-amber)" />
+              <path d="M 355 170 L 395 170" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow-emb-amber)" />
+              <path d="M 355 185 L 395 185" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow-emb-amber)" />
+              <text x="360" y="134" fill="#64748b" font-size="7">PWM</text>
+
+              <!-- Dual H-Bridge Motor Driver Block -->
+              <rect x="395" y="105" width="115" height="110" rx="8" fill="#162032" stroke="#8b5cf6" stroke-width="1.5" />
+              <text x="405" y="125" fill="#a78bfa" font-size="9" font-weight="700">H-BRIDGE</text>
+              <text x="405" y="137" fill="#94a3b8" font-size="7.5">DRV8833 / L298N</text>
+              <text x="405" y="152" fill="#64748b" font-size="7">&bull; 4-Pin Logic In</text>
+              <text x="405" y="164" fill="#64748b" font-size="7">&bull; Flyback Clamp</text>
+              <text x="405" y="176" fill="#64748b" font-size="7">&bull; Opto-Isolation</text>
+              <text x="405" y="196" fill="#f5a623" font-size="7.5">2x TT Gearmotors</text>
+
+              <!-- Motor Symbols -->
+              <circle cx="430" cy="255" r="14" fill="#111827" stroke="#00d4ff" stroke-width="1.5" />
+              <text x="430" y="259" fill="#00d4ff" font-size="9" text-anchor="middle" font-weight="700">M1</text>
+              <text x="430" y="280" fill="#94a3b8" font-size="7" text-anchor="middle">Left Wheel</text>
+
+              <circle cx="480" cy="255" r="14" fill="#111827" stroke="#00d4ff" stroke-width="1.5" />
+              <text x="480" y="259" fill="#00d4ff" font-size="9" text-anchor="middle" font-weight="700">M2</text>
+              <text x="480" y="280" fill="#94a3b8" font-size="7" text-anchor="middle">Right Wheel</text>
+
+              <line x1="430" y1="215" x2="430" y2="241" stroke="#00d4ff" stroke-width="1.2" />
+              <line x1="480" y1="215" x2="480" y2="241" stroke="#00d4ff" stroke-width="1.2" />
+
+              <!-- Power Domain Bus Legend at Bottom -->
+              <rect x="20" y="275" width="220" height="48" rx="6" fill="#111827" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+              <line x1="30" y1="292" x2="55" y2="292" stroke="#00d4ff" stroke-width="2" />
+              <text x="62" y="295" fill="#94a3b8" font-size="7.5">Logic Rail: 3.3V Regulated (AMS1117)</text>
+              <line x1="30" y1="310" x2="55" y2="310" stroke="#f5a623" stroke-width="2" />
+              <text x="62" y="313" fill="#94a3b8" font-size="7.5">Motor Supply: 7.4V 2S Li-ion Battery</text>
+            </svg>
+            <p class="tech-figure-caption">Figure H-1: Illustrative Schematic &middot; ESP32 micro-ROS embedded topology, dual-core task allocation, and isolated dual H-bridge motor control.</p>
+            <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -417,7 +542,7 @@
     <section class="cs-section reveal" id="cs-specs">
       <span class="cs-section-tag">// 05 — bill of materials &amp; pinout</span>
       <h2 class="cs-section-title">Hardware Specifications &amp; Pinout</h2>
-      <div style="overflow-x:auto;">
+      <div class="table-responsive">
         <table class="tech-table">
           <thead>
             <tr>
@@ -533,6 +658,15 @@
 
   </main>
 
+  <!-- DIAGRAM LIGHTBOX MODAL -->
+  <div id="diagramModal" class="diagram-modal" role="dialog" aria-modal="true" aria-label="Expanded technical diagram" tabindex="-1">
+    <div class="diagram-modal-dialog">
+      <button class="diagram-modal-close" id="diagramModalClose" aria-label="Close diagram preview">&times;</button>
+      <div class="diagram-modal-body" id="diagramModalBody"></div>
+      <p class="diagram-modal-caption" id="diagramModalCaption"></p>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer id="footer">
     <div class="container">
@@ -554,6 +688,71 @@
         document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
       }
     } catch(e) {}
+
+    // Diagram Lightbox & Zoom
+    (function initLightbox() {
+      var modal = document.getElementById('diagramModal');
+      var modalBody = document.getElementById('diagramModalBody');
+      var modalCaption = document.getElementById('diagramModalCaption');
+      var closeBtn = document.getElementById('diagramModalClose');
+      if (!modal || !modalBody) return;
+
+      function openModal(targetEl, captionText) {
+        if (!targetEl) return;
+        modalBody.innerHTML = '';
+        if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'svg') {
+          var clone = targetEl.cloneNode(true);
+          clone.removeAttribute('style');
+          clone.style.width = '100%';
+          clone.style.maxHeight = '75vh';
+          clone.style.borderRadius = '8px';
+          modalBody.appendChild(clone);
+        } else if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'img') {
+          var img = document.createElement('img');
+          img.src = targetEl.src;
+          img.alt = targetEl.alt || '';
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '75vh';
+          img.style.borderRadius = '8px';
+          modalBody.appendChild(img);
+        }
+        if (modalCaption) modalCaption.textContent = captionText || targetEl.getAttribute('aria-label') || targetEl.getAttribute('alt') || '';
+        modal.classList.add('active');
+        modal.focus();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        modalBody.innerHTML = '';
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.zoomable-figure').forEach(function(el) {
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('role', 'button');
+        el.addEventListener('click', function() {
+          var container = el.closest('.tech-figure-wrap') || el.closest('div');
+          var captionEl = container ? container.querySelector('.tech-figure-caption, p') : null;
+          var captionText = captionEl ? captionEl.textContent : (el.getAttribute('alt') || el.getAttribute('aria-label'));
+          openModal(el, captionText);
+        });
+        el.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            el.click();
+          }
+        });
+      });
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
+    })();
   </script>
 </body>
 </html>

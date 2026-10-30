@@ -111,7 +111,7 @@
           <div class="hero-stats-v5">
             <div class="stat-box">
               <span class="stat-val">100 Hz</span>
-              <span class="stat-desc">ros2_control Loop</span>
+              <span class="stat-desc">Quadruped Gazebo Simulation</span>
             </div>
             <div class="stat-box">
               <span class="stat-val">ROS 2</span>
@@ -131,7 +131,7 @@
         <!-- Hero Right: Interactive Robotics Engineering Stage -->
         <div class="hero-interactive-stage reveal" id="heroStage">
           <div class="stage-header">
-            <span class="stage-live-tag"><span class="badge-dot"></span> LIVE SENSOR RADAR</span>
+            <span class="stage-live-tag"><span class="badge-dot"></span> INTERACTIVE ROBOT SCHEMATIC</span>
             <span class="stage-coords">[ORIGIN // 0.00, 0.00]</span>
           </div>
 
@@ -226,7 +226,7 @@
                 <text x="0" y="-18" fill="#94a3b8" font-family="'JetBrains Mono',monospace" font-size="6.5" text-anchor="middle">SBC / ROS 2</text>
 
                 <rect x="-24" y="6" width="48" height="24" rx="4" fill="#182235" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
-                <text x="0" y="22" fill="#94a3b8" font-family="'JetBrains Mono',monospace" font-size="6.5" text-anchor="middle">LiFePO4 24V</text>
+                <text x="0" y="22" fill="#94a3b8" font-family="'JetBrains Mono',monospace" font-size="6.5" text-anchor="middle">POWER MODULE</text>
 
                 <!-- Left Drive Wheel -->
                 <rect x="-42" y="-18" width="8" height="36" rx="2" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5" />
@@ -248,22 +248,23 @@
 
           <div class="telemetry-overlay">
             <div class="telem-chip active" id="telemLidar">
-              <span class="telem-label">LiDAR SCAN</span>
-              <span class="telem-val">360&deg; @ 10 Hz</span>
+              <span class="telem-label">LiDAR FOV</span>
+              <span class="telem-val">360&deg; OMNI</span>
             </div>
             <div class="telem-chip" id="telemOdom">
-              <span class="telem-label">EKF ODOM</span>
-              <span class="telem-val">100 Hz FUSED</span>
+              <span class="telem-label">ODOMETRY</span>
+              <span class="telem-val">DIFF-DRIVE KINEMATICS</span>
             </div>
             <div class="telem-chip" id="telemSlam">
               <span class="telem-label">SLAM RANGE</span>
-              <span class="telem-val">8.0 m LIMIT</span>
+              <span class="telem-val">8.0 m CONFIG LIMIT</span>
             </div>
             <div class="telem-chip" id="telemNav">
-              <span class="telem-label">NAV2 PLANNER</span>
-              <span class="telem-val">DWB ACTIVE</span>
+              <span class="telem-label">NAV2 STACK</span>
+              <span class="telem-val">CONFIGURED</span>
             </div>
           </div>
+          <p class="stage-disclaimer">Illustrative visualization &middot; Not connected to live robot telemetry</p>
         </div>
 
       </div>

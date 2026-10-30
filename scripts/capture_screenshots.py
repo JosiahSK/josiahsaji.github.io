@@ -62,25 +62,42 @@ def capture_all():
         else:
             print(f"  [FAIL] Failed to capture {name}")
             
-    # Capture desktop view of all 4 case study pages
+    # Capture desktop and mobile views of all 4 case study pages
     for page_name, page_file in PAGES:
         if page_name == "index":
             continue
-        out_file = os.path.join(out_dir, f"{page_name}_desktop.png")
+        # Desktop
+        out_file_desk = os.path.join(out_dir, f"{page_name}_desktop.png")
         url = f"http://127.0.0.1:{port}/{page_file}"
-        cmd = [
+        cmd_desk = [
             edge_exe,
             "--headless=new",
             "--disable-gpu",
             "--no-sandbox",
             "--window-size=1440,900",
             f"--user-data-dir={temp_profile}",
-            f"--screenshot={out_file}",
+            f"--screenshot={out_file_desk}",
             url
         ]
-        res = subprocess.run(cmd, capture_output=True, text=True)
-        if os.path.exists(out_file) and os.path.getsize(out_file) > 1000:
-            print(f"  [OK] Captured case study {page_name} -> {os.path.basename(out_file)} ({os.path.getsize(out_file)} bytes)")
+        subprocess.run(cmd_desk, capture_output=True, text=True)
+        if os.path.exists(out_file_desk) and os.path.getsize(out_file_desk) > 1000:
+            print(f"  [OK] Captured case study {page_name} desktop -> {os.path.basename(out_file_desk)} ({os.path.getsize(out_file_desk)} bytes)")
+
+        # Mobile 390x844
+        out_file_mob = os.path.join(out_dir, f"{page_name}_mobile_390x844.png")
+        cmd_mob = [
+            edge_exe,
+            "--headless=new",
+            "--disable-gpu",
+            "--no-sandbox",
+            "--window-size=390,844",
+            f"--user-data-dir={temp_profile}",
+            f"--screenshot={out_file_mob}",
+            url
+        ]
+        subprocess.run(cmd_mob, capture_output=True, text=True)
+        if os.path.exists(out_file_mob) and os.path.getsize(out_file_mob) > 1000:
+            print(f"  [OK] Captured case study {page_name} mobile -> {os.path.basename(out_file_mob)} ({os.path.getsize(out_file_mob)} bytes)")
             
     print("Screenshot capture suite finished successfully.")
 

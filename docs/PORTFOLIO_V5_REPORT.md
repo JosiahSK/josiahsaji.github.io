@@ -105,6 +105,66 @@ The verification suite captured and validated full-page renders across all stand
 
 ---
 
-## 4. Release Status & Conclusion
+---
 
-Portfolio V5 is verified, fully tested against all static link and accessibility constraints, and ready for release merge to `main`.
+# Portfolio V5.1 Release Report: Visual Polish, Project Identity & Telemetry Accuracy
+
+**Release Version:** Portfolio V5.1.0  
+**Baseline Commit:** `14c610d` (V5.0.0 release)  
+**Target Branch:** `main` (via `feature/portfolio-v5.1-telemetry-polish`)  
+**Workspace:** `D:\Documents\Antigravity_project\Interactive_Website\josiahsaji.github.io`  
+**Production Site:** `https://josiahsk.github.io/josiahsaji.github.io/`  
+**Author:** Josiah Saji & Antigravity Quality & Systems Engineer  
+**Date:** October 30, 2026  
+
+---
+
+## 1. Executive Summary & Telemetry Corrections
+
+Portfolio V5.1 resolves technical claim ambiguity in the homepage hero visualization and introduces distinctive visual hero cards and interactive diagram modals across all four case-study pages:
+
+### Key Enhancements & Rigorous Telemetry Qualifications:
+1. **Homepage Hero Telemetry Accuracy (`index.html`):**
+   - **Label Rectification:** Replaced `LIVE SENSOR RADAR` with `INTERACTIVE ROBOT SCHEMATIC` to prevent misrepresentation as a live teleoperated sensor stream.
+   - **Discreet Disclaimer:** Added `.stage-disclaimer`: `Illustrative visualization · Not connected to live robot telemetry`.
+   - **HUD Chip Precision:**
+     - LiDAR FOV: `360° OMNI` (removed static unverified 10 Hz rate citation).
+     - Odometry: `DIFF-DRIVE KINEMATICS` (purged ungrounded `100 Hz FUSED` label).
+     - SLAM: `8.0 m CONFIG LIMIT` (explicitly noted as configured mapping threshold).
+     - Navigation: `NAV2 STACK CONFIGURED` (removed uncalibrated `DWB ACTIVE` label).
+   - **SVG Chassis Power Module:** Replaced `LiFePO4 24V` text with `POWER MODULE` on the generic chassis footprint.
+   - **Hero Stat Grounding:** Changed `100 Hz ros2_control Loop` to `100 Hz Quadruped Gazebo Simulation` to reflect the verified Gazebo physics loop in the quadruped repository.
+
+2. **Distinctive Visual Opening for All 4 Case Studies:**
+   - **Quadruped Locomotion (`quadruped-locomotion.html`):** Split-screen hero featuring an interactive tabbed perception card switching between authentic analytical kinematics derivations, multi-gait phase progression timing diagrams, and support polygon stability envelopes.
+   - **ESP32 micro-ROS Robot (`esp32-microros-robot.html`):** Split-screen hero with custom SVG embedded hardware & micro-ROS controller topology (Figure H-1) illustrating dual-core Xtensa LX6 task allocation (Core 0: micro-ROS FreeRTOS node, Core 1: PWM driver & failsafe watchdog), Wi-Fi UDP link, and isolated 3.3V logic vs. 7.4V motor power rails.
+   - **Autonomous Tilling Robot (`tilling-robot.html`):** Split-screen hero with custom agricultural machinery and powertrain schematic (Figure H-1) illustrating welded mild steel chassis, front two-stroke rotary tiller, central isolated LiFePO4 battery pack, GPS ceramic patch antenna mast, and rear high-torque planetary drive with cleated mud tires.
+   - **ROS 2 Jazzy Mobile Robot (`ros2-mobile-robot.html`):** Split-screen hero with custom perception & navigation schematic (Figure H-1) illustrating SLAM Toolbox 2D occupancy grid generation, 8.0 m configured range boundary, and Nav2 costmap inflation planning trajectory.
+
+3. **Figure Presentation & Lightbox Modal:**
+   - Added accessible click-to-zoom diagram modal (`#diagramModal`) across all four case studies supporting both SVG vector schematics and high-resolution PNG technical figures with keyboard focus (`Tab`, `Enter`, `Escape`).
+   - Integrated `.figure-zoom-hint` and `.zoomable-figure` classes for clear visual affordance.
+   - Wrapped all technical specification and BOM tables in `.table-responsive` wrappers for seamless horizontal scrolling on mobile displays.
+
+4. **Automated Regression Test Suite (`tests/test_links.py`):**
+   - Added automated regression checks ensuring disallowed telemetry claims (`LIVE SENSOR RADAR`, `100 HZ FUSED`, `DWB ACTIVE`, `360° @ 10 HZ`) cannot be reintroduced.
+   - All tests passed: 100% DOM uniqueness, heading hierarchy, asset existence, alt accessibility, factual accuracy, and single-page ATS résumé integrity.
+
+---
+
+## 2. Multi-Viewport Verification Evidence
+
+13 high-resolution viewport screenshots were captured using headless Microsoft Edge:
+- **Homepage:**
+  - `home_desktop_1440x900.png` (296 KB): Verified `INTERACTIVE ROBOT SCHEMATIC`, updated telemetry chips, and disclaimer.
+  - `home_tablet_landscape_1024x768.png` (249 KB): Clean responsive wrapping.
+  - `home_tablet_portrait_768x1024.png` (181 KB): Centered single-column layout.
+  - `home_mobile_390x844.png` (64 KB): Fluid cards, zero horizontal overflow.
+  - `home_compact_mobile_360x800.png` (52 KB): Compact mobile verified.
+- **Case Studies (Desktop 1440&times;900 & Mobile 390&times;844):**
+  - Quadruped Locomotion: `quadruped_desktop.png` (369 KB) & `quadruped_mobile_390x844.png` (182 KB)
+  - ESP32 micro-ROS: `esp32_desktop.png` (425 KB) & `esp32_mobile_390x844.png` (196 KB)
+  - ROS 2 Jazzy Mobile Robot: `mobile_robot_desktop.png` (415 KB) & `mobile_robot_mobile_390x844.png` (191 KB)
+  - Autonomous Tilling Robot: `tilling_desktop.png` (374 KB) & `tilling_mobile_390x844.png` (176 KB)
+
+All screenshots confirmed no horizontal scrolling, proper font clamping, and readable diagram schematics.

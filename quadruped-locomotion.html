@@ -31,25 +31,25 @@
     /* ── Case Study Styles ── */
     .cs-hero {
       padding: 120px 24px 64px;
-      text-align: center;
       background: radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.16) 0%, rgba(0, 212, 255, 0.08) 40%, transparent 70%);
       border-bottom: 1px solid var(--border);
     }
     .cs-back {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: var(--font-mono); font-size: 0.8rem;
-      color: var(--accent2); margin-bottom: 28px;
+      color: var(--accent2); margin-bottom: 24px;
       transition: color var(--transition);
     }
     .cs-back:hover { color: var(--text); }
     .cs-tag { display: block; font-family: var(--font-mono); font-size: 0.78rem;
       color: var(--accent2); letter-spacing: 1px; margin-bottom: 12px; }
     .cs-title {
-      font-family: var(--font-head); font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 900; letter-spacing: -2px; color: #fff; margin-bottom: 20px; line-height: 1.15;
+      font-family: var(--font-head); font-size: clamp(1.75rem, 5vw, 3.2rem);
+      font-weight: 900; letter-spacing: -1.5px; color: #fff; margin-bottom: 20px; line-height: 1.15;
+      word-wrap: break-word; overflow-wrap: break-word;
     }
-    .cs-subtitle { font-size: 1.08rem; color: var(--text-muted); max-width: 720px; margin: 0 auto 32px; line-height: 1.65; }
-    .cs-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .cs-subtitle { font-size: 1.05rem; color: var(--text-muted); max-width: 100%; margin: 0 0 28px; line-height: 1.65; }
+    .cs-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
     .cs-badge {
       background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.3);
       padding: 5px 14px; border-radius: 99px;
@@ -160,8 +160,10 @@
     }
 
     @media(max-width: 600px) {
-      .cs-hero { padding: 90px 20px 40px; }
-      .cs-section { padding: 40px 0; }
+      .cs-hero { padding: 85px 16px 36px; }
+      .cs-title { font-size: 1.65rem; letter-spacing: -0.5px; }
+      .cs-subtitle { font-size: 0.92rem; }
+      .cs-section { padding: 36px 0; }
       .decision-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -181,18 +183,57 @@
 
   <!-- HERO -->
   <header class="cs-hero">
-    <a href="index.html#projects" class="cs-back">← Back to Projects</a>
-    <span class="cs-tag">// case study · 02</span>
-    <h1 class="cs-title">ROS 2 Quadruped<br><span class="accent-text">Locomotion Framework</span></h1>
-    <p class="cs-subtitle">A modular 12-DOF legged robot control and simulation architecture featuring closed-form analytical kinematics, 3D cycloid foot trajectory planning, and synchronized multi-gait coordination in ROS 2 &amp; Gazebo.</p>
-    <div class="cs-badges">
-      <span class="cs-badge badge-cyan">ROS 2 Humble</span>
-      <span class="cs-badge">12-DOF URDF / Xacro</span>
-      <span class="cs-badge badge-cyan">Analytical IK (~25 µs Python)</span>
-      <span class="cs-badge">3D Cycloid Gait</span>
-      <span class="cs-badge badge-cyan">ros2_control</span>
-      <span class="cs-badge">Gazebo Classic 11</span>
-      <span class="cs-badge">PyQt5 Teleop GUI</span>
+    <div class="container">
+      <div class="cs-hero-grid">
+        <div class="cs-hero-content">
+          <a href="index.html#projects" class="cs-back">&larr; Back to Projects</a>
+          <span class="cs-tag">// case study &middot; 02</span>
+          <h1 class="cs-title">ROS 2 Quadruped<br><span class="accent-text">Locomotion Framework</span></h1>
+          <p class="cs-subtitle">A modular 12-DOF legged robot control and simulation architecture featuring closed-form analytical kinematics, 3D cycloid foot trajectory planning, and synchronized multi-gait coordination in ROS 2 &amp; Gazebo.</p>
+          <div class="cs-badges">
+            <span class="cs-badge badge-cyan">ROS 2 Humble</span>
+            <span class="cs-badge">12-DOF URDF / Xacro</span>
+            <span class="cs-badge badge-cyan">Analytical IK (~25 &mu;s Python)</span>
+            <span class="cs-badge">3D Cycloid Gait</span>
+            <span class="cs-badge badge-cyan">ros2_control</span>
+            <span class="cs-badge">Gazebo Classic 11</span>
+            <span class="cs-badge">PyQt5 Teleop GUI</span>
+          </div>
+          <div class="cs-hero-actions">
+            <a href="#cs-overview" class="btn btn-primary btn-sm">Read Technical Analysis &darr;</a>
+            <a href="https://github.com/JosiahSK/ros2-quadruped-locomotion" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">GitHub Repository &nearr;</a>
+          </div>
+        </div>
+
+        <!-- Distinctive Hero Visual Card: Kinematics & Gait Viewer -->
+        <div class="cs-hero-visual-card">
+          <div class="cs-hero-visual-header">
+            <span class="cs-hero-visual-tag"><span class="badge-dot"></span> ANALYTICAL KINEMATICS &amp; GAIT</span>
+            <span>[GAZEBO 11 // ODE]</span>
+          </div>
+
+          <div class="quad-preview-tabs" role="tablist" aria-label="Locomotion Diagram Selector">
+            <button class="quad-tab-btn active" role="tab" aria-selected="true" data-target="quad-panel-kinematics">Analytical IK</button>
+            <button class="quad-tab-btn" role="tab" aria-selected="false" data-target="quad-panel-gait">Cycloid Gait</button>
+            <button class="quad-tab-btn" role="tab" aria-selected="false" data-target="quad-panel-polygon">Support Polygon</button>
+          </div>
+
+          <div class="quad-tab-panel active" id="quad-panel-kinematics" role="tabpanel">
+            <img src="assets/projects/quadruped-robot/images/quadruped_kinematics_diagram.png" alt="Analytical 3-DOF Leg Kinematics Diagram" class="zoomable-figure" loading="lazy">
+            <p class="tech-figure-caption">Figure H-1: 3-DOF closed-form analytical inverse kinematics solving joint angles &theta;1, &theta;2, &theta;3 in ~25 &mu;s.</p>
+          </div>
+
+          <div class="quad-tab-panel" id="quad-panel-gait" role="tabpanel">
+            <img src="assets/projects/quadruped-robot/images/gait_phase_diagram.png" alt="Multi-Gait Phase Progression Timing Chart" class="zoomable-figure" loading="lazy">
+            <p class="tech-figure-caption">Figure H-2: Synchronized multi-gait phase progression (Trot &beta;=0.5, Crawl &beta;=0.75, Walk, Bound).</p>
+          </div>
+
+          <div class="quad-tab-panel" id="quad-panel-polygon" role="tabpanel">
+            <img src="assets/projects/quadruped-robot/images/support_polygon_diagram.png" alt="Support Polygon Stability Margin Diagram" class="zoomable-figure" loading="lazy">
+            <p class="tech-figure-caption">Figure H-3: Center-of-mass projection inside dynamic tripod and diagonal support polygons.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -335,8 +376,9 @@
       </div>
 
       <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
-        <img src="assets/projects/quadruped-robot/images/control_architecture_diagram.png" alt="Quadruped Locomotion Control Architecture Diagram" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(124,58,237,0.2);">
-        <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Figure 2.1: Generated Locomotion Control Architecture across Command, Gait, Kinematics, and Simulation Subsystems.</p>
+        <img src="assets/projects/quadruped-robot/images/control_architecture_diagram.png" alt="Quadruped Locomotion Control Architecture Diagram" class="zoomable-figure" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(124,58,237,0.2);">
+        <p class="tech-figure-caption">Figure 2.1: Generated Locomotion Control Architecture across Command, Gait, Kinematics, and Simulation Subsystems.</p>
+        <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
       </div>
     </section>
 
@@ -388,8 +430,9 @@
       </p>
 
       <div style="margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
-        <img src="assets/projects/quadruped-robot/images/quadruped_kinematics_diagram.png" alt="Analytical 3-DOF Leg Kinematics Diagram" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(6,182,212,0.2);">
-        <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Figure 4.1: Geometric Vector Kinematics for 3-DOF Quadruped Leg (Hip Roll, Thigh Pitch, Knee Pitch).</p>
+        <img src="assets/projects/quadruped-robot/images/quadruped_kinematics_diagram.png" alt="Analytical 3-DOF Leg Kinematics Diagram" class="zoomable-figure" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(6,182,212,0.2);">
+        <p class="tech-figure-caption">Figure 4.1: Geometric Vector Kinematics for 3-DOF Quadruped Leg (Hip Roll, Thigh Pitch, Knee Pitch).</p>
+        <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
       </div>
 
       <div class="code-snippet">
@@ -429,8 +472,9 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
       </div>
 
       <div style="margin-top:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
-        <img src="assets/projects/quadruped-robot/images/gait_phase_diagram.png" alt="Multi-Gait Phase Progression Timing Chart" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(124,58,237,0.2);">
-        <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Figure 4.2: Stance and Swing Phase Timing Schedules for Trot, Walk, Crawl, and Bound Gaits.</p>
+        <img src="assets/projects/quadruped-robot/images/gait_phase_diagram.png" alt="Multi-Gait Phase Progression Timing Chart" class="zoomable-figure" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(124,58,237,0.2);">
+        <p class="tech-figure-caption">Figure 4.2: Stance and Swing Phase Timing Schedules for Trot, Walk, Crawl, and Bound Gaits.</p>
+        <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
       </div>
     </section>
 
@@ -438,7 +482,7 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
     <section class="cs-section reveal" id="cs-specs">
       <span class="cs-section-tag">// 05 — technical stack</span>
       <h2 class="cs-section-title">Hardware &amp; Software Specifications</h2>
-      <div style="overflow-x:auto;">
+      <div class="table-responsive">
         <table class="tech-table">
           <thead>
             <tr>
@@ -532,8 +576,9 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
       </div>
 
       <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;">
-        <img src="assets/projects/quadruped-robot/images/support_polygon_diagram.png" alt="Support Polygon Stability Margin Diagram" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(6,182,212,0.2);">
-        <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);margin-top:12px;">Figure 6.1: Real-Time Dynamic Center-of-Mass (CoM) Projection and Support Polygon Convex Hull Verification.</p>
+        <img src="assets/projects/quadruped-robot/images/support_polygon_diagram.png" alt="Support Polygon Stability Margin Diagram" class="zoomable-figure" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;border:1px solid rgba(6,182,212,0.2);">
+        <p class="tech-figure-caption">Figure 6.1: Real-Time Dynamic Center-of-Mass (CoM) Projection and Support Polygon Convex Hull Verification.</p>
+        <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
       </div>
     </section>
 
@@ -569,6 +614,15 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
 
   </main>
 
+  <!-- DIAGRAM LIGHTBOX MODAL -->
+  <div id="diagramModal" class="diagram-modal" role="dialog" aria-modal="true" aria-label="Expanded technical diagram" tabindex="-1">
+    <div class="diagram-modal-dialog">
+      <button class="diagram-modal-close" id="diagramModalClose" aria-label="Close diagram preview">&times;</button>
+      <div class="diagram-modal-body" id="diagramModalBody"></div>
+      <p class="diagram-modal-caption" id="diagramModalCaption"></p>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer id="footer">
     <div class="container">
@@ -590,6 +644,92 @@ z_swing = default_z + step_height * (<span class="code-num">0.5</span> * (<span 
         document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
       }
     } catch(e) {}
+
+    // Quadruped Hero Tabs
+    (function initQuadTabs() {
+      var tabs = document.querySelectorAll('.quad-tab-btn');
+      var panels = document.querySelectorAll('.quad-tab-panel');
+      if (!tabs.length) return;
+      tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          tabs.forEach(function(t) {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          panels.forEach(function(p) { p.classList.remove('active'); });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+          var targetId = tab.getAttribute('data-target');
+          var targetPanel = document.getElementById(targetId);
+          if (targetPanel) targetPanel.classList.add('active');
+        });
+      });
+    })();
+
+    // Diagram Lightbox & Zoom
+    (function initLightbox() {
+      var modal = document.getElementById('diagramModal');
+      var modalBody = document.getElementById('diagramModalBody');
+      var modalCaption = document.getElementById('diagramModalCaption');
+      var closeBtn = document.getElementById('diagramModalClose');
+      if (!modal || !modalBody) return;
+
+      function openModal(targetEl, captionText) {
+        if (!targetEl) return;
+        modalBody.innerHTML = '';
+        if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'svg') {
+          var clone = targetEl.cloneNode(true);
+          clone.removeAttribute('style');
+          clone.style.width = '100%';
+          clone.style.maxHeight = '75vh';
+          clone.style.borderRadius = '8px';
+          modalBody.appendChild(clone);
+        } else if (targetEl.tagName && targetEl.tagName.toLowerCase() === 'img') {
+          var img = document.createElement('img');
+          img.src = targetEl.src;
+          img.alt = targetEl.alt || '';
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '75vh';
+          img.style.borderRadius = '8px';
+          modalBody.appendChild(img);
+        }
+        if (modalCaption) modalCaption.textContent = captionText || targetEl.getAttribute('aria-label') || targetEl.getAttribute('alt') || '';
+        modal.classList.add('active');
+        modal.focus();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        modalBody.innerHTML = '';
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.zoomable-figure').forEach(function(el) {
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('role', 'button');
+        el.addEventListener('click', function() {
+          var container = el.closest('.tech-figure-wrap') || el.closest('div');
+          var captionEl = container ? container.querySelector('.tech-figure-caption, p') : null;
+          var captionText = captionEl ? captionEl.textContent : (el.getAttribute('alt') || el.getAttribute('aria-label'));
+          openModal(el, captionText);
+        });
+        el.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            el.click();
+          }
+        });
+      });
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+      });
+    })();
   </script>
 </body>
 </html>
