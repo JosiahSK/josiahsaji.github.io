@@ -61,6 +61,27 @@ PROHIBITED_IK_PATTERN = re.compile(
     re.IGNORECASE
 )
 
+# Core prohibited tilling robot claim patterns
+PROHIBITED_TILLING_PATTERNS = [
+    (re.compile(r'(?:design target:\s*)?~?\s*15\s*cm\s*(?:depth|furrow)', re.IGNORECASE), "15cm depth/furrow claim"),
+    (re.compile(r'24\s*v(?:\s*-\s*class)?\s*dc\s*geared\s*motor', re.IGNORECASE), "24V DC geared motor claim"),
+    (re.compile(r'2\.4\s*ghz\s*(?:manual\s*)?(?:remote\s*)?override', re.IGNORECASE), "2.4 GHz override claim"),
+    (re.compile(r'(?:fail-safe\s*)?rf\s*remote\s*teleoperation', re.IGNORECASE), "RF remote teleoperation claim"),
+    (re.compile(r'teleop\s*failsafe\s*cutoff', re.IGNORECASE), "teleop failsafe cutoff claim"),
+    (re.compile(r'gps\s*heading\s*drift\s*at\s*low\s*crawl\s*speeds', re.IGNORECASE), "GPS heading drift at low crawl speeds claim"),
+    (re.compile(r'0\.3\s*[-–—]\s*0\.6\s*m/s', re.IGNORECASE), "0.3-0.6 m/s heading speed correlation claim"),
+]
+
+def find_prohibited_tilling_claims(raw_text):
+    """Normalize text and return list of tilling violations."""
+    norm = normalize_content(raw_text)
+    matches = []
+    for pat, desc in PROHIBITED_TILLING_PATTERNS:
+        found = pat.findall(norm)
+        if found:
+            matches.extend(found)
+    return matches
+
 def find_prohibited_claims(raw_text):
     """Normalize text and return list of matches."""
     norm = normalize_content(raw_text)
@@ -90,11 +111,29 @@ def test_unit_normalization():
         ("Closed-Form Analytical IK", False),
         ("Direct trigonometric equations", False),
         ("200 Hz Controller Manager", False),
+        ("Design Target: ~15cm Depth", True),
+        ("~15cm depth", True),
+        ("24V DC Geared Motor", True),
+        ("2.4 GHz Manual Override", True),
+        ("Fail-safe RF remote teleoperation protocol", True),
+        ("teleop failsafe cutoff", True),
+        ("GPS Heading Drift at Low Crawl Speeds", True),
+        ("0.3–0.6 m/s", True),
+        ("0.3-0.6 m/s", True),
+        ("Soft-Soil Blade Evaluation", False),
+        ("24V-Class LiFePO4 Battery", False),
+        ("24V DC Motor", False),
+        ("Mechanical Emergency Override", False),
+        ("2.4 GHz Wi-Fi", False),
+        ("GPS Coordinate Drift", False),
+        ("Forward driving: stable at 0.3 m/s", False),
+        ("GPS logging: ~3 m drift observed", False),
+
     ]
 
     failed = 0
     for sample, should_match in test_cases:
-        matches = find_prohibited_claims(sample)
+        matches = find_prohibited_claims(sample) + find_prohibited_tilling_claims(sample)
         matched = len(matches) > 0
         if matched == should_match:
             print(f"  [PASS] '{sample}' -> matched={matched} (expected {should_match})")
@@ -117,6 +156,8 @@ def test_fixture_files():
         "prohibited_ik_svg.html": True,
         "prohibited_ik_attributes.html": True,
         "valid_ik_terminology.html": False,
+        "prohibited_tilling_claims.html": True,
+        "valid_tilling_claims.html": False,
     }
 
     all_passed = True
@@ -130,7 +171,7 @@ def test_fixture_files():
         with open(fpath, "r", encoding="utf-8") as f:
             content = f.read()
 
-        matches = find_prohibited_claims(content)
+        matches = find_prohibited_claims(content) + find_prohibited_tilling_claims(content)
         has_violations = len(matches) > 0
 
         if has_violations == should_contain_violations:

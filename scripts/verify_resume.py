@@ -90,6 +90,8 @@ DISALLOWED_PATTERNS = [
     ("8s configuration", "Unsupported battery cell configuration claim"),
     ("15cm", "Unsupported furrow depth claim"),
     ("15 cm", "Unsupported furrow depth claim"),
+    ("ackermann", "Unsupported Ackermann steering geometry claim"),
+    ("geared motor", "Unsupported geared motor claim for tilling robot"),
 ]
 
 def verify_resume(pdf_path=RESUME_PATH):

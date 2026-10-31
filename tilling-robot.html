@@ -286,7 +286,7 @@
                 <circle cx="0" cy="0" r="8" fill="#475569" />
               </g>
               <text x="415" y="285" fill="#e2e8f0" font-size="7.5" text-anchor="middle" font-weight="600">Rear Drive Wheel</text>
-              <text x="415" y="297" fill="#94a3b8" font-size="6.5" text-anchor="middle">Cleated Mud Tires</text>
+              <text x="415" y="297" fill="#94a3b8" font-size="6.5" text-anchor="middle">Rear Drive Wheels</text>
 
               <!-- Soil Surface Datum Line -->
               <line x1="20" y1="270" x2="500" y2="270" stroke="#a16207" stroke-width="2" stroke-dasharray="6,4" />
@@ -294,7 +294,7 @@
 
               <!-- Architecture Badging -->
               <rect x="150" y="305" width="220" height="24" rx="4" fill="#111827" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
-              <text x="260" y="320" fill="#94a3b8" font-size="7.2" text-anchor="middle">Rear Chain Drive &middot; Front Rototiller Counter-Torque</text>
+              <text x="260" y="320" fill="#94a3b8" font-size="7.2" text-anchor="middle">Rear Chain Drive &middot; Front Tilling Implement</text>
             </svg>
             <p class="tech-figure-caption">Figure H-1: Illustrative Schematic &middot; Agricultural tilling robot mechanical layout: front two-stroke cultivator, central 24V-class LiFePO4 battery, and rear chain-driven drivetrain.</p>
             <span class="figure-zoom-hint">&#x2922; Click to inspect full diagram</span>
@@ -310,7 +310,7 @@
     <section class="cs-section reveal" id="cs-overview">
       <span class="cs-section-tag">// 01 — system overview</span>
       <h2 class="cs-section-title">System Architecture</h2>
-      <p style="color:var(--text-muted);margin-bottom:28px;">The agricultural tilling robot prototype integrates a rear-wheel-drive electric drivetrain with a front-mounted two-stroke rototiller implement. The system combines an embedded microcontroller for low-level motor drive PWM and emergency override sequencing, a ceramic patch antenna GPS module for field data acquisition, a dedicated 24V-class LiFePO4 battery subsystem for powertrain delivery with regulated logic rails, and a mechanical emergency throttle takeover lever.</p>
+      <p style="color:var(--text-muted);margin-bottom:28px;">The agricultural tilling robot prototype integrates a rear-wheel-drive electric drivetrain with a front-mounted two-stroke rototiller implement. The system combines an embedded microcontroller for motor drive PWM and sensor polling, a NEO-6M GPS receiver for field data acquisition, a dedicated 24V-class LiFePO4 battery subsystem for powertrain delivery with step-down logic regulation, and a mechanical emergency throttle takeover lever.</p>
 
       <div class="verification-status-box" style="margin-bottom:28px;background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.25);border-radius:12px;padding:20px;">
         <h3 style="color:var(--accent2);font-family:var(--font-mono);font-size:0.95rem;margin-bottom:8px;">Verification Status: Hardware Prototype &amp; Validation Plan</h3>
@@ -380,8 +380,8 @@
           <text x="705" y="88" fill="#fbbf24" font-size="13" font-weight="bold">Dual H-Bridge Driver</text>
           <text x="705" y="108" fill="#94a3b8" font-size="10">High-Current Motor Stage</text>
           <text x="705" y="128" fill="#64748b" font-size="9">• 24V DC Motor &amp; Chain Drive</text>
-          <text x="705" y="144" fill="#64748b" font-size="9">• Rear cleated agricultural drive wheels</text>
-          <text x="705" y="160" fill="#f59e0b" font-size="9">24V Power bus with flyback suppression</text>
+          <text x="705" y="144" fill="#64748b" font-size="9">• Rear drive axle &amp; wheels</text>
+          <text x="705" y="160" fill="#f59e0b" font-size="9">24V Power bus to motor driver</text>
 
           <!-- Block 5: Power & Tiller Engine -->
           <rect x="690" y="200" width="260" height="110" rx="10" fill="url(#nodeGradTill)" stroke="#ef4444" stroke-width="1.5"/>
@@ -411,7 +411,7 @@
           <!-- Legend Bottom -->
           <rect x="30" y="340" width="920" height="50" rx="8" fill="#0c101c" stroke="#1e293b" stroke-width="1"/>
           <text x="45" y="362" fill="#94a3b8" font-size="9.5">Safety Architecture: Mechanical emergency takeover lever decouples throttle control; obstacle detection loop commands motor stop when front obstacles are detected within 50 cm.</text>
-          <text x="45" y="378" fill="#64748b" font-size="8.5">Electrical Architecture: Dedicated DC-DC logic regulators + separate 24V-class LiFePO4 battery bus shield the MCU from inductive motor transients and engine ignition noise with a common system ground.</text>
+          <text x="45" y="378" fill="#64748b" font-size="8.5">Electrical Architecture: Dedicated DC-DC buck regulators step 24V-class LiFePO4 battery power down to 5V/3.3V logic rails sharing common system ground.</text>
         </svg>
       </div>
 
@@ -419,7 +419,7 @@
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">⚙️</div>
           <div style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;margin-bottom:6px;">Mechanical</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);">Welded mild steel chassis · High-traction cleated drive wheels · Front stabilizer caster · Heavy-duty shaft coupling to rotary tiller drum</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">Welded mild steel chassis · Rear chain drive transmission · Front steering servo · Two-stroke engine tilling mechanism</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">🔌</div>
@@ -429,7 +429,7 @@
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
           <div style="font-size:1.5rem;margin-bottom:8px;">💾</div>
           <div style="font-family:'Poppins',sans-serif;font-weight:700;color:#fff;margin-bottom:6px;">Software</div>
-          <div style="font-size:0.85rem;color:var(--text-muted);">Embedded motor drive loop · NMEA GPS coordinate acquisition · Fail-safe RF remote teleoperation protocol · ROS 2 node architecture</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);">Documented ROS 2 node architecture · GPS NMEA data acquisition · LiDAR obstacle detection · Embedded motor drive loop</div>
         </div>
       </div>
     </section>
@@ -477,19 +477,19 @@
               <td>Motor Driver</td>
               <td>Dual H-Bridge High-Current Driver</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">PWM speed and directional control with extruded heat sink</td>
+              <td class="bom-note">PWM speed and directional control for 24V DC drive motor</td>
             </tr>
             <tr>
               <td>5</td>
               <td>Embedded Controller</td>
               <td>Microcontroller Development Board (32-bit MCU)</td>
               <td class="bom-qty">1</td>
-              <td class="bom-note">Executes motor PWM, sensor polling, and teleop failsafe cutoff</td>
+              <td class="bom-note">Executes motor PWM, sensor polling, and throttle servo actuation</td>
             </tr>
             <tr>
               <td>6</td>
               <td>GPS Module</td>
-              <td>NEO-6M GPS Receiver (Ceramic Patch Antenna)</td>
+              <td>NEO-6M GPS Receiver</td>
               <td class="bom-qty">1</td>
               <td class="bom-note">Outputs serial NMEA sentences at 9600 baud for ROS 2 coordinate acquisition</td>
             </tr>
@@ -504,8 +504,8 @@
               <td>8</td>
               <td>Buck Converter</td>
               <td>High-Efficiency DC-DC Step-Down Regulator</td>
-              <td class="bom-qty">2</td>
-              <td class="bom-note">Steps 24V LiFePO4 down to 5V logic and 3.3V sensor rails with common ground</td>
+              <td class="bom-qty">Subsystem</td>
+              <td class="bom-note">Steps 24V LiFePO4 down for subsystem logic and sensor rails with common ground</td>
             </tr>
             <tr>
               <td>9</td>
@@ -534,26 +534,26 @@
 
         <div class="challenge-card">
           <div class="challenge-num">Challenge 01</div>
-          <div class="challenge-title">Power Delivery &amp; Inductive Noise Isolation</div>
-          <p class="challenge-problem">High in-rush currents and back-EMF from the 24V drive motor coupled with two-stroke engine vibrations caused voltage dips and resets on the 5V logic bus.</p>
-          <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">Migrated the power architecture to a dedicated 24V-class LiFePO4 battery system, separated the motor power bus from the logic bus using dedicated DC-DC buck regulators with common ground, and added TVS diodes and filter capacitors across motor leads.</p>
+          <div class="challenge-title">Power Architecture &amp; Subsystem Isolation</div>
+          <p class="challenge-problem"><strong>Design Consideration:</strong> Powering a high-draw 24V DC drive motor alongside sensitive digital electronics (Raspberry Pi, microcontroller, GPS) requires isolation to prevent voltage drops and electrical noise from affecting the computing logic.</p>
+          <span class="challenge-label">Architecture Approach →</span>
+          <p class="challenge-solution">Employed a dedicated 24V-class LiFePO4 battery system (bench-tested stable at 23.8V under load) powering the drive motor, with independent DC-DC buck regulators stepping down voltage to supply 5V and 3.3V logic rails across a common ground reference.</p>
         </div>
 
         <div class="challenge-card">
           <div class="challenge-num">Challenge 02</div>
-          <div class="challenge-title">GPS Heading Drift at Low Crawl Speeds</div>
-          <p class="challenge-problem">Standard consumer GPS modules produce noisy heading estimates when traversing agricultural plots at slow tilling speeds (0.3–0.6 m/s), leading to erratic steering corrections.</p>
-          <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">Project field testing records stable forward driving at 0.3 m/s and separately logs ~3 m observed GPS coordinate drift; planned EKF sensor fusion (GPS + IMU + odometry) to filter position and heading.</p>
+          <div class="challenge-title">GPS Coordinate Drift</div>
+          <p class="challenge-problem"><strong>Observed Prototype Behavior:</strong> In standalone GPS logging tests, the NEO-6M receiver logged coordinates with approximately 3 m observed drift, presenting challenges for precise agricultural row following.</p>
+          <span class="challenge-label">Future Roadmap →</span>
+          <p class="challenge-solution">Project test records document stable forward driving at 0.3 m/s and separately document ~3 m GPS drift. To address drift, project roadmap documentation (<code>docs/future_work.md</code>) plans EKF sensor fusion combining GPS, IMU, and wheel odometry, alongside potential RTK upgrades.</p>
         </div>
 
         <div class="challenge-card">
           <div class="challenge-num">Challenge 03</div>
-          <div class="challenge-title">Traction Management on Damp Soft Soil</div>
-          <p class="challenge-problem">When tilling damp Kerala soil, the active cultivator drum generates severe counter-torque, pushing the robot backward and causing drive wheels to dig in and lose grip.</p>
-          <span class="challenge-label">Solution →</span>
-          <p class="challenge-solution">Shifted battery and chassis center of mass forward over the rear drive axle, fitted aggressive agricultural cleated tires, and adjusted drivetrain gear ratios to counteract tilling drag.</p>
+          <div class="challenge-title">Traction Management in Agricultural Soil</div>
+          <p class="challenge-problem"><strong>Design Consideration:</strong> When engaging agricultural soil, the front tilling mechanism introduces rotational resistance against forward vehicle motion, requiring sufficient rear-wheel traction to maintain forward progress without wheel slip.</p>
+          <span class="challenge-label">Evaluation &amp; Testing →</span>
+          <p class="challenge-solution">Project test records document that the front tilling blade was evaluated as effective on soft soil, with rear-wheel chain transmission providing propulsion. Further quantitative traction and load analysis remains an objective for ongoing field evaluations.</p>
         </div>
 
       </div>

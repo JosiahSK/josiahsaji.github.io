@@ -1,10 +1,10 @@
 # PORTFOLIO TECHNICAL CLAIMS & HARDWARE SPECIFICATIONS REGISTER
 
-**Version:** V5.3.3 (Final Technical Evidence Correction)
+**Version:** V5.3.4 (Residual Claim Purge & Final Release Audit)
 **Author / Subject:** Josiah Saji — Robotics & Embedded Systems Engineer
 **Repository:** [https://github.com/JosiahSK/josiahsaji.github.io](https://github.com/JosiahSK/josiahsaji.github.io)
-**Production Baseline Commit:** `5dcede2d5f630cf26211a36d494d61b8d8c49a1f`
-**Audit Date:** 2026-10-30
+**Production Baseline Commit:** `b24cb452bd1818f3e47e2f5b99fd6935acdd31e1`
+**Audit Date:** 2026-10-31
 **Maintenance Policy:** Every technical metric, frequency, hardware rating, or performance claim presented across the public portfolio website, diagrams, and résumé must map directly to an entry in this register.
 
 ---
@@ -33,7 +33,7 @@ To eliminate ambiguity, every entry in this register is classified using one of 
 | **micro-ROS 2WD Robot** | `https://github.com/JosiahSK/esp32-microros-2wd-car` | `b0681f8451b0f0e3c3174c99dca2820333a66763` | Arduino/ESP32 micro-ROS firmware, 4-pin PWM, command timeout |
 | **ROS 2 AMR (Jazzy)** | `https://github.com/JosiahSK/ros2_jazzy_2wd_robot` | `f75afeedf97c43e075f2749b891c0eab83fdc980` | Nav2 costmaps, SLAM Toolbox configuration, URDF differential drive |
 | **Tilling Robot** | `https://github.com/JosiahSK/autonomous-tilling-robot` | `19fe9cc2f644f2947d716eead1e7bef3d797993c` | System architecture, 24V-class LiFePO4 battery, GPS node, test logs |
-| **Portfolio Website** | `https://github.com/JosiahSK/josiahsaji.github.io` | `5dcede2d5f630cf26211a36d494d61b8d8c49a1f` | Case study pages, interactive diagrams, automated test suites |
+| **Portfolio Website** | `https://github.com/JosiahSK/josiahsaji.github.io` | `b24cb452bd1818f3e47e2f5b99fd6935acdd31e1` | Case study pages, interactive diagrams, automated test suites |
 
 ---
 
@@ -100,3 +100,6 @@ To eliminate ambiguity, every entry in this register is classified using one of 
 
 7. **ESP32 Firmware Timeout & Braking Semantics (V5.3.3):**
    In `JosiahSK/esp32-microros-2wd-car` (`firmware/esp32_microros_2wd/esp32_microros_2wd.ino`), the 500 ms command timeout check runs sequentially in the Arduino `loop()` after `rclc_executor_spin_some()` and executes `stopMotors()` which commands zero PWM duty cycle on all 4 motor pins. All remaining references to "deterministic software failsafes", "asynchronous timers", and "active regenerative braking" have been purged from public pages, correctly describing the 500 ms application-level command-age check and zero PWM stop state.
+
+8. **Residual Claim Purge & Schematic Reconciliation (V5.3.4):**
+   In V5.3.4, residual obsolete strings in `index.html` SVG schematic (`Design Target: ~15cm Depth`, `24V LiFePO4 Battery`, `24V DC Geared Motor`, `2.4 GHz Manual Override`) were updated to `Soft-Soil Blade Evaluation`, `24V-Class LiFePO4 Battery`, `24V DC Motor`, and `Mechanical Emergency Override`. In `tilling-robot.html`, Challenge 01 and Challenge 03 were rewritten as anticipated engineering design considerations (removing unevidenced failure/component-level claims), Challenge 02 was retitled `GPS Coordinate Drift` (strictly keeping 0.3 m/s forward driving and ~3 m GPS coordinate drift as separate test records without speed-correlated heading claims), `Fail-safe RF remote teleoperation protocol` was replaced with documented ROS 2 architecture/GPS/LiDAR capabilities, and all unevidenced mechanical/electrical claims (cleated mud tires, front stabilizer caster, heavy-duty shaft coupling, extruded heat sink, ceramic patch antenna details) were purged or qualified.

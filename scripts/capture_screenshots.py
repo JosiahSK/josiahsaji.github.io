@@ -217,8 +217,8 @@ def main():
     root_dir = os.path.dirname(script_dir)
 
     # Output directory selection
-    version_label = "V5.3.3"
-    out_rel = os.path.join("docs", "screenshots", "v5.3.3")
+    version_label = "V5.3.4"
+    out_rel = os.path.join("docs", "screenshots", "v5.3.4")
 
     if "--v53" in sys.argv:
         version_label = "V5.3"
@@ -251,7 +251,7 @@ def main():
         httpd.server_close()
         sys.exit(1)
 
-    temp_profile = tempfile.mkdtemp(prefix="portfolio_screen_v533_")
+    temp_profile = tempfile.mkdtemp(prefix="portfolio_screen_v534_")
     print(f"Running automated screenshot suite across viewports to: {out_dir}\n")
 
     failures = 0

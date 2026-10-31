@@ -318,7 +318,7 @@ def run_suite(check_live=False):
         ("gps waypoint tracking", "Unevidenced waypoint tracking; must be classified as GPS Data Acquisition"),
         ("gps waypoint guidance", "Unevidenced waypoint guidance; must be classified as GPS Data Acquisition"),
         ("rf failsafe", "Unverified safety failsafe claim; must be classified as Manual Remote Override"),
-        ("high-torque rear drive", "Must be classified as Geared DC Motor Drive or Rear-Wheel Drive"),
+        ("high-torque rear drive", "Must be classified as Rear-Wheel Drive"),
         ("e-brake", "Unsubstantiated dynamic braking claim; must be labeled Zero PWM"),
         ("deterministic failsafe", "Must be qualified as application-level software command timeout"),
         ("2.4 ghz manual remote override", "Unevidenced 2.4 GHz RF wireless transceiver claim; must use Emergency Manual Override"),
@@ -335,6 +335,27 @@ def run_suite(check_live=False):
         ("~15 cm furrow depth", "Unsupported numerical furrow depth claim"),
         ("15 cm furrow depth", "Unsupported numerical furrow depth claim"),
         ("target furrow depth ~15cm", "Unsupported numerical furrow depth claim"),
+        ("design target: ~15cm depth", "Unsupported tilling depth claim"),
+        ("~15cm depth", "Unsupported tilling depth claim"),
+        ("~15 cm depth", "Unsupported tilling depth claim"),
+        ("15cm depth", "Unsupported tilling depth claim"),
+        ("15 cm depth", "Unsupported tilling depth claim"),
+        ("24v dc geared motor", "Unsupported geared motor claim for 24V tilling robot"),
+        ("24v geared motor", "Unsupported geared motor claim for 24V tilling robot"),
+        ("2.4 ghz manual override", "Unevidenced wireless override claim for tilling robot"),
+        ("fail-safe rf remote teleoperation", "Unevidenced RF remote teleoperation claim"),
+        ("rf remote teleoperation", "Unevidenced RF remote teleoperation claim"),
+        ("teleop failsafe cutoff", "Unevidenced teleop failsafe cutoff claim"),
+        ("teleop failsafe", "Unevidenced teleop failsafe claim"),
+        ("gps heading drift at low crawl speeds", "Unsupported speed-correlated GPS heading drift claim"),
+        ("0.3-0.6 m/s", "Unsupported speed range correlation for GPS heading"),
+        ("0.3–0.6 m/s", "Unsupported speed range correlation for GPS heading"),
+        ("cleated mud tires", "Unsupported tire specification claim"),
+        ("cleated agricultural drive wheels", "Unsupported tire specification claim"),
+        ("cleated drive wheels", "Unsupported tire specification claim"),
+        ("front stabilizer caster", "Unsupported front caster claim"),
+        ("heavy-duty shaft coupling", "Unsupported shaft coupling claim"),
+        ("extruded heat sink", "Unsupported heat sink claim"),
     ]
 
     claims_clean = True
@@ -355,6 +376,23 @@ def run_suite(check_live=False):
         if ik_timing_match:
             errors.append(f"[{hf}] Contextual IK timing claim detected: '{ik_timing_match.group(0)}'")
             claims_clean = False
+
+        # Context-sensitive tilling checks
+        if hf == "tilling-robot.html":
+            if "geared" in lower_raw:
+                errors.append(f"[{hf}] Unsupported 'geared' motor claim detected")
+                claims_clean = False
+            if "ackermann" in lower_raw:
+                errors.append(f"[{hf}] Unsupported 'Ackermann' steering claim detected")
+                claims_clean = False
+        if hf == "index.html":
+            proj_tilling_match = re.search(r'id=["\']proj-tilling["\'].*?<!--\s*§\s*PROJECT 02', raw_content, re.DOTALL | re.IGNORECASE)
+            if proj_tilling_match and "geared" in proj_tilling_match.group(0).lower():
+                errors.append(f"[{hf}] Unsupported 'geared' claim detected in tilling project card")
+                claims_clean = False
+            if proj_tilling_match and "ackermann" in proj_tilling_match.group(0).lower():
+                errors.append(f"[{hf}] Unsupported 'Ackermann' claim detected in tilling project card")
+                claims_clean = False
 
         ik_timing_match2 = re.search(r'\d+\s*(?:µs|μs|us)\s*python', norm_content)
         if ik_timing_match2:
@@ -392,6 +430,13 @@ def run_suite(check_live=False):
         ("tilling-robot.html", "Documented Prototype Test Records (Repository docs/testing.md)", "Tilling page must feature documented subsystem test records"),
         ("index.html", "Agricultural Tilling Robot Prototype", "Index project 01 must be titled 'Agricultural Tilling Robot Prototype'"),
         ("index.html", "24V-Class LiFePO4", "Index project 01 must feature 24V-Class LiFePO4"),
+        ("index.html", "Soft-Soil Blade Evaluation", "Tilling schematic must feature Soft-Soil Blade Evaluation"),
+        ("index.html", "24V DC Motor", "Tilling schematic must feature 24V DC Motor"),
+        ("index.html", "Mechanical Emergency Override", "Tilling schematic must feature Mechanical Emergency Override"),
+        ("tilling-robot.html", "GPS Coordinate Drift", "Tilling challenge 02 must feature 'GPS Coordinate Drift'"),
+        ("tilling-robot.html", "Power Architecture & Subsystem Isolation", "Tilling challenge 01 must feature 'Power Architecture & Subsystem Isolation'"),
+        ("tilling-robot.html", "Traction Management in Agricultural Soil", "Tilling challenge 03 must feature 'Traction Management in Agricultural Soil'"),
+
         ("quadruped-locomotion.html", 'id="quad-tab-kinematics"', "Quadruped tab must have id='quad-tab-kinematics'"),
         ("quadruped-locomotion.html", 'aria-controls="quad-panel-kinematics"', "Quadruped tab must have aria-controls='quad-panel-kinematics'"),
         ("quadruped-locomotion.html", 'aria-labelledby="quad-tab-kinematics"', "Quadruped panel must have aria-labelledby='quad-tab-kinematics'"),
